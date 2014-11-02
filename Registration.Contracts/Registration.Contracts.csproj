@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{353CE50D-AF96-49F7-92AA-86FF2C6C45F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Registration.Contracts</RootNamespace>
+    <AssemblyName>Registration.Contracts</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ECommon">
+      <HintPath>..\packages\ECommon.1.3.7\lib\net40\ECommon.dll</HintPath>
+    </Reference>
+    <Reference Include="ENode">
+      <HintPath>..\packages\ENode.2.4.6\lib\net40\ENode.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Events\AvailableSeatsChanged.cs" />
+    <Compile Include="Events\OrderConfirmed.cs" />
+    <Compile Include="Events\OrderPartiallyReserved.cs" />
+    <Compile Include="Events\OrderPlaced.cs" />
+    <Compile Include="Events\OrderRegistrantAssigned.cs" />
+    <Compile Include="Events\OrderReservationCompleted.cs" />
+    <Compile Include="Events\OrderTotalsCalculated.cs" />
+    <Compile Include="Events\OrderUpdated.cs" />
+    <Compile Include="Events\SeatAssigned.cs" />
+    <Compile Include="Events\SeatAssignmentsCreated.cs" />
+    <Compile Include="Events\SeatAssignmentUpdated.cs" />
+    <Compile Include="Events\SeatsAvailabilityCreated.cs" />
+    <Compile Include="Events\SeatsReservationCancelled.cs" />
+    <Compile Include="Events\SeatsReservationCommitted.cs" />
+    <Compile Include="Events\SeatsReserved.cs" />
+    <Compile Include="Events\SeatUnassigned.cs" />
+    <Compile Include="OrderLine.cs" />
+    <Compile Include="PersonalInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeatQuantity.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

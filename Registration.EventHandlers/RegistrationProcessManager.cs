@@ -7,7 +7,7 @@ using Registration.Events;
 
 namespace Registration.EventHandlers
 {
-    [Component(LifeStyle.Singleton)]
+    [Component]
     public class RegistrationProcessManager :
         IEventHandler<OrderPlaced>,
         IEventHandler<OrderUpdated>,

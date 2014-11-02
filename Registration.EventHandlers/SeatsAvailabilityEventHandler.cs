@@ -5,7 +5,7 @@ using Registration.Commands;
 
 namespace Registration.EventHandlers
 {
-    [Component(LifeStyle.Singleton)]
+    [Component]
     public class SeatsAvailabilityEventHandler : IEventHandler<ConferenceCreated>
     {
         public void Handle(IEventContext context, ConferenceCreated evnt)

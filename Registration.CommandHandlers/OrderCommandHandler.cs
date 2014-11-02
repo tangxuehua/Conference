@@ -5,7 +5,7 @@ using Registration.Commands;
 
 namespace Registration.CommandHandlers
 {
-    [Component(LifeStyle.Singleton)]
+    [Component]
     public class OrderCommandHandler :
         ICommandHandler<RegisterToConference>,
         ICommandHandler<MarkSeatsAsReserved>,

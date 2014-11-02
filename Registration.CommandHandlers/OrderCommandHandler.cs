@@ -1,9 +1,11 @@
 ﻿using System.Linq;
+using ECommon.Components;
 using ENode.Commanding;
 using Registration.Commands;
 
 namespace Registration.CommandHandlers
 {
+    [Component(LifeStyle.Singleton)]
     public class OrderCommandHandler :
         ICommandHandler<RegisterToConference>,
         ICommandHandler<MarkSeatsAsReserved>,

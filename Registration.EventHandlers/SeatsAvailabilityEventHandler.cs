@@ -1,9 +1,11 @@
 ﻿using Conference.Contracts;
+using ECommon.Components;
 using ENode.Eventing;
 using Registration.Commands;
 
 namespace Registration.EventHandlers
 {
+    [Component(LifeStyle.Singleton)]
     public class SeatsAvailabilityEventHandler : IEventHandler<ConferenceCreated>
     {
         public void Handle(IEventContext context, ConferenceCreated evnt)

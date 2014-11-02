@@ -1,8 +1,10 @@
-﻿using ENode.Commanding;
+﻿using ECommon.Components;
+using ENode.Commanding;
 using Registration.Commands;
 
 namespace Registration.CommandHandlers
 {
+    [Component(LifeStyle.Singleton)]
     public class SeatAssignmentsCommandHandler :
         ICommandHandler<CreateSeatAssignments>,
         ICommandHandler<UnassignSeat>,

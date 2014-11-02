@@ -1,5 +1,5 @@
 ﻿
-namespace Payments
+namespace Conference
 {
     public class Class1
     {

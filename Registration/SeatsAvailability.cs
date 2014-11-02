@@ -8,8 +8,8 @@ namespace Registration
 {
     public class SeatsAvailability : AggregateRoot<Guid>
     {
-        private readonly Dictionary<Guid, int> remainingSeats = new Dictionary<Guid, int>();
-        private readonly Dictionary<Guid, List<SeatQuantity>> pendingReservations = new Dictionary<Guid, List<SeatQuantity>>();
+        private Dictionary<Guid, int> remainingSeats;
+        private Dictionary<Guid, List<SeatQuantity>> pendingReservations;
 
         public SeatsAvailability(Guid id) : base(id)
         {
@@ -107,6 +107,8 @@ namespace Registration
         private void Handle(SeatsAvailabilityCreated e)
         {
             Id = e.AggregateRootId;
+            remainingSeats = new Dictionary<Guid, int>();
+            pendingReservations = new Dictionary<Guid, List<SeatQuantity>>();
         }
         private void Handle(AvailableSeatsChanged e)
         {

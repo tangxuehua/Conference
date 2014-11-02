@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Registration
+﻿namespace Registration
 {
     public class PersonalInfo
     {

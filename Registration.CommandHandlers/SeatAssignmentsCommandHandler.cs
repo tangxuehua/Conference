@@ -3,7 +3,7 @@ using Registration.Commands;
 
 namespace Registration.CommandHandlers
 {
-    public class SeatAssignmentsHandler :
+    public class SeatAssignmentsCommandHandler :
         ICommandHandler<CreateSeatAssignments>,
         ICommandHandler<UnassignSeat>,
         ICommandHandler<AssignSeat>

@@ -46,8 +46,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConferenceCreated.cs" />
+    <Compile Include="ConferencePublished.cs" />
+    <Compile Include="ConferenceUnpublished.cs" />
+    <Compile Include="ConferenceUpdated.cs" />
     <Compile Include="Owner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeatCreated.cs" />
+    <Compile Include="SeatUpdated.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

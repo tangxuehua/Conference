@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateSeatsAvailability.cs" />
     <Compile Include="CreateSeatAssignments.cs" />
     <Compile Include="AddSeats.cs" />
     <Compile Include="AssignRegistrantDetails.cs" />

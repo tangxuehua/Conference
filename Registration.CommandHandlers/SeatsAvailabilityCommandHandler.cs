@@ -6,24 +6,35 @@ namespace Registration.CommandHandlers
 {
     [Component]
     public class SeatsAvailabilityCommandHandler :
-        ICommandHandler<CreateSeatsAvailability>,
         ICommandHandler<AddSeats>,
         ICommandHandler<RemoveSeats>,
         ICommandHandler<MakeSeatReservation>,
         ICommandHandler<CancelSeatReservation>,
         ICommandHandler<CommitSeatReservation>
     {
-        public void Handle(ICommandContext context, CreateSeatsAvailability command)
-        {
-            context.Add(new SeatsAvailability(command.AggregateRootId));
-        }
         public void Handle(ICommandContext context, AddSeats command)
         {
-            context.Get<SeatsAvailability>(command.AggregateRootId).AddSeats(command.SeatType, command.Quantity);
+            var availability = context.Get<SeatsAvailability>(command.AggregateRootId);
+            if (availability == null)
+            {
+                context.Add(new SeatsAvailability(command.AggregateRootId));
+            }
+            else
+            {
+                availability.AddSeats(command.SeatType, command.Quantity);
+            }
         }
         public void Handle(ICommandContext context, RemoveSeats command)
         {
-            context.Get<SeatsAvailability>(command.AggregateRootId).RemoveSeats(command.SeatType, command.Quantity);
+            var availability = context.Get<SeatsAvailability>(command.AggregateRootId);
+            if (availability == null)
+            {
+                context.Add(new SeatsAvailability(command.AggregateRootId));
+            }
+            else
+            {
+                availability.RemoveSeats(command.SeatType, command.Quantity);
+            }
         }
         public void Handle(ICommandContext context, MakeSeatReservation command)
         {

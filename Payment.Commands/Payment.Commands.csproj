@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{353CE50D-AF96-49F7-92AA-86FF2C6C45F2}</ProjectGuid>
+    <ProjectGuid>{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Registration.Contracts</RootNamespace>
-    <AssemblyName>Registration.Contracts</AssemblyName>
+    <RootNamespace>Payment.Commands</RootNamespace>
+    <AssemblyName>Payment.Commands</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -42,26 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Events\AvailableSeatsChanged.cs" />
-    <Compile Include="Events\OrderConfirmed.cs" />
-    <Compile Include="Events\OrderPartiallyReserved.cs" />
-    <Compile Include="Events\OrderPlaced.cs" />
-    <Compile Include="Events\OrderRegistrantAssigned.cs" />
-    <Compile Include="Events\OrderReservationCompleted.cs" />
-    <Compile Include="Events\OrderTotalsCalculated.cs" />
-    <Compile Include="Events\OrderUpdated.cs" />
-    <Compile Include="Events\SeatAssigned.cs" />
-    <Compile Include="Events\SeatAssignmentsCreated.cs" />
-    <Compile Include="Events\SeatAssignmentUpdated.cs" />
-    <Compile Include="Events\SeatsAvailabilityCreated.cs" />
-    <Compile Include="Events\SeatsReservationCancelled.cs" />
-    <Compile Include="Events\SeatsReservationCommitted.cs" />
-    <Compile Include="Events\SeatsReserved.cs" />
-    <Compile Include="Events\SeatUnassigned.cs" />
-    <Compile Include="OrderLine.cs" />
-    <Compile Include="PersonalInfo.cs" />
+    <Compile Include="CancelPayment.cs" />
+    <Compile Include="CompletePayment.cs" />
+    <Compile Include="CreatePayment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SeatQuantity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

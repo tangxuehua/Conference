@@ -1,10 +1,10 @@
 ﻿using System;
 using ENode.Commanding;
 
-namespace Payments.Contracts.Commands
+namespace Payments.Commands
 {
+    [Serializable]
     public class CancelPayment : AggregateCommand<Guid>
     {
-        public CancelPayment(Guid paymentId) : base(paymentId) { }
     }
 }

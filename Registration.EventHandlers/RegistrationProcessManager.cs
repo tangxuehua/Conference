@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using ECommon.Components;
 using ENode.Eventing;
-using Payments.Contracts.Events;
+using Payments.Contracts;
 using Registration.Commands;
 using Registration.Events;
 
@@ -12,7 +12,7 @@ namespace Registration.EventHandlers
         IEventHandler<OrderPlaced>,
         IEventHandler<OrderUpdated>,
         IEventHandler<SeatsReserved>,
-        IEventHandler<PaymentCompleted>,
+        IEventHandler<PaymentCompletedEvent>,
         IEventHandler<OrderConfirmed>
     {
         public void Handle(IEventContext context, OrderPlaced evnt)
@@ -38,9 +38,9 @@ namespace Registration.EventHandlers
                 Seats = evnt.ReservationDetails.ToList()
             });
         }
-        public void Handle(IEventContext context, PaymentCompleted evnt)
+        public void Handle(IEventContext context, PaymentCompletedEvent evnt)
         {
-            context.AddCommand(new ConfirmOrder(evnt.SourceOrderId));
+            context.AddCommand(new ConfirmOrder(evnt.AggregateRootId));
         }
         public void Handle(IEventContext context, OrderConfirmed evnt)
         {

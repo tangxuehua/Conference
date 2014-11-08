@@ -6,14 +6,15 @@ using Registration.Events;
 
 namespace Registration
 {
+    [Serializable]
     public class SeatsAvailability : AggregateRoot<Guid>
     {
-        private Dictionary<Guid, int> remainingSeats;
-        private Dictionary<Guid, List<SeatQuantity>> pendingReservations;
+        private Dictionary<Guid, int> _remainingSeats;
+        private Dictionary<Guid, List<SeatQuantity>> _pendingReservations;
 
         public SeatsAvailability(Guid id) : base(id)
         {
-            ApplyEvent(new SeatsAvailabilityCreated(Id));
+            ApplyEvent(new SeatsAvailabilityCreated(id));
         }
 
         public void AddSeats(Guid seatType, int quantity)
@@ -27,7 +28,7 @@ namespace Registration
         public void MakeReservation(Guid reservationId, IEnumerable<SeatQuantity> wantedSeats)
         {
             var wantedList = wantedSeats.ToList();
-            if (wantedList.Any(x => !this.remainingSeats.ContainsKey(x.SeatType)))
+            if (wantedList.Any(x => !this._remainingSeats.ContainsKey(x.SeatType)))
             {
                 throw new ArgumentOutOfRangeException("wantedSeats");
             }
@@ -38,11 +39,11 @@ namespace Registration
             {
                 var item = GetOrAdd(difference, w.SeatType);
                 item.Wanted = w.Quantity;
-                item.Remaining = this.remainingSeats[w.SeatType];
+                item.Remaining = this._remainingSeats[w.SeatType];
             }
 
             List<SeatQuantity> existing;
-            if (this.pendingReservations.TryGetValue(reservationId, out existing))
+            if (this._pendingReservations.TryGetValue(reservationId, out existing))
             {
                 foreach (var e in existing)
                 {
@@ -61,7 +62,7 @@ namespace Registration
         public void CancelReservation(Guid reservationId)
         {
             List<SeatQuantity> reservation;
-            if (this.pendingReservations.TryGetValue(reservationId, out reservation))
+            if (this._pendingReservations.TryGetValue(reservationId, out reservation))
             {
                 ApplyEvent(new SeatsReservationCancelled(reservationId)
                 {
@@ -71,7 +72,7 @@ namespace Registration
         }
         public void CommitReservation(Guid reservationId)
         {
-            if (this.pendingReservations.ContainsKey(reservationId))
+            if (this._pendingReservations.ContainsKey(reservationId))
             {
                 ApplyEvent(new SeatsReservationCommitted(reservationId));
             }
@@ -106,9 +107,9 @@ namespace Registration
 
         private void Handle(SeatsAvailabilityCreated e)
         {
-            Id = e.AggregateRootId;
-            remainingSeats = new Dictionary<Guid, int>();
-            pendingReservations = new Dictionary<Guid, List<SeatQuantity>>();
+            _id = e.AggregateRootId;
+            _remainingSeats = new Dictionary<Guid, int>();
+            _pendingReservations = new Dictionary<Guid, List<SeatQuantity>>();
         }
         private void Handle(AvailableSeatsChanged e)
         {
@@ -116,12 +117,12 @@ namespace Registration
             {
                 int newValue = seat.Quantity;
                 int remaining;
-                if (this.remainingSeats.TryGetValue(seat.SeatType, out remaining))
+                if (this._remainingSeats.TryGetValue(seat.SeatType, out remaining))
                 {
                     newValue += remaining;
                 }
 
-                this.remainingSeats[seat.SeatType] = newValue;
+                this._remainingSeats[seat.SeatType] = newValue;
             }
         }
         private void Handle(SeatsReserved e)
@@ -129,29 +130,29 @@ namespace Registration
             var details = e.ReservationDetails.ToList();
             if (details.Count > 0)
             {
-                this.pendingReservations[e.AggregateRootId] = details;
+                this._pendingReservations[e.AggregateRootId] = details;
             }
             else
             {
-                this.pendingReservations.Remove(e.AggregateRootId);
+                this._pendingReservations.Remove(e.AggregateRootId);
             }
 
             foreach (var seat in e.AvailableSeatsChanged)
             {
-                this.remainingSeats[seat.SeatType] = this.remainingSeats[seat.SeatType] + seat.Quantity;
+                this._remainingSeats[seat.SeatType] = this._remainingSeats[seat.SeatType] + seat.Quantity;
             }
         }
         private void Handle(SeatsReservationCommitted e)
         {
-            this.pendingReservations.Remove(e.AggregateRootId);
+            this._pendingReservations.Remove(e.AggregateRootId);
         }
         private void Handle(SeatsReservationCancelled e)
         {
-            this.pendingReservations.Remove(e.AggregateRootId);
+            this._pendingReservations.Remove(e.AggregateRootId);
 
             foreach (var seat in e.AvailableSeatsChanged)
             {
-                this.remainingSeats[seat.SeatType] = this.remainingSeats[seat.SeatType] + seat.Quantity;
+                this._remainingSeats[seat.SeatType] = this._remainingSeats[seat.SeatType] + seat.Quantity;
             }
         }
     }

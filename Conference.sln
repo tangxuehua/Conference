@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Sql", "Infrastructure.Sql\Infrastructure.Sql.csproj", "{F038F286-5AEF-4341-83EC-9F72F42D06D6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.Commands", "Payment.Commands\Payment.Commands.csproj", "{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.EventHandlers", "Payment.EventHandlers\Payment.EventHandlers.csproj", "{34477AE1-228F-40DF-B463-3CFC85841A82}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +83,14 @@ Global
 		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34477AE1-228F-40DF-B463-3CFC85841A82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34477AE1-228F-40DF-B463-3CFC85841A82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34477AE1-228F-40DF-B463-3CFC85841A82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34477AE1-228F-40DF-B463-3CFC85841A82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -92,6 +104,8 @@ Global
 		{223579DD-4650-4F51-A3AE-E7F8AF00972C} = {E3E79116-A677-47B9-A5E3-35049785ADC5}
 		{C6D29641-E27B-4180-985B-E5FB7181F7F8} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{C39BCB0A-AB88-45EB-9CEE-9EF4157B22C6} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
+		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
+		{34477AE1-228F-40DF-B463-3CFC85841A82} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\DesignTime;packages\TransientFaultHandling.Core.5.0.1118.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35

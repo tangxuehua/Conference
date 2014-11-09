@@ -2,6 +2,7 @@
 using ECommon.Components;
 using ENode.Commanding;
 using Registration.Commands;
+using Registration.Orders;
 
 namespace Registration.CommandHandlers
 {

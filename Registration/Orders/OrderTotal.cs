@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Registration
+namespace Registration.Orders
 {
     public struct OrderTotal
     {

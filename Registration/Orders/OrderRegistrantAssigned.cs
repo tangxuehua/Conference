@@ -1,7 +1,7 @@
 ﻿using System;
 using ENode.Eventing;
 
-namespace Registration.Events
+namespace Registration.Orders
 {
     public class OrderRegistrantAssigned : DomainEvent<Guid>
     {

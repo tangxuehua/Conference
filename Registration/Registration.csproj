@@ -42,29 +42,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AvailableSeatsChanged.cs" />
+    <Compile Include="SeatAvailabilities\AvailableSeatsChanged.cs" />
     <Compile Include="IPricingService.cs" />
-    <Compile Include="Order.cs" />
-    <Compile Include="OrderConfirmed.cs" />
-    <Compile Include="OrderPartiallyReserved.cs" />
-    <Compile Include="OrderLine.cs" />
-    <Compile Include="OrderPlaced.cs" />
-    <Compile Include="OrderRegistrantAssigned.cs" />
-    <Compile Include="OrderReservationCompleted.cs" />
-    <Compile Include="OrderTotal.cs" />
-    <Compile Include="OrderTotalsCalculated.cs" />
-    <Compile Include="RegistrantInfo.cs" />
+    <Compile Include="Orders\Order.cs" />
+    <Compile Include="Orders\OrderConfirmed.cs" />
+    <Compile Include="Orders\OrderPartiallyReserved.cs" />
+    <Compile Include="Orders\OrderLine.cs" />
+    <Compile Include="Orders\OrderPlaced.cs" />
+    <Compile Include="Orders\OrderRegistrantAssigned.cs" />
+    <Compile Include="Orders\OrderReservationCompleted.cs" />
+    <Compile Include="Orders\OrderTotal.cs" />
+    <Compile Include="Orders\OrderTotalsCalculated.cs" />
+    <Compile Include="Orders\RegistrantInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SeatAssigned.cs" />
-    <Compile Include="SeatAssignments.cs" />
-    <Compile Include="SeatAssignmentsCreated.cs" />
+    <Compile Include="SeatAssigning\SeatAssigned.cs" />
+    <Compile Include="SeatAssigning\SeatAssignments.cs" />
+    <Compile Include="SeatAssigning\SeatAssignmentsCreated.cs" />
     <Compile Include="SeatQuantity.cs" />
-    <Compile Include="SeatsAvailability.cs" />
-    <Compile Include="SeatsAvailabilityCreated.cs" />
-    <Compile Include="SeatsReservationCancelled.cs" />
-    <Compile Include="SeatsReservationCommitted.cs" />
-    <Compile Include="SeatsReserved.cs" />
-    <Compile Include="SeatUnassigned.cs" />
+    <Compile Include="SeatAvailabilities\SeatsAvailability.cs" />
+    <Compile Include="SeatAvailabilities\SeatsAvailabilityCreated.cs" />
+    <Compile Include="SeatAvailabilities\SeatsReservationCancelled.cs" />
+    <Compile Include="SeatAvailabilities\SeatsReservationCommitted.cs" />
+    <Compile Include="SeatAvailabilities\SeatsReserved.cs" />
+    <Compile Include="SeatAssigning\SeatUnassigned.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,6 +1,6 @@
 ﻿using ECommon.Utilities;
 
-namespace Registration
+namespace Registration.Orders
 {
     public class RegistrantInfo
     {

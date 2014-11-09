@@ -1,7 +1,8 @@
 ﻿using System;
 using ENode.Eventing;
+using Registration.Orders;
 
-namespace Registration.Events
+namespace Registration.SeatAssigning
 {
     public class SeatAssigned : DomainEvent<Guid>
     {

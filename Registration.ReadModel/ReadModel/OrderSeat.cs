@@ -11,9 +11,10 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using Registration.Orders;
+
 namespace Registration.ReadModel
 {
-
     public class OrderSeat
     {
         public OrderSeat() { }

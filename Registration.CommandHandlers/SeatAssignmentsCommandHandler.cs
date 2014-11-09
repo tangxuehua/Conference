@@ -1,6 +1,8 @@
 ﻿using ECommon.Components;
 using ENode.Commanding;
 using Registration.Commands;
+using Registration.Orders;
+using Registration.SeatAssigning;
 
 namespace Registration.CommandHandlers
 {

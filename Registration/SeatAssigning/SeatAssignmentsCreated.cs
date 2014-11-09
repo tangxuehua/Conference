@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using ENode.Eventing;
 
-namespace Registration.Events
+namespace Registration.SeatAssigning
 {
     public class SeatAssignmentsCreated : DomainEvent<Guid>
     {

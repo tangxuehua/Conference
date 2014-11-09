@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using ENode.Eventing;
 
-namespace Registration
+namespace Registration.Orders
 {
-    public class AvailableSeatsChanged : DomainEvent<Guid>
+    public class OrderPartiallyReserved : DomainEvent<Guid>
     {
         public IEnumerable<SeatQuantity> Seats { get; private set; }
 
-        public AvailableSeatsChanged(Guid sourceId, IEnumerable<SeatQuantity> seats) : base(sourceId)
+        public OrderPartiallyReserved(Guid sourceId, IEnumerable<SeatQuantity> seats) : base(sourceId)
         {
             Seats = seats;
         }

@@ -3,7 +3,8 @@ using ECommon.Components;
 using ENode.Eventing;
 using Payments.Contracts;
 using Registration.Commands;
-using Registration.Events;
+using Registration.Orders;
+using Registration.SeatAvailabilities;
 
 namespace Registration.EventHandlers
 {

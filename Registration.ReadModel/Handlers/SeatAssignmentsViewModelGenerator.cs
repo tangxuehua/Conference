@@ -8,8 +8,8 @@
     using ENode.Eventing;
     using Infrastructure.BlobStorage;
     using Infrastructure.Serialization;
-    using Registration.Events;
     using Registration.ReadModel;
+    using Registration.SeatAssigning;
 
     public class SeatAssignmentsViewModelGenerator :
         IEventHandler<SeatAssignmentsCreated>,

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using ENode.Domain;
-using Registration.Events;
+using Registration.SeatAssigning;
 
-namespace Registration
+namespace Registration.Orders
 {
     [Serializable]
     public class Order : AggregateRoot<Guid>

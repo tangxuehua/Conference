@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Registration
+namespace Registration.Orders
 {
     public class OrderLine
     {

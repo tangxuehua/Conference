@@ -7,9 +7,10 @@
     using System.Diagnostics;
     using System.Linq;
     using ENode.Eventing;
-    using Registration.Events;
+    using Registration.Orders;
     using Registration.ReadModel;
     using Registration.ReadModel.Implementation;
+    using Registration.SeatAssigning;
 
     public class PricedOrderViewModelGenerator :
         IEventHandler<OrderPlaced>,

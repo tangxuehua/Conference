@@ -49,7 +49,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Payment.Commands\Payments.Commands.csproj">
+    <ProjectReference Include="..\Payments.Commands\Payments.Commands.csproj">
       <Project>{914b7e07-3bd2-4eb6-b1c8-e37ff94d662b}</Project>
       <Name>Payments.Commands</Name>
     </ProjectReference>

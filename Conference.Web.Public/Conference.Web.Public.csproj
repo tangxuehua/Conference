@@ -269,15 +269,15 @@
       <Project>{BAF088F8-3FCB-45EF-A228-6424C34C65CA}</Project>
       <Name>Conference.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Payment.CommandHandlers\Payments.CommandHandlers.csproj">
+    <ProjectReference Include="..\Payments.CommandHandlers\Payments.CommandHandlers.csproj">
       <Project>{bc3d3aac-e5a0-4ae0-ac38-1b247f83b692}</Project>
       <Name>Payments.CommandHandlers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Payment.Commands\Payments.Commands.csproj">
+    <ProjectReference Include="..\Payments.Commands\Payments.Commands.csproj">
       <Project>{914b7e07-3bd2-4eb6-b1c8-e37ff94d662b}</Project>
       <Name>Payments.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Payment.EventHandlers\Payments.EventHandlers.csproj">
+    <ProjectReference Include="..\Payments.EventHandlers\Payments.EventHandlers.csproj">
       <Project>{34477ae1-228f-40df-b463-3cfc85841a82}</Project>
       <Name>Payments.EventHandlers</Name>
     </ProjectReference>

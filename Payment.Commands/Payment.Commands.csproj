@@ -45,6 +45,7 @@
     <Compile Include="CancelPayment.cs" />
     <Compile Include="CompletePayment.cs" />
     <Compile Include="CreatePayment.cs" />
+    <Compile Include="PaymentLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

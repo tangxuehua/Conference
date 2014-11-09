@@ -1,0 +1,38 @@
+﻿@model Registration.ReadModel.PricedOrder
+@{
+    ViewBag.Title = "Display Registration";
+}
+<h1 class="page__head page__wrapper">Registration details</h1>
+<div class="page__content">
+    <div class="page__wrapper content-main content-main_assignseats">
+        <div class="content-main__wrapper">
+            <div class="content-main__main">
+                <div class="content-main__header">Order details</div>
+                <div class="content">
+                    @Html.Partial("_OrderDetails", this.Model)
+                </div>
+
+		        <div class="g-clear"></div>
+                <div class="nav content-main__nav">
+                    <a class="nav__right" href="@if (Model.AssignmentsId.HasValue)
+                                                {
+                                                    @Url.Action("AssignSeats", new { assignmentsId = Model.AssignmentsId, orderId = Model.OrderId });
+                                                }
+                                                else
+                                                {
+                                                    @Url.Action("AssignSeatsForOrder", new { orderId = Model.OrderId });
+                                                }">
+                        Assign seats to attendees
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        @*        <div class="content-main__aside">
+            <div class="content-main__header">
+            </div>
+        </div>*@
+        <div class="g-clear">
+        </div>
+    </div>
+</div>

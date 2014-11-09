@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using ENode.Commanding;
+using Payment.Commands;
 
 namespace Payments.Commands
 {
@@ -10,5 +12,6 @@ namespace Payments.Commands
         public Guid ConferenceId { get; set; }
         public string Description { get; set; }
         public decimal TotalAmount { get; set; }
+        public IEnumerable<PaymentLine> Lines { get; set; }
     }
 }

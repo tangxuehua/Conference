@@ -5,12 +5,14 @@
     using System.IO;
     using System.Linq;
     using System.Text;
+    using ECommon.Components;
     using ENode.Eventing;
     using Infrastructure.BlobStorage;
     using Infrastructure.Serialization;
     using Registration.ReadModel;
     using Registration.SeatAssigning;
 
+    [Component]
     public class SeatAssignmentsViewModelGenerator :
         IEventHandler<SeatAssignmentsCreated>,
         IEventHandler<SeatAssigned>,

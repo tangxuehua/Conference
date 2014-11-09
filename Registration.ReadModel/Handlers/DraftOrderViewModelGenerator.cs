@@ -5,11 +5,13 @@
     using System.Data.Entity;
     using System.Diagnostics;
     using System.Linq;
+    using ECommon.Components;
     using ENode.Eventing;
     using Registration.Orders;
     using Registration.ReadModel;
     using Registration.ReadModel.Implementation;
 
+    [Component]
     public class DraftOrderViewModelGenerator :
         IEventHandler<OrderPlaced>,
         IEventHandler<OrderPartiallyReserved>,

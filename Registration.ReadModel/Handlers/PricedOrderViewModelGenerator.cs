@@ -6,12 +6,14 @@
     using System.Data.Entity.Infrastructure;
     using System.Diagnostics;
     using System.Linq;
+    using ECommon.Components;
     using ENode.Eventing;
     using Registration.Orders;
     using Registration.ReadModel;
     using Registration.ReadModel.Implementation;
     using Registration.SeatAssigning;
 
+    [Component]
     public class PricedOrderViewModelGenerator :
         IEventHandler<OrderPlaced>,
         IEventHandler<OrderTotalsCalculated>,

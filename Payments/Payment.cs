@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ENode.Domain;
 
 namespace Payments
@@ -11,10 +12,11 @@ namespace Payments
         private PaymentState _state;
         private string _description;
         private decimal _totalAmount;
+        private IEnumerable<PaymentItem> _items;
 
-        public Payment(Guid id, Guid orderId, Guid conferenceId, string description, decimal totalAmount) : base(id)
+        public Payment(Guid id, Guid orderId, Guid conferenceId, string description, decimal totalAmount, IEnumerable<PaymentItem> items) : base(id)
         {
-            ApplyEvent(new PaymentInitiated(id, orderId, conferenceId, description, totalAmount));
+            ApplyEvent(new PaymentInitiated(id, orderId, conferenceId, description, totalAmount, items));
         }
 
         public void Complete()
@@ -42,6 +44,7 @@ namespace Payments
             _description = evnt.Description;
             _totalAmount = evnt.TotalAmount;
             _state = PaymentState.Initiated;
+            _items = evnt.Items;
         }
         private void Handle(PaymentCompleted evnt)
         {
@@ -51,6 +54,19 @@ namespace Payments
         {
             _state = PaymentState.Rejected;
         }
+    }
+    public class PaymentItem
+    {
+        public PaymentItem(string description, decimal amount)
+        {
+            this.Id = Guid.NewGuid();
+            this.Description = description;
+            this.Amount = amount;
+        }
+
+        public Guid Id { get; private set; }
+        public string Description { get; private set; }
+        public decimal Amount { get; private set; }
     }
     public enum PaymentState
     {

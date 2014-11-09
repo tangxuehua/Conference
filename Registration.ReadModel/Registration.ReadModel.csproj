@@ -116,9 +116,9 @@
       <Project>{b5786d07-5888-4df5-b295-3fea593f3bfe}</Project>
       <Name>Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Registration.Contracts\Registration.Contracts.csproj">
-      <Project>{353ce50d-af96-49f7-92aa-86ff2c6c45f2}</Project>
-      <Name>Registration.Contracts</Name>
+    <ProjectReference Include="..\Registration\Registration.csproj">
+      <Project>{ba3dd497-5943-4e10-b586-12d9447a95a2}</Project>
+      <Name>Registration</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -5,7 +5,6 @@
     using System.IO;
     using System.Linq;
     using System.Text;
-    using AutoMapper;
     using ENode.Eventing;
     using Infrastructure.BlobStorage;
     using Infrastructure.Serialization;
@@ -15,8 +14,7 @@
     public class SeatAssignmentsViewModelGenerator :
         IEventHandler<SeatAssignmentsCreated>,
         IEventHandler<SeatAssigned>,
-        IEventHandler<SeatUnassigned>,
-        IEventHandler<SeatAssignmentUpdated>
+        IEventHandler<SeatUnassigned>
     {
         private readonly IBlobStorage storage;
         private readonly ITextSerializer serializer;
@@ -30,12 +28,6 @@
             this.conferenceDao = conferenceDao;
             this.storage = storage;
             this.serializer = serializer;
-        }
-
-        static SeatAssignmentsViewModelGenerator()
-        {
-            Mapper.CreateMap<SeatAssigned, OrderSeat>();
-            Mapper.CreateMap<SeatAssignmentUpdated, OrderSeat>();
         }
 
         public static string GetSeatAssignmentsBlobId(Guid sourceId)
@@ -58,7 +50,7 @@
         {
             var dto = Find(@event.AggregateRootId);
             var seat = dto.Seats.First(x => x.Position == @event.Position);
-            Mapper.Map(@event, seat);
+            seat.Attendee = @event.Attendee;
             Save(dto);
         }
 
@@ -66,15 +58,7 @@
         {
             var dto = Find(@event.AggregateRootId);
             var seat = dto.Seats.First(x => x.Position == @event.Position);
-            seat.Attendee.Email = seat.Attendee.FirstName = seat.Attendee.LastName = null;
-            Save(dto);
-        }
-
-        public void Handle(IEventContext eventContext, SeatAssignmentUpdated @event)
-        {
-            var dto = Find(@event.AggregateRootId);
-            var seat = dto.Seats.First(x => x.Position == @event.Position);
-            Mapper.Map(@event, seat);
+            seat.Attendee = null;
             Save(dto);
         }
 

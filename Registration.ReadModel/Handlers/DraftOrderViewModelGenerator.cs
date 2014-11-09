@@ -12,7 +12,6 @@
 
     public class DraftOrderViewModelGenerator :
         IEventHandler<OrderPlaced>,
-        IEventHandler<OrderUpdated>,
         IEventHandler<OrderPartiallyReserved>,
         IEventHandler<OrderReservationCompleted>,
         IEventHandler<OrderRegistrantAssigned>,
@@ -46,31 +45,8 @@
                 var dto = context.Find<DraftOrder>(@event.AggregateRootId);
                 if (WasNotAlreadyHandled(dto, @event.Version))
                 {
-                    dto.RegistrantEmail = @event.Email;
+                    dto.RegistrantEmail = @event.Registrant.Email;
                     dto.OrderVersion = @event.Version;
-                    context.Save(dto);
-                }
-            }
-        }
-
-        public void Handle(IEventContext eventContext, OrderUpdated @event)
-        {
-            using (var context = this.contextFactory.Invoke())
-            {
-                var dto = context.Set<DraftOrder>().Include(o => o.Lines).First(o => o.OrderId == @event.AggregateRootId);
-                if (WasNotAlreadyHandled(dto, @event.Version))
-                {
-                    var linesSet = context.Set<DraftOrderItem>();
-                    foreach (var line in dto.Lines.ToArray())
-                    {
-                        linesSet.Remove(line);
-                    }
-
-                    dto.Lines.AddRange(@event.Seats.Select(seat => new DraftOrderItem(seat.SeatType, seat.Quantity)));
-
-                    dto.State = DraftOrder.States.PendingReservation;
-                    dto.OrderVersion = @event.Version;
-
                     context.Save(dto);
                 }
             }

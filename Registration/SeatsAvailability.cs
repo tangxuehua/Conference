@@ -17,13 +17,13 @@ namespace Registration
             ApplyEvent(new SeatsAvailabilityCreated(id));
         }
 
-        public void AddSeats(Guid seatType, int quantity)
+        public void AddSeats(SeatQuantity seat)
         {
-            ApplyEvent(new AvailableSeatsChanged(Id) { Seats = new[] { new SeatQuantity(seatType, quantity) } });
+            ApplyEvent(new AvailableSeatsChanged(_id, new[] { new SeatQuantity(seat.SeatType, seat.Quantity) }));
         }
-        public void RemoveSeats(Guid seatType, int quantity)
+        public void RemoveSeats(SeatQuantity seat)
         {
-            ApplyEvent(new AvailableSeatsChanged(Id) { Seats = new[] { new SeatQuantity(seatType, -quantity) } });
+            ApplyEvent(new AvailableSeatsChanged(_id, new[] { new SeatQuantity(seat.SeatType, -seat.Quantity) }));
         }
         public void MakeReservation(Guid reservationId, IEnumerable<SeatQuantity> wantedSeats)
         {
@@ -59,22 +59,18 @@ namespace Registration
 
             ApplyEvent(reservation);
         }
-        public void CancelReservation(Guid reservationId)
-        {
-            List<SeatQuantity> reservation;
-            if (this._pendingReservations.TryGetValue(reservationId, out reservation))
-            {
-                ApplyEvent(new SeatsReservationCancelled(reservationId)
-                {
-                    AvailableSeatsChanged = reservation.Select(x => new SeatQuantity(x.SeatType, x.Quantity)).ToList()
-                });
-            }
-        }
         public void CommitReservation(Guid reservationId)
         {
             if (this._pendingReservations.ContainsKey(reservationId))
             {
                 ApplyEvent(new SeatsReservationCommitted(reservationId));
+            }
+        }
+        public void CancelReservation(Guid reservationId)
+        {
+            if (this._pendingReservations.ContainsKey(reservationId))
+            {
+                ApplyEvent(new SeatsReservationCancelled(reservationId));
             }
         }
 
@@ -121,7 +117,6 @@ namespace Registration
                 {
                     newValue += remaining;
                 }
-
                 this._remainingSeats[seat.SeatType] = newValue;
             }
         }
@@ -149,8 +144,7 @@ namespace Registration
         private void Handle(SeatsReservationCancelled e)
         {
             this._pendingReservations.Remove(e.AggregateRootId);
-
-            foreach (var seat in e.AvailableSeatsChanged)
+            foreach (var seat in this._pendingReservations[e.AggregateRootId])
             {
                 this._remainingSeats[seat.SeatType] = this._remainingSeats[seat.SeatType] + seat.Quantity;
             }

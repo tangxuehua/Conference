@@ -42,19 +42,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AvailableSeatsChanged.cs" />
     <Compile Include="IPricingService.cs" />
     <Compile Include="Order.cs" />
-    <Compile Include="OrderItem.cs" />
+    <Compile Include="OrderConfirmed.cs" />
+    <Compile Include="OrderPartiallyReserved.cs" />
+    <Compile Include="OrderLine.cs" />
+    <Compile Include="OrderPlaced.cs" />
+    <Compile Include="OrderRegistrantAssigned.cs" />
+    <Compile Include="OrderReservationCompleted.cs" />
     <Compile Include="OrderTotal.cs" />
+    <Compile Include="OrderTotalsCalculated.cs" />
+    <Compile Include="RegistrantInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SeatAssigned.cs" />
     <Compile Include="SeatAssignments.cs" />
+    <Compile Include="SeatAssignmentsCreated.cs" />
+    <Compile Include="SeatQuantity.cs" />
     <Compile Include="SeatsAvailability.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Registration.Contracts\Registration.Contracts.csproj">
-      <Project>{353ce50d-af96-49f7-92aa-86ff2c6c45f2}</Project>
-      <Name>Registration.Contracts</Name>
-    </ProjectReference>
+    <Compile Include="SeatsAvailabilityCreated.cs" />
+    <Compile Include="SeatsReservationCancelled.cs" />
+    <Compile Include="SeatsReservationCommitted.cs" />
+    <Compile Include="SeatsReserved.cs" />
+    <Compile Include="SeatUnassigned.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

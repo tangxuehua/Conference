@@ -6,11 +6,11 @@ namespace Registration.Commands
 {
     public class MarkSeatsAsReserved : AggregateCommand<Guid>
     {
-        public List<SeatQuantity> Seats { get; set; }
+        public IEnumerable<SeatInfo> Seats { get; set; }
 
         public MarkSeatsAsReserved(Guid orderId) : base(orderId)
         {
-            this.Seats = new List<SeatQuantity>();
+            this.Seats = new List<SeatInfo>();
         }
     }
 }

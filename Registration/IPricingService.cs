@@ -5,6 +5,6 @@ namespace Registration
 {
     public interface IPricingService
     {
-        OrderTotal CalculateTotal(Guid conferenceId, ICollection<SeatQuantity> seatItems);
+        OrderTotal CalculateTotal(Guid conferenceId, IEnumerable<SeatQuantity> seats);
     }
 }

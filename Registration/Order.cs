@@ -13,60 +13,41 @@ namespace Registration
         private bool _isConfirmed;
         private Guid _conferenceId;
 
-        public Order(Guid id, Guid conferenceId, IEnumerable<OrderItem> items, IPricingService pricingService) : base(id)
+        public Order(Guid id, Guid conferenceId, IEnumerable<SeatQuantity> seats, IPricingService pricingService) : base(id)
         {
-            var all = ConvertItems(items);
-            var totals = pricingService.CalculateTotal(conferenceId, all.AsReadOnly());
-
-            ApplyEvent(new OrderPlaced(id)
-            {
-                ConferenceId = conferenceId,
-                Seats = all,
-                AccessCode = Guid.NewGuid().ToString()
-            });
-            ApplyEvent(new OrderTotalsCalculated(id) { Total = totals.Total, Lines = totals.Lines != null ? totals.Lines.ToArray() : null, IsFreeOfCharge = totals.Total == 0m });
+            var orderTotal = pricingService.CalculateTotal(conferenceId, seats);
+            ApplyEvent(new OrderPlaced(id, conferenceId, seats, Guid.NewGuid().ToString()));
+            ApplyEvent(new OrderTotalsCalculated(id, orderTotal.Total, orderTotal.Lines, orderTotal.Total == 0m));
         }
 
-        public void UpdateSeats(IEnumerable<OrderItem> items, IPricingService pricingService)
-        {
-            var all = ConvertItems(items);
-            var totals = pricingService.CalculateTotal(this._conferenceId, all.AsReadOnly());
-
-            ApplyEvent(new OrderUpdated(Id) { ConferenceId = _conferenceId, Seats = all });
-            ApplyEvent(new OrderTotalsCalculated(Id) { Total = totals.Total, Lines = totals.Lines != null ? totals.Lines.ToArray() : null, IsFreeOfCharge = totals.Total == 0m });
-        }
         public void MarkAsReserved(IPricingService pricingService, IEnumerable<SeatQuantity> reservedSeats)
         {
             if (this._isConfirmed)
+            {
                 throw new InvalidOperationException("Cannot modify a confirmed order.");
+            }
 
             var reserved = reservedSeats.ToList();
 
             // Is there an order item which didn't get an exact reservation?
             if (this._seats.Any(item => item.Quantity != 0 && !reserved.Any(seat => seat.SeatType == item.SeatType && seat.Quantity == item.Quantity)))
             {
-                var totals = pricingService.CalculateTotal(this._conferenceId, reserved.AsReadOnly());
-
-                ApplyEvent(new OrderPartiallyReserved(Id) { Seats = reserved.ToArray() });
-                ApplyEvent(new OrderTotalsCalculated(Id) { Total = totals.Total, Lines = totals.Lines != null ? totals.Lines.ToArray() : null, IsFreeOfCharge = totals.Total == 0m });
+                var orderTotal = pricingService.CalculateTotal(this._conferenceId, reserved);
+                ApplyEvent(new OrderPartiallyReserved(_id, reserved));
+                ApplyEvent(new OrderTotalsCalculated(_id, orderTotal.Total, orderTotal.Lines, orderTotal.Total == 0m));
             }
             else
             {
-                ApplyEvent(new OrderReservationCompleted(Id) { Seats = reserved.ToArray() });
+                ApplyEvent(new OrderPartiallyReserved(_id, reserved));
             }
         }
         public void Confirm()
         {
             ApplyEvent(new OrderConfirmed(Id) { ConferenceId = _conferenceId });
         }
-        public void AssignRegistrant(string firstName, string lastName, string email)
+        public void AssignRegistrant(RegistrantInfo registrant)
         {
-            ApplyEvent(new OrderRegistrantAssigned(Id)
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                Email = email,
-            });
+            ApplyEvent(new OrderRegistrantAssigned(_id, registrant));
         }
 
         public SeatAssignments CreateSeatAssignments()
@@ -77,19 +58,10 @@ namespace Registration
             return new SeatAssignments(Guid.NewGuid(), this.Id, this._seats.AsReadOnly());
         }
 
-        private static List<SeatQuantity> ConvertItems(IEnumerable<OrderItem> items)
-        {
-            return items.Select(x => new SeatQuantity(x.SeatType, x.Quantity)).ToList();
-        }
-
         private void Handle(OrderPlaced e)
         {
             this._id = e.AggregateRootId;
             this._conferenceId = e.ConferenceId;
-            this._seats = e.Seats.ToList();
-        }
-        private void Handle(OrderUpdated e)
-        {
             this._seats = e.Seats.ToList();
         }
         private void Handle(OrderPartiallyReserved e)

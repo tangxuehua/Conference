@@ -54,10 +54,6 @@
       <Project>{eb602d2f-5fc3-4a4f-aaf3-63bb43d02a5d}</Project>
       <Name>Registration.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Registration.Contracts\Registration.Contracts.csproj">
-      <Project>{353ce50d-af96-49f7-92aa-86ff2c6c45f2}</Project>
-      <Name>Registration.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Registration\Registration.csproj">
       <Project>{ba3dd497-5943-4e10-b586-12d9447a95a2}</Project>
       <Name>Registration</Name>

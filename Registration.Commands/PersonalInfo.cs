@@ -1,4 +1,4 @@
-﻿namespace Registration
+﻿namespace Registration.Commands
 {
     public class PersonalInfo
     {

@@ -1,4 +1,5 @@
-﻿using ECommon.Components;
+﻿using System.Linq;
+using ECommon.Components;
 using ENode.Commanding;
 using Registration.Commands;
 
@@ -17,28 +18,18 @@ namespace Registration.CommandHandlers
             var availability = context.Get<SeatsAvailability>(command.AggregateRootId);
             if (availability == null)
             {
-                context.Add(new SeatsAvailability(command.AggregateRootId));
+                availability = new SeatsAvailability(command.AggregateRootId);
+                context.Add(availability);
             }
-            else
-            {
-                availability.AddSeats(command.SeatType, command.Quantity);
-            }
+            availability.AddSeats(new SeatQuantity(command.SeatType, command.Quantity));
         }
         public void Handle(ICommandContext context, RemoveSeats command)
         {
-            var availability = context.Get<SeatsAvailability>(command.AggregateRootId);
-            if (availability == null)
-            {
-                context.Add(new SeatsAvailability(command.AggregateRootId));
-            }
-            else
-            {
-                availability.RemoveSeats(command.SeatType, command.Quantity);
-            }
+            context.Get<SeatsAvailability>(command.AggregateRootId).RemoveSeats(new SeatQuantity(command.SeatType, command.Quantity));
         }
         public void Handle(ICommandContext context, MakeSeatReservation command)
         {
-            context.Get<SeatsAvailability>(command.AggregateRootId).MakeReservation(command.ReservationId, command.Seats);
+            context.Get<SeatsAvailability>(command.AggregateRootId).MakeReservation(command.ReservationId, command.Seats.Select(x => new SeatQuantity(x.SeatType, x.Quantity)));
         }
         public void Handle(ICommandContext context, CancelSeatReservation command)
         {

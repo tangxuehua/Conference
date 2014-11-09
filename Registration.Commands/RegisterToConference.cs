@@ -9,10 +9,10 @@ namespace Registration.Commands
     {
         public RegisterToConference() : base(Guid.NewGuid())
         {
-            this.Seats = new Collection<SeatQuantity>();
+            this.Seats = new Collection<SeatInfo>();
         }
 
         public Guid ConferenceId { get; set; }
-        public ICollection<SeatQuantity> Seats { get; set; }
+        public ICollection<SeatInfo> Seats { get; set; }
     }
 }

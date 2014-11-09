@@ -16,11 +16,11 @@ namespace Registration.CommandHandlers
         }
         public void Handle(ICommandContext context, AssignSeat command)
         {
-            context.Get<SeatAssignments>(command.AggregateRootId).AssignSeat(command.Position, command.Attendee);
+            context.Get<SeatAssignments>(command.AggregateRootId).AssignSeat(command.Position, new RegistrantInfo(command.Attendee.FirstName, command.Attendee.LastName, command.Attendee.Email));
         }
         public void Handle(ICommandContext context, UnassignSeat command)
         {
-            context.Get<SeatAssignments>(command.AggregateRootId).Unassign(command.Position);
+            context.Get<SeatAssignments>(command.AggregateRootId).UnassignSeat(command.Position);
         }
     }
 }

@@ -9,111 +9,71 @@ namespace Registration
     [Serializable]
     public class SeatAssignments : AggregateRoot<Guid>
     {
-        private class SeatAssignment
-        {
-            public SeatAssignment()
-            {
-                this.Attendee = new PersonalInfo();
-            }
-
-            public int Position { get; set; }
-            public Guid SeatType { get; set; }
-            public PersonalInfo Attendee { get; set; }
-        }
         private Guid _orderId;
-        private Dictionary<int, SeatAssignment> _seats;
+        private IEnumerable<SeatAssignment> _seats;
 
         public SeatAssignments(Guid id, Guid orderId, IEnumerable<SeatQuantity> seats) : base(id)
         {
-            // Add as many assignments as seats there are.
             var i = 0;
-            var all = new List<SeatAssignmentsCreated.SeatAssignmentInfo>();
+            var all = new List<SeatAssignment>();
             foreach (var seatQuantity in seats)
             {
                 for (int j = 0; j < seatQuantity.Quantity; j++)
                 {
-                    all.Add(new SeatAssignmentsCreated.SeatAssignmentInfo { Position = i++, SeatType = seatQuantity.SeatType });
+                    all.Add(new SeatAssignment(i++, seatQuantity.SeatType));
                 }
             }
-
-            ApplyEvent(new SeatAssignmentsCreated(id) { OrderId = orderId, Seats = all });
+            ApplyEvent(new SeatAssignmentsCreated(id, orderId, all));
         }
 
-        public void AssignSeat(int position, PersonalInfo attendee)
+        public void AssignSeat(int position, RegistrantInfo attendee)
         {
-            if (string.IsNullOrEmpty(attendee.Email))
-                throw new ArgumentNullException("attendee.Email");
-
-            SeatAssignment current;
-            if (!this._seats.TryGetValue(position, out current))
+            var current = this._seats.SingleOrDefault(x => x.Position == position);
+            if (current == null)
+            {
                 throw new ArgumentOutOfRangeException("position");
-
-            if (!attendee.Email.Equals(current.Attendee.Email, StringComparison.InvariantCultureIgnoreCase))
-            {
-                if (current.Attendee.Email != null)
-                {
-                    ApplyEvent(new SeatUnassigned(this.Id) { Position = position });
-                }
-
-                ApplyEvent(new SeatAssigned(this.Id)
-                {
-                    Position = position,
-                    SeatType = current.SeatType,
-                    Attendee = attendee,
-                });
             }
-            else if (!string.Equals(attendee.FirstName, current.Attendee.FirstName, StringComparison.InvariantCultureIgnoreCase)
-                || !string.Equals(attendee.LastName, current.Attendee.LastName, StringComparison.InvariantCultureIgnoreCase))
+            if (attendee.Email != current.Attendee.Email || attendee.FirstName != current.Attendee.FirstName || attendee.LastName != current.Attendee.LastName)
             {
-                ApplyEvent(new SeatAssignmentUpdated(this.Id)
-                {
-                    Position = position,
-                    Attendee = attendee,
-                });
+                ApplyEvent(new SeatAssigned(this._id, current.Position, current.SeatType, attendee));
             }
         }
-        public void Unassign(int position)
+        public void UnassignSeat(int position)
         {
-            SeatAssignment current;
-            if (!this._seats.TryGetValue(position, out current))
-                throw new ArgumentOutOfRangeException("position");
-
-            if (current.Attendee.Email != null)
+            var current = this._seats.SingleOrDefault(x => x.Position == position);
+            if (current == null)
             {
-                ApplyEvent(new SeatUnassigned(this.Id) { Position = position });
+                throw new ArgumentOutOfRangeException("position");
             }
+            ApplyEvent(new SeatUnassigned(this._id, position));
         }
 
         private void Handle(SeatAssignmentsCreated e)
         {
             this._id = e.AggregateRootId;
             this._orderId = e.OrderId;
-            this._seats = e.Seats.ToDictionary(x => x.Position, x => new SeatAssignment { Position = x.Position, SeatType = x.SeatType });
+            this._seats = e.Seats;
         }
         private void Handle(SeatAssigned e)
         {
-            this._seats[e.Position] = new SeatAssignment
-            {
-                Position = e.Position,
-                SeatType = e.SeatType,
-                Attendee = e.Attendee
-            };
+            this._seats.Single(x => x.Position == e.Position).Attendee = e.Attendee;
         }
         private void Handle(SeatUnassigned e)
         {
-            this._seats[e.Position] = new SeatAssignment { Position = e.Position, SeatType = this._seats[e.Position].SeatType };
+            this._seats.Single(x => x.Position == e.Position).Attendee = null;
         }
-        private void Handle(SeatAssignmentUpdated e)
+    }
+    [Serializable]
+    public class SeatAssignment
+    {
+        public int Position { get; private set; }
+        public Guid SeatType { get; private set; }
+        public RegistrantInfo Attendee { get; set; }
+
+        public SeatAssignment(int position, Guid seatType)
         {
-            this._seats[e.Position] = new SeatAssignment
-            {
-                Position = e.Position,
-                // Seat type is also never received again from the client.
-                SeatType = this._seats[e.Position].SeatType,
-                // The email property is not received for updates, as those 
-                // are for the same attendee essentially.
-                Attendee = new PersonalInfo { Email = this._seats[e.Position].Attendee.Email }
-            };
+            Position = position;
+            SeatType = seatType;
         }
     }
 }

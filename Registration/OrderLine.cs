@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace Registration
 {
@@ -6,7 +6,6 @@ namespace Registration
     {
         public decimal LineTotal { get; set; }
     }
-
     public class SeatOrderLine : OrderLine
     {
         public Guid SeatType { get; set; }

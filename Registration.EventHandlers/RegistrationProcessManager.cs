@@ -10,7 +10,6 @@ namespace Registration.EventHandlers
     [Component]
     public class RegistrationProcessManager :
         IEventHandler<OrderPlaced>,
-        IEventHandler<OrderUpdated>,
         IEventHandler<SeatsReserved>,
         IEventHandler<PaymentCompletedEvent>,
         IEventHandler<OrderConfirmed>
@@ -20,22 +19,14 @@ namespace Registration.EventHandlers
             context.AddCommand(new MakeSeatReservation(evnt.ConferenceId)
             {
                 ReservationId = evnt.AggregateRootId,
-                Seats = evnt.Seats.ToList()
-            });
-        }
-        public void Handle(IEventContext context, OrderUpdated evnt)
-        {
-            context.AddCommand(new MakeSeatReservation(evnt.ConferenceId)
-            {
-                ReservationId = evnt.AggregateRootId,
-                Seats = evnt.Seats.ToList()
+                Seats = evnt.Seats.Select(x => new SeatInfo { SeatType = x.SeatType, Quantity = x.Quantity })
             });
         }
         public void Handle(IEventContext context, SeatsReserved evnt)
         {
             context.AddCommand(new MarkSeatsAsReserved(evnt.AggregateRootId)
             {
-                Seats = evnt.ReservationDetails.ToList()
+                Seats = evnt.ReservationDetails.Select(x => new SeatInfo { SeatType = x.SeatType, Quantity = x.Quantity })
             });
         }
         public void Handle(IEventContext context, PaymentCompletedEvent evnt)

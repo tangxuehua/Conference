@@ -4,7 +4,7 @@ namespace Registration
 {
     public struct OrderTotal
     {
-        public ICollection<OrderLine> Lines { get; set; }
+        public OrderLine[] Lines { get; set; }
         public decimal Total { get; set; }
     }
 }

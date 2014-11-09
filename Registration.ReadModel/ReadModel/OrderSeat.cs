@@ -16,20 +16,15 @@ namespace Registration.ReadModel
 
     public class OrderSeat
     {
-        public OrderSeat()
-        {
-            this.Attendee = new PersonalInfo();
-        }
-
+        public OrderSeat() { }
         public OrderSeat(int position, string seatName)
         {
             this.Position = position;
             this.SeatName = seatName;
-            this.Attendee = new PersonalInfo();
         }
 
         public int Position { get; set; }
         public string SeatName { get; set; }
-        public PersonalInfo Attendee { get; set; }
+        public RegistrantInfo Attendee { get; set; }
     }
 }

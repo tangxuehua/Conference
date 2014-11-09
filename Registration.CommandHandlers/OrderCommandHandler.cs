@@ -12,29 +12,25 @@ namespace Registration.CommandHandlers
         ICommandHandler<AssignRegistrantDetails>,
         ICommandHandler<ConfirmOrder>
     {
-        private readonly IPricingService pricingService;
+        private readonly IPricingService _pricingService;
 
         public OrderCommandHandler(IPricingService pricingService)
         {
-            this.pricingService = pricingService;
+            this._pricingService = pricingService;
         }
 
         public void Handle(ICommandContext context, RegisterToConference command)
         {
-            var items = command.Seats.Select(t => new OrderItem(t.SeatType, t.Quantity)).ToList();
-            context.Add(new Order(command.AggregateRootId, command.ConferenceId, items, pricingService));
+            context.Add(new Order(command.AggregateRootId, command.ConferenceId, command.Seats.Select(t => new SeatQuantity(t.SeatType, t.Quantity)), _pricingService));
         }
-
         public void Handle(ICommandContext context, MarkSeatsAsReserved command)
         {
-            context.Get<Order>(command.AggregateRootId).MarkAsReserved(pricingService, command.Seats);
+            context.Get<Order>(command.AggregateRootId).MarkAsReserved(_pricingService, command.Seats.Select(x => new SeatQuantity(x.SeatType, x.Quantity)));
         }
-
         public void Handle(ICommandContext context, AssignRegistrantDetails command)
         {
-            context.Get<Order>(command.AggregateRootId).AssignRegistrant(command.FirstName, command.LastName, command.Email);
+            context.Get<Order>(command.AggregateRootId).AssignRegistrant(new RegistrantInfo(command.FirstName, command.LastName, command.Email));
         }
-
         public void Handle(ICommandContext context, ConfirmOrder command)
         {
             context.Get<Order>(command.AggregateRootId).Confirm();

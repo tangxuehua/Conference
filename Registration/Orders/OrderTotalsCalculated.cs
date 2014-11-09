@@ -4,6 +4,7 @@ using ENode.Eventing;
 
 namespace Registration.Orders
 {
+    [Serializable]
     public class OrderTotalsCalculated : DomainEvent<Guid>
     {
         public decimal Total { get; private set; }

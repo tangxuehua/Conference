@@ -3,6 +3,7 @@ using ENode.Eventing;
 
 namespace Registration.Orders
 {
+    [Serializable]
     public class OrderRegistrantAssigned : DomainEvent<Guid>
     {
         public RegistrantInfo Registrant { get; private set; }

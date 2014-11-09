@@ -4,6 +4,7 @@ using ENode.Eventing;
 
 namespace Registration.SeatAvailabilities
 {
+    [Serializable]
     public class AvailableSeatsChanged : DomainEvent<Guid>
     {
         public IEnumerable<SeatQuantity> Seats { get; private set; }

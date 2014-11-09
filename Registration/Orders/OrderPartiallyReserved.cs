@@ -4,6 +4,7 @@ using ENode.Eventing;
 
 namespace Registration.Orders
 {
+    [Serializable]
     public class OrderPartiallyReserved : DomainEvent<Guid>
     {
         public IEnumerable<SeatQuantity> Seats { get; private set; }

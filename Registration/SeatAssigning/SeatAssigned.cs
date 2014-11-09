@@ -4,6 +4,7 @@ using Registration.Orders;
 
 namespace Registration.SeatAssigning
 {
+    [Serializable]
     public class SeatAssigned : DomainEvent<Guid>
     {
         public int Position { get; private set; }

@@ -4,7 +4,7 @@ using ENode.Commanding;
 using Payments;
 using Payments.Commands;
 
-namespace Payment.CommandHandlers
+namespace Payments.CommandHandlers
 {
     [Component]
     public class PaymentCommandHandler :
@@ -14,7 +14,7 @@ namespace Payment.CommandHandlers
     {
         public void Handle(ICommandContext context, CreatePayment command)
         {
-            context.Add(new Payments.Payment(
+            context.Add(new Payment(
                 command.AggregateRootId,
                 command.OrderId,
                 command.ConferenceId,

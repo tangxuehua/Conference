@@ -14,32 +14,11 @@
 namespace Registration.ReadModel
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
 
     public class SeatType
     {
-        public SeatType(Guid id, Guid conferenceId, string name, string description, decimal price, int quantity)
-        {
-            this.Id = id;
-            this.ConferenceId = conferenceId;
-            this.Name = name;
-            this.Description = description;
-            this.Price = price;
-            this.Quantity = quantity;
-            this.AvailableQuantity = 0;
-            this.SeatsAvailabilityVersion = -1;
-        }
-
-        protected SeatType()
-        {
-        }
-
-        [Key]
         public Guid Id { get; set; }
-
-        // Conference ID is not FK, as we are relaxing the constraint due to eventual consistency
         public Guid ConferenceId { get; set; }
-
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }

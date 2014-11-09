@@ -11,14 +11,12 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using System;
+
 namespace Registration.ReadModel.Implementation
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-
     internal class PricedOrderLineSeatTypeDescription
     {
-        [Key]
         public Guid SeatTypeId { get; set; }
         public string Name { get; set; }
     }

@@ -5,6 +5,7 @@
     using System.Data;
     using System.Data.SqlClient;
     using System.Linq;
+    using Conference.Common;
     using ECommon.Components;
     using ECommon.Dapper;
 
@@ -20,7 +21,7 @@
         }
         private IDbConnection GetConnection()
         {
-            return new SqlConnection(ConfigurationManager.AppSettings["connectionString"]);
+            return new SqlConnection(ConfigSettings.ConnectionString);
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using ENode.Eventing;
-using Payments;
+﻿using ECommon.Components;
+using ENode.Eventing;
 using Payments.Contracts;
 
-namespace Payment.EventHandlers
+namespace Payments.EventHandlers
 {
+    [Component]
     public class PaymentEventHandler :
         IEventHandler<PaymentInitiated>,
         IEventHandler<PaymentCompleted>,

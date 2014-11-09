@@ -16,7 +16,6 @@ namespace Registration.ReadModel
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.ComponentModel.DataAnnotations;
 
     public class DraftOrder
     {
@@ -29,40 +28,25 @@ namespace Registration.ReadModel
             Confirmed = 4,
         }
 
-        public DraftOrder(Guid orderId, Guid conferenceId, States state, int orderVersion = 0)
-            : this()
+        public DraftOrder(Guid orderId, Guid conferenceId, States state, int orderVersion = 0) : this()
         {
             this.OrderId = orderId;
             this.ConferenceId = conferenceId;
-            this.State = state;
+            this.StateValue = state;
             this.OrderVersion = orderVersion;
         }
-
-        protected DraftOrder()
+        public DraftOrder()
         {
             this.Lines = new ObservableCollection<DraftOrderItem>();
         }
 
-        [Key]
-        public Guid OrderId { get; private set; }
-
-        public Guid ConferenceId { get; private set; }
-
+        public Guid OrderId { get; set; }
+        public Guid ConferenceId { get; set; }
         public DateTime? ReservationExpirationDate { get; set; }
-
-        public ICollection<DraftOrderItem> Lines { get; private set; }
-
-        public int StateValue { get; private set; }
-
-        [NotMapped]
-        public States State
-        {
-            get { return (States)this.StateValue; }
-            set { this.StateValue = (int)value; }
-        }
-
-        public int OrderVersion { get; internal set; }
-        public string RegistrantEmail { get; internal set; }
-        public string AccessCode { get; internal set; }
+        public ICollection<DraftOrderItem> Lines { get; set; }
+        public States StateValue { get; set; }
+        public int OrderVersion { get; set; }
+        public string RegistrantEmail { get; set; }
+        public string AccessCode { get; set; }
     }
 }

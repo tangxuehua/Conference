@@ -15,7 +15,6 @@ namespace Registration.ReadModel
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
     using System.Linq;
 
     /// <summary>
@@ -29,7 +28,6 @@ namespace Registration.ReadModel
         {
             this.Seats = new List<OrderSeat>();
         }
-
         public OrderSeats(Guid assignmentsId, Guid orderId, IEnumerable<OrderSeat> seats)
         {
             this.AssignmentsId = assignmentsId;
@@ -37,15 +35,7 @@ namespace Registration.ReadModel
             this.Seats = seats.ToList();
         }
 
-        /// <summary>
-        /// Gets or sets the seat assignments AR identifier.
-        /// </summary>
-        [Key]
         public Guid AssignmentsId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the order id.
-        /// </summary>
         public Guid OrderId { get; set; }
         public IList<OrderSeat> Seats { get; set; }
     }

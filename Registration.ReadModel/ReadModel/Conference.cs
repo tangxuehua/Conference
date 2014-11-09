@@ -16,7 +16,6 @@ namespace Registration.ReadModel
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.ComponentModel.DataAnnotations;
 
     public class Conference
     {
@@ -31,12 +30,8 @@ namespace Registration.ReadModel
             this.TwitterSearch = twitterSearch;
             this.StartDate = startDate;
         }
+        public Conference() { }
 
-        protected Conference()
-        {
-        }
-
-        [Key]
         public Guid Id { get; set; }
         public string Code { get; set; }
         public string Name { get; set; }

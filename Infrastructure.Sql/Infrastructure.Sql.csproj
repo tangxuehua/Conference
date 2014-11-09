@@ -90,44 +90,8 @@
     <Compile Include="BlobStorage\BlobEntity.cs" />
     <Compile Include="BlobStorage\BlobStorageDbContext.cs" />
     <Compile Include="BlobStorage\SqlBlobStorage.cs" />
-    <Compile Include="Database\SqlDataContext.cs" />
-    <Compile Include="MessageLog\SqlMessageLogHandler.cs" />
-    <Compile Include="MessageLog\MessageLogDbContext.cs" />
-    <Compile Include="MessageLog\MessageLogEntity.cs" />
-    <Compile Include="MessageLog\QueryCriteriaExtensions.cs" />
-    <Compile Include="MessageLog\SqlMessageLog.cs" />
-    <Compile Include="EventSourcing\EventStoreDbContext.cs" />
-    <Compile Include="Messaging\Implementation\MessagingDbInitializer.cs" />
-    <Compile Include="Processes\UndispatchedMessages.cs" />
     <Compile Include="Utils\CacheAnyEnumerableExtensions.cs" />
-    <Compile Include="Messaging\CommandBus.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Messaging\EventBus.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Messaging\Handling\CommandProcessor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Messaging\Handling\EventProcessor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Messaging\IMessageReceiver.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Messaging\IMessageSender.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Messaging\Implementation\MessageReceiver.cs" />
-    <Compile Include="Messaging\Implementation\MessageSender.cs" />
-    <Compile Include="Messaging\Message.cs" />
-    <Compile Include="Messaging\Handling\MessageProcessor.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Messaging\MessageReceivedEventArgs.cs" />
-    <Compile Include="Processes\SqlProcessManagerDataContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="EventSourcing\SqlEventSourcedRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

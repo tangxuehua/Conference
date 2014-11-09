@@ -1,84 +1,46 @@
-// ==============================================================================================================
-// Microsoft patterns & practices
-// CQRS Journey project
-// ==============================================================================================================
-// ?012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://go.microsoft.com/fwlink/p/?LinkID=258575
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
-// with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software distributed under the License is 
-// distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-// See the License for the specific language governing permissions and limitations under the License.
-// ==============================================================================================================
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using Conference.Common;
+using ECommon.Components;
+using ECommon.Dapper;
 
 namespace Registration.ReadModel.Implementation
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
+    [Component]
     public class ConferenceDao : IConferenceDao
     {
-        private readonly Func<ConferenceRegistrationDbContext> contextFactory;
-
-        public ConferenceDao(Func<ConferenceRegistrationDbContext> contextFactory)
-        {
-            this.contextFactory = contextFactory;
-        }
-
         public ConferenceDetails GetConferenceDetails(string conferenceCode)
         {
-            using (var context = this.contextFactory.Invoke())
+            using (var connection = GetConnection())
             {
-                return context
-                    .Query<Conference>()
-                    .Where(dto => dto.Code == conferenceCode)
-                    .Select(x => new ConferenceDetails
-                    {
-                        Id = x.Id,
-                        Code = x.Code,
-                        Name = x.Name,
-                        Description = x.Description,
-                        Location = x.Location,
-                        Tagline = x.Tagline,
-                        TwitterSearch = x.TwitterSearch,
-                        StartDate = x.StartDate
-                    })
-                    .FirstOrDefault();
+                return connection.QueryList<ConferenceDetails>(new { Code = conferenceCode }, "ConferencesView").SingleOrDefault();
             }
         }
 
         public ConferenceAlias GetConferenceAlias(string conferenceCode)
         {
-            using (var context = this.contextFactory.Invoke())
+            using (var connection = GetConnection())
             {
-                return context
-                    .Query<Conference>()
-                    .Where(dto => dto.Code == conferenceCode)
-                    .Select(x => new ConferenceAlias { Id = x.Id, Code = x.Code, Name = x.Name, Tagline = x.Tagline })
-                    .FirstOrDefault();
+                return connection.QueryList<ConferenceAlias>(new { Code = conferenceCode }, "ConferencesView").SingleOrDefault();
             }
         }
 
         public IList<ConferenceAlias> GetPublishedConferences()
         {
-            using (var context = this.contextFactory.Invoke())
+            using (var connection = GetConnection())
             {
-                return context
-                    .Query<Conference>()
-                    .Where(dto => dto.IsPublished)
-                    .Select(x => new ConferenceAlias { Id = x.Id, Code = x.Code, Name = x.Name, Tagline = x.Tagline })
-                    .ToList();
+                return connection.QueryList<ConferenceAlias>(new { IsPublished = 1 }, "ConferencesView").ToList();
             }
         }
 
         public IList<SeatType> GetPublishedSeatTypes(Guid conferenceId)
         {
-            using (var context = this.contextFactory.Invoke())
+            using (var connection = GetConnection())
             {
-                return context.Query<SeatType>()
-                    .Where(c => c.ConferenceId == conferenceId)
-                    .ToList();
+                return connection.QueryList<SeatType>(new { ConferenceId = conferenceId }, "ConferenceSeatTypesView").ToList();
             }
         }
 
@@ -86,15 +48,28 @@ namespace Registration.ReadModel.Implementation
         {
             var distinctIds = seatTypes.Distinct().ToArray();
             if (distinctIds.Length == 0)
-                return new List<SeatTypeName>();
-
-            using (var context = this.contextFactory.Invoke())
             {
-                return context.Query<SeatType>()
-                    .Where(x => distinctIds.Contains(x.Id))
-                    .Select(s => new SeatTypeName { Id = s.Id, Name = s.Name })
-                    .ToList();
+                return new List<SeatTypeName>();
             }
+
+            using (var connection = GetConnection())
+            {
+                var result = new List<SeatTypeName>();
+                foreach (var seatId in distinctIds)
+                {
+                    var seat = connection.QueryList<SeatType>(new { Id = seatId }, "ConferenceSeatTypesView").SingleOrDefault();
+                    if (seat != null)
+                    {
+                        result.Add(new SeatTypeName { Id = seat.Id, Name = seat.Name });
+                    }
+                }
+                return result;
+            }
+        }
+
+        private IDbConnection GetConnection()
+        {
+            return new SqlConnection(ConfigSettings.ConnectionString);
         }
     }
 }

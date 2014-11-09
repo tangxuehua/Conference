@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using ENode.Commanding;
-using Payment.Commands;
 
 namespace Payments.Commands
 {

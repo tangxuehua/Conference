@@ -20,6 +20,7 @@ namespace Infrastructure.Sql.BlobStorage
     /// Simple local blob storage simulator for easy local debugging. 
     /// Assumes the blobs are persisted as text through an <see cref="ITextSerializer"/>.
     /// </summary>
+    [Component]
     public class SqlBlobStorage : IBlobStorage
     {
         private string nameOrConnectionString;

@@ -16,7 +16,6 @@ namespace Registration.ReadModel
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.ComponentModel.DataAnnotations;
 
     public class PricedOrder
     {
@@ -24,15 +23,8 @@ namespace Registration.ReadModel
         {
             this.Lines = new ObservableCollection<PricedOrderLine>();
         }
-
-        [Key]
         public Guid OrderId { get; set; }
-
-        /// <summary>
-        /// Used for correlating with the seat assignments.
-        /// </summary>
         public Guid? AssignmentsId { get; set; }
-
         public IList<PricedOrderLine> Lines { get; set; }
         public decimal Total { get; set; }
         public int OrderVersion { get; set; }
@@ -42,10 +34,6 @@ namespace Registration.ReadModel
 
     public class PricedOrderLine
     {
-        public PricedOrderLine()
-        {
-        }
-
         public Guid OrderId { get; set; }
         public int Position { get; set; }
         public string Description { get; set; }

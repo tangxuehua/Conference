@@ -30,48 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper">
-      <HintPath>..\packages\AutoMapper.2.1.267\lib\net40\AutoMapper.dll</HintPath>
-    </Reference>
     <Reference Include="ECommon">
       <HintPath>..\packages\ECommon.1.3.8\lib\net40\ECommon.dll</HintPath>
     </Reference>
     <Reference Include="ENode">
       <HintPath>..\packages\ENode.2.4.9\lib\net40\ENode.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
-      <HintPath>..\packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling">
-      <HintPath>..\packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\lib\NET4\Microsoft.Practices.EnterpriseLibrary.WindowsAzure.TransientFaultHandling.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.TransientFaultHandling.Core">
-      <HintPath>..\packages\TransientFaultHandling.Core.5.0.1118.2\lib\NET35\Microsoft.Practices.TransientFaultHandling.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity">
-      <HintPath>..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration">
-      <HintPath>..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Interception">
-      <HintPath>..\packages\Unity.Interception.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Interception.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration">
-      <HintPath>..\packages\Unity.Interception.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -79,6 +45,7 @@
     <Compile Include="Handlers\DraftOrderViewModelGenerator.cs" />
     <Compile Include="Handlers\PricedOrderViewModelGenerator.cs" />
     <Compile Include="Handlers\SeatAssignmentsViewModelGenerator.cs" />
+    <Compile Include="PricingService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadModel\Conference.cs" />
     <Compile Include="ReadModel\ConferenceAlias.cs" />
@@ -86,10 +53,7 @@
     <Compile Include="ReadModel\DraftOrder.cs" />
     <Compile Include="ReadModel\DraftOrderItem.cs" />
     <Compile Include="ReadModel\IConferenceDao.cs" />
-    <Compile Include="ReadModel\Implementation\CachingConferenceDao.cs" />
     <Compile Include="ReadModel\Implementation\ConferenceDao.cs" />
-    <Compile Include="ReadModel\Implementation\ConferenceRegistrationDbContext.cs" />
-    <Compile Include="ReadModel\Implementation\ConferenceRegistrationDbContextInitializer.cs" />
     <Compile Include="ReadModel\Implementation\OrderDao.cs" />
     <Compile Include="ReadModel\Implementation\PricedOrderLineSeatTypeDescription.cs" />
     <Compile Include="ReadModel\IOrderDao.cs" />
@@ -107,14 +71,6 @@
     <ProjectReference Include="..\Conference.Common\Conference.Common.csproj">
       <Project>{baf088f8-3fcb-45ef-a228-6424c34c65ca}</Project>
       <Name>Conference.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure.Sql\Infrastructure.Sql.csproj">
-      <Project>{f038f286-5aef-4341-83ec-9f72f42d06d6}</Project>
-      <Name>Infrastructure.Sql</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
-      <Project>{b5786d07-5888-4df5-b295-3fea593f3bfe}</Project>
-      <Name>Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Registration\Registration.csproj">
       <Project>{ba3dd497-5943-4e10-b586-12d9447a95a2}</Project>

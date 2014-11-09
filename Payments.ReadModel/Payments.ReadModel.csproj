@@ -36,15 +36,10 @@
     <Reference Include="ENode">
       <HintPath>..\packages\ENode.2.4.9\lib\net40\ENode.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +51,10 @@
     <Compile Include="Payment.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Conference.Common\Conference.Common.csproj">
+      <Project>{baf088f8-3fcb-45ef-a228-6424c34c65ca}</Project>
+      <Name>Conference.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Payments\Payments.csproj">
       <Project>{c6d29641-e27b-4180-985b-e5fb7181f7f8}</Project>
       <Name>Payments</Name>

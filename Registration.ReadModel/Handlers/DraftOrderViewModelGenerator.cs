@@ -1,16 +1,16 @@
-﻿namespace Registration.Handlers
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Data.Entity;
-    using System.Diagnostics;
-    using System.Linq;
-    using ECommon.Components;
-    using ENode.Eventing;
-    using Registration.Orders;
-    using Registration.ReadModel;
-    using Registration.ReadModel.Implementation;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using Conference.Common;
+using ECommon.Components;
+using ECommon.Dapper;
+using ENode.Eventing;
+using Registration.Orders;
+using Registration.ReadModel;
 
+namespace Registration.Handlers
+{
     [Component]
     public class DraftOrderViewModelGenerator :
         IEventHandler<OrderPlaced>,
@@ -19,112 +19,77 @@
         IEventHandler<OrderRegistrantAssigned>,
         IEventHandler<OrderConfirmed>
     {
-        private readonly Func<ConferenceRegistrationDbContext> contextFactory;
-
-        public DraftOrderViewModelGenerator(Func<ConferenceRegistrationDbContext> contextFactory)
+        public void Handle(IEventContext eventContext, OrderPlaced evnt)
         {
-            this.contextFactory = contextFactory;
-        }
-
-        public void Handle(IEventContext eventContext, OrderPlaced @event)
-        {
-            using (var context = this.contextFactory.Invoke())
+            using (var connection = GetConnection())
             {
-                var dto = new DraftOrder(@event.AggregateRootId, @event.ConferenceId, DraftOrder.States.PendingReservation, @event.Version)
+                connection.Open();
+                var transaction = connection.BeginTransaction();
+                try
                 {
-                    AccessCode = @event.AccessCode,
-                };
-                dto.Lines.AddRange(@event.Seats.Select(seat => new DraftOrderItem(seat.SeatType, seat.Quantity)));
-
-                context.Save(dto);
-            }
-        }
-
-        public void Handle(IEventContext eventContext, OrderRegistrantAssigned @event)
-        {
-            using (var context = this.contextFactory.Invoke())
-            {
-                var dto = context.Find<DraftOrder>(@event.AggregateRootId);
-                if (WasNotAlreadyHandled(dto, @event.Version))
+                    var order = new DraftOrder(evnt.AggregateRootId, evnt.ConferenceId, DraftOrder.States.PendingReservation, evnt.Version) { AccessCode = evnt.AccessCode, };
+                    connection.Insert(order, "OrdersViewV3");
+                    foreach (var seat in evnt.Seats)
+                    {
+                        connection.Insert(new DraftOrderItem(seat.SeatType, seat.Quantity) { OrderId = evnt.AggregateRootId }, "OrderItemsViewV3");
+                    }
+                    transaction.Commit();
+                }
+                catch
                 {
-                    dto.RegistrantEmail = @event.Registrant.Email;
-                    dto.OrderVersion = @event.Version;
-                    context.Save(dto);
+                    transaction.Rollback();
+                    throw;
                 }
             }
         }
-
-        public void Handle(IEventContext eventContext, OrderPartiallyReserved @event)
+        public void Handle(IEventContext eventContext, OrderRegistrantAssigned evnt)
         {
-            this.UpdateReserved(@event.AggregateRootId, DraftOrder.States.PartiallyReserved, @event.Version, @event.Seats);
-        }
-
-        public void Handle(IEventContext eventContext, OrderReservationCompleted @event)
-        {
-            this.UpdateReserved(@event.AggregateRootId, DraftOrder.States.ReservationCompleted, @event.Version, @event.Seats);
-        }
-
-        public void Handle(IEventContext eventContext, OrderConfirmed @event)
-        {
-            using (var context = this.contextFactory.Invoke())
+            using (var connection = GetConnection())
             {
-                var dto = context.Find<DraftOrder>(@event.AggregateRootId);
-                if (WasNotAlreadyHandled(dto, @event.Version))
-                {
-                    dto.State = DraftOrder.States.Confirmed;
-                    dto.OrderVersion = @event.Version;
-                    context.Save(dto);
-                }
+                connection.Update(new { RegistrantEmail = evnt.Registrant.Email, OrderVersion = evnt.Version }, new { OrderId = evnt.AggregateRootId }, "OrdersViewV3");
+            }
+        }
+        public void Handle(IEventContext eventContext, OrderPartiallyReserved evnt)
+        {
+            UpdateReserved(evnt.AggregateRootId, DraftOrder.States.PartiallyReserved, evnt.Version, evnt.Seats);
+        }
+        public void Handle(IEventContext eventContext, OrderReservationCompleted evnt)
+        {
+            UpdateReserved(evnt.AggregateRootId, DraftOrder.States.ReservationCompleted, evnt.Version, evnt.Seats);
+        }
+        public void Handle(IEventContext eventContext, OrderConfirmed evnt)
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Update(new { State = DraftOrder.States.Confirmed }, new { OrderId = evnt.AggregateRootId }, "OrdersViewV3");
             }
         }
 
         private void UpdateReserved(Guid orderId, DraftOrder.States state, int orderVersion, IEnumerable<SeatQuantity> seats)
         {
-            using (var context = this.contextFactory.Invoke())
+            using (var connection = GetConnection())
             {
-                var dto = context.Set<DraftOrder>().Include(x => x.Lines).First(x => x.OrderId == orderId);
-                if (WasNotAlreadyHandled(dto, orderVersion))
+                connection.Open();
+                var transaction = connection.BeginTransaction();
+                try
                 {
+                    connection.Update(new { State = state }, new { OrderId = orderId }, "OrdersViewV3");
                     foreach (var seat in seats)
                     {
-                        var item = dto.Lines.Single(x => x.SeatType == seat.SeatType);
-                        item.ReservedSeats = seat.Quantity;
+                        connection.Update(new { ReservedSeats = seat.Quantity }, new { OrderId = orderId }, "OrderItemsViewV3");
                     }
-
-                    dto.State = state;
-
-                    dto.OrderVersion = orderVersion;
-
-                    context.Save(dto);
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
                 }
             }
         }
-
-        private static bool WasNotAlreadyHandled(DraftOrder draftOrder, int eventVersion)
+        private IDbConnection GetConnection()
         {
-            // This assumes that events will be handled in order, but we might get the same message more than once.
-            if (eventVersion > draftOrder.OrderVersion)
-            {
-                return true;
-            }
-            else if (eventVersion == draftOrder.OrderVersion)
-            {
-                Trace.TraceWarning(
-                    "Ignoring duplicate draft order update message with version {1} for order id {0}",
-                    draftOrder.OrderId,
-                    eventVersion);
-                return false;
-            }
-            else
-            {
-                Trace.TraceWarning(
-                    @"An older order update message was received with with version {1} for order id {0}, last known version {2}.
-This read model generator has an expectation that the EventBus will deliver messages for the same source in order.",
-                    draftOrder.OrderId,
-                    eventVersion,
-                    draftOrder.OrderVersion);
-                return false;
-            }
+            return new SqlConnection(ConfigSettings.ConnectionString);
         }
     }
 }

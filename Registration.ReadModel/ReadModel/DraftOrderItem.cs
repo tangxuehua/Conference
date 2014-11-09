@@ -22,12 +22,9 @@ namespace Registration.ReadModel
             this.SeatType = seatType;
             this.RequestedSeats = requestedSeats;
         }
+        public DraftOrderItem() { }
 
-        protected DraftOrderItem()
-        {
-        }
-
-        public Guid OrderId { get; private set; }
+        public Guid OrderId { get; set; }
         public Guid SeatType { get; set; }
         public int RequestedSeats { get; set; }
         public int ReservedSeats { get; set; }

@@ -36,57 +36,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ECommon">
+      <HintPath>..\packages\ECommon.1.3.8\lib\net40\ECommon.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.4.3.1\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BlobStorage\IBlobStorage.cs" />
-    <Compile Include="ConcurrencyException.cs" />
-    <Compile Include="Database\IAggregateRoot.cs" />
-    <Compile Include="Database\IDataContext.cs" />
-    <Compile Include="EntityNotFoundException.cs" />
-    <Compile Include="EventSourcing\IMementoOriginator.cs" />
-    <Compile Include="IProcessor.cs" />
-    <Compile Include="MessageLog\EventLogExtensions.cs" />
-    <Compile Include="MessageLog\IEventLogReader.cs" />
-    <Compile Include="MessageLog\QueryCriteria.cs" />
-    <Compile Include="EventSourcing\EventSourced.cs" />
-    <Compile Include="EventSourcing\IEventSourced.cs" />
-    <Compile Include="EventSourcing\IEventSourcedRepository.cs" />
-    <Compile Include="EventSourcing\IVersionedEvent.cs" />
-    <Compile Include="EventSourcing\VersionedEvent.cs" />
-    <Compile Include="ExpressionCombiner.cs" />
-    <Compile Include="IMetadataProvider.cs" />
-    <Compile Include="Messaging\CommandBusExtensions.cs" />
-    <Compile Include="Messaging\IMessageSessionProvider.cs" />
-    <Compile Include="Messaging\EventBusExtensions.cs" />
-    <Compile Include="Messaging\Envelope.cs" />
-    <Compile Include="Messaging\Handling\EventDispatcher.cs" />
-    <Compile Include="Messaging\Handling\ICommandHandler.cs" />
-    <Compile Include="Messaging\Handling\ICommandHandlerRegistry.cs" />
-    <Compile Include="Messaging\Handling\IEventHandler.cs" />
-    <Compile Include="Messaging\Handling\IEventHandlerRegistry.cs" />
-    <Compile Include="Messaging\ICommand.cs" />
-    <Compile Include="Messaging\ICommandBus.cs" />
-    <Compile Include="Messaging\IEvent.cs" />
-    <Compile Include="Messaging\IEventBus.cs" />
-    <Compile Include="Messaging\IEventPublisher.cs" />
-    <Compile Include="Processes\IProcessManager.cs" />
-    <Compile Include="Processes\IProcessManagerDataContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\ITextSerializer.cs" />
-    <Compile Include="Serialization\JsonTextSerializer.cs" />
-    <Compile Include="Serialization\TextSerializerExtensions.cs" />
-    <Compile Include="StandardMetadata.cs" />
-    <Compile Include="StandardMetadataProvider.cs" />
     <Compile Include="Tasks\TimerTaskFactory.cs" />
-    <Compile Include="Utils\GuidUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

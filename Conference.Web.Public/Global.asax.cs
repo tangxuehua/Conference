@@ -1,108 +1,97 @@
-﻿// ==============================================================================================================
-// Microsoft patterns & practices
-// CQRS Journey project
-// ==============================================================================================================
-// ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://go.microsoft.com/fwlink/p/?LinkID=258575
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
-// with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software distributed under the License is 
-// distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-// See the License for the specific language governing permissions and limitations under the License.
-// ==============================================================================================================
+﻿using System.Reflection;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using Autofac;
+using Autofac.Integration.Mvc;
+using Conference.Common;
+using ECommon.Autofac;
+using ECommon.Components;
+using ECommon.JsonNet;
+using ECommon.Log4Net;
+using ECommon.Logging;
+using ENode.Configurations;
+using ECommonConfiguration = ECommon.Configurations.Configuration;
 
 namespace Conference.Web.Public
 {
-    using System.Runtime.Caching;
-    using System.Web;
-    using System.Web.Mvc;
-    using System.Web.Routing;
-    using Conference.Common;
-    using Conference.Web.Utils;
-    using Microsoft.Practices.Unity;
-    using Registration.ReadModel;
-    using Registration.ReadModel.Implementation;
-
     public partial class MvcApplication : HttpApplication
     {
-        private IUnityContainer container;
+        private ILogger _logger;
+        private ECommonConfiguration _ecommonConfiguration;
+        private ENodeConfiguration _enodeConfiguration;
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new MaintenanceModeAttribute());
             filters.Add(new HandleErrorAttribute());
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2122:DoNotIndirectlyExposeMethodsWithLinkDemands"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope", Justification = "By design")]
         protected void Application_Start()
         {
-//#if AZURESDK
-//            Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment.Changed +=
-//                (s, a) =>
-//                {
-//                    Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment.RequestRecycle();
-//                };
-//#endif
-            MaintenanceMode.RefreshIsInMaintainanceMode();
-
-            DatabaseSetup.Initialize();
-
-            this.container = CreateContainer();
-
-            DependencyResolver.SetResolver(new UnityServiceLocator(this.container));
+            ConfigSettings.Initialize();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RouteTable.Routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             AreaRegistration.RegisterAllAreas();
             AppRoutes.RegisterRoutes(RouteTable.Routes);
 
-//#if AZURESDK
-//            if (Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment.IsAvailable)
-//            {
-//                System.Diagnostics.Trace.Listeners.Add(new Microsoft.WindowsAzure.Diagnostics.DiagnosticMonitorTraceListener());
-//                System.Diagnostics.Trace.AutoFlush = true;
-//            }
-//#endif
-
-            this.OnStart();
+            InitializeECommon();
+            InitializeENode();
         }
 
-        protected void Application_Stop()
+        private void InitializeECommon()
         {
-            this.OnStop();
+            _ecommonConfiguration = ECommonConfiguration
+                .Create()
+                .UseAutofac()
+                .RegisterCommonComponents()
+                .UseLog4Net()
+                .UseJsonNet();
 
-            this.container.Dispose();
+            _logger = ObjectContainer.Resolve<ILoggerFactory>().Create(GetType().FullName);
+            _logger.Info("ECommon initialized.");
         }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Reliability", "CA2000:Dispose objects before losing scope")]
-        private static UnityContainer CreateContainer()
+        private void InitializeENode()
         {
-            var container = new UnityContainer();
-            try
+            var assemblies = new[]
             {
-                container.RegisterType<ConferenceRegistrationDbContext>(new TransientLifetimeManager(), new InjectionConstructor("ConferenceRegistration"));
+                Assembly.Load("Infrastructure"),
 
-                var cache = new MemoryCache("ReadModel");
-                container.RegisterType<IOrderDao, OrderDao>();
-                container.RegisterType<IConferenceDao, CachingConferenceDao>(
-                    new ContainerControlledLifetimeManager(),
-                    new InjectionConstructor(new ResolvedParameter<ConferenceDao>(), cache));
+                Assembly.Load("Registration"),
+                Assembly.Load("Registration.CommandHandlers"),
+                Assembly.Load("Registration.EventHandlers"),
+                Assembly.Load("Registration.ReadModel"),
 
-                OnCreateContainer(container);
+                Assembly.Load("Payments"),
+                Assembly.Load("Payments.CommandHandlers"),
+                Assembly.Load("Payments.EventHandlers"),
+                Assembly.Load("Payments.ReadModel"),
+            };
 
-                return container;
-            }
-            catch
-            {
-                container.Dispose();
-                throw;
-            }
+            var setting = new ConfigurationSetting { SqlServerDefaultConnectionString = ConfigSettings.ConnectionString };
+
+            _enodeConfiguration = _ecommonConfiguration
+                .CreateENode(setting)
+                .RegisterENodeComponents()
+                .RegisterBusinessComponents(assemblies)
+                .UseSqlServerCommandStore()
+                .UseSqlServerEventStore()
+                .UseEQueue()
+                .InitializeBusinessAssemblies(assemblies)
+                .StartENode(NodeType.CommandProcessor | NodeType.EventProcessor | NodeType.ExceptionProcessor)
+                .StartEQueue();
+
+            RegisterControllers();
+            _logger.Info("ENode initialized.");
         }
-
-        static partial void OnCreateContainer(UnityContainer container);
-
-        partial void OnStart();
-
-        partial void OnStop();
+        private void RegisterControllers()
+        {
+            var webAssembly = Assembly.GetExecutingAssembly();
+            var container = (ObjectContainer.Current as AutofacObjectContainer).Container;
+            var builder = new ContainerBuilder();
+            builder.RegisterControllers(webAssembly);
+            builder.Update(container);
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+        }
     }
 }

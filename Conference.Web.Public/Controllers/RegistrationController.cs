@@ -11,22 +11,18 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Web.Mvc;
+using Conference.Web.Public.Models;
+using ENode.Commanding;
+using Payments.Commands;
+using Registration.Commands;
+using Registration.ReadModel;
+
 namespace Conference.Web.Public.Controllers
 {
-    using System;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using System.Web.Mvc;
-    using Conference.Web.Public.Models;
-    using ENode.Commanding;
-    using Infrastructure.Messaging;
-    using Infrastructure.Tasks;
-    using Infrastructure.Utils;
-    using Payment.Commands;
-    using Payments.Commands;
-    using Registration.Commands;
-    using Registration.ReadModel;
-
     public class RegistrationController : ConferenceTenantController
     {
         public const string ThirdPartyProcessorPayment = "thirdParty";
@@ -39,8 +35,7 @@ namespace Conference.Web.Public.Controllers
         private readonly ICommandService commandService;
         private readonly IOrderDao orderDao;
 
-        public RegistrationController(ICommandService commandService, IOrderDao orderDao, IConferenceDao conferenceDao)
-            : base(conferenceDao)
+        public RegistrationController(ICommandService commandService, IOrderDao orderDao, IConferenceDao conferenceDao) : base(conferenceDao)
         {
             this.commandService = commandService;
             this.orderDao = orderDao;
@@ -57,7 +52,7 @@ namespace Conference.Web.Public.Controllers
                     .ContinueWith<ActionResult>(t =>
                     {
                         var viewModel = t.Result;
-                        viewModel.OrderId = GuidUtil.NewSequentialId();
+                        viewModel.OrderId = Guid.NewGuid();
                         return View(viewModel);
                     });
             }
@@ -75,7 +70,7 @@ namespace Conference.Web.Public.Controllers
                             return View("PricedOrderUnknown");
                         }
 
-                        if (order.State == DraftOrder.States.Confirmed)
+                        if (order.StateValue == DraftOrder.States.Confirmed)
                         {
                             return View("ShowCompletedOrder");
                         }
@@ -201,7 +196,7 @@ namespace Conference.Web.Public.Controllers
                         return View("ReservationUnknown");
                     }
 
-                    if (order.State == DraftOrder.States.PartiallyReserved)
+                    if (order.StateValue == DraftOrder.States.PartiallyReserved)
                     {
                         //TODO: have a clear message in the UI saying there was a problem and he actually didn't get all the seats.
                         // This happened as a result the seats availability being eventually but not fully consistent when
@@ -210,7 +205,7 @@ namespace Conference.Web.Public.Controllers
                         return this.RedirectToAction("StartRegistration", new { conferenceCode = this.ConferenceCode, orderId, orderVersion = order.OrderVersion });
                     }
 
-                    if (order.State == DraftOrder.States.Confirmed)
+                    if (order.StateValue == DraftOrder.States.Confirmed)
                     {
                         return View("ShowCompletedOrder");
                     }
@@ -290,7 +285,7 @@ namespace Conference.Web.Public.Controllers
             var paymentCommand =
                 new CreatePayment
                 {
-                    AggregateRootId = GuidUtil.NewSequentialId(),
+                    AggregateRootId = Guid.NewGuid(),
                     ConferenceId = this.ConferenceAlias.Id,
                     OrderId = order.OrderId,
                     Description = description,
@@ -357,7 +352,7 @@ namespace Conference.Web.Public.Controllers
             return
                 TimerTaskFactory.StartNew<DraftOrder>(
                     () => this.orderDao.FindDraftOrder(orderId),
-                    order => order != null && order.State != DraftOrder.States.PendingReservation && order.OrderVersion > lastOrderVersion,
+                    order => order != null && order.StateValue != DraftOrder.States.PendingReservation && order.OrderVersion > lastOrderVersion,
                     DraftOrderPollInterval,
                     DraftOrderWaitTimeout);
         }

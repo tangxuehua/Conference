@@ -23,19 +23,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.ReadModel", "R
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conference.Common", "Conference.Common\Conference.Common.csproj", "{BAF088F8-3FCB-45EF-A228-6424C34C65CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{B5786D07-5888-4DF5-B295-3FEA593F3BFE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Commands", "Payment.Commands\Payments.Commands.csproj", "{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Sql", "Infrastructure.Sql\Infrastructure.Sql.csproj", "{F038F286-5AEF-4341-83EC-9F72F42D06D6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.Commands", "Payment.Commands\Payment.Commands.csproj", "{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.EventHandlers", "Payment.EventHandlers\Payment.EventHandlers.csproj", "{34477AE1-228F-40DF-B463-3CFC85841A82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.EventHandlers", "Payment.EventHandlers\Payments.EventHandlers.csproj", "{34477AE1-228F-40DF-B463-3CFC85841A82}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conference.Web.Public", "Conference.Web.Public\Conference.Web.Public.csproj", "{32E3E4D7-D887-4BE1-A84F-130BF80533D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.ReadModel", "Payments.ReadModel\Payments.ReadModel.csproj", "{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payment.CommandHandlers", "Payment.CommandHandlers\Payment.CommandHandlers.csproj", "{BC3D3AAC-E5A0-4AE0-AC38-1B247F83B692}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.CommandHandlers", "Payment.CommandHandlers\Payments.CommandHandlers.csproj", "{BC3D3AAC-E5A0-4AE0-AC38-1B247F83B692}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,18 +88,6 @@ Global
 		{BAF088F8-3FCB-45EF-A228-6424C34C65CA}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{BAF088F8-3FCB-45EF-A228-6424C34C65CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BAF088F8-3FCB-45EF-A228-6424C34C65CA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
-		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
-		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B5786D07-5888-4DF5-B295-3FEA593F3BFE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
-		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
-		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F038F286-5AEF-4341-83EC-9F72F42D06D6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU

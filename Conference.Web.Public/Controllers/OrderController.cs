@@ -17,26 +17,19 @@ namespace Conference.Web.Public.Controllers
     using System.Collections.Generic;
     using System.Linq;
     using System.Web.Mvc;
-    using AutoMapper;
-    using Infrastructure.Messaging;
+    using ENode.Commanding;
     using Registration.Commands;
     using Registration.ReadModel;
 
     public class OrderController : ConferenceTenantController
     {
         private readonly IOrderDao orderDao;
-        private readonly ICommandBus bus;
+        private readonly ICommandService commandService;
 
-        static OrderController()
-        {
-            Mapper.CreateMap<OrderSeat, AssignSeat>();
-        }
-
-        public OrderController(IConferenceDao conferenceDao, IOrderDao orderDao, ICommandBus bus)
-            : base(conferenceDao)
+        public OrderController(IConferenceDao conferenceDao, IOrderDao orderDao, ICommandService commandService) : base(conferenceDao)
         {
             this.orderDao = orderDao;
-            this.bus = bus;
+            this.commandService = commandService;
         }
 
         [HttpGet]
@@ -103,12 +96,24 @@ namespace Conference.Web.Public.Controllers
 
             var changed = pairs
                 .Where(x => x.Saved.Attendee != x.New.Attendee && x.New.Attendee.Email != null)
-                .Select(x => (ICommand)Mapper.Map(x.New, new AssignSeat(saved.AssignmentsId) { Position = x.Saved.Position }));
+                .Select(x => new AssignSeat(saved.AssignmentsId)
+                {
+                    Position = x.Saved.Position,
+                    Attendee = new PersonalInfo
+                        {
+                            Email = x.New.Attendee.Email,
+                            FirstName = x.New.Attendee.FirstName,
+                            LastName = x.New.Attendee.LastName
+                        }
+                });
 
             var commands = unassigned.Union(changed).ToList();
             if (commands.Count > 0)
             {
-                this.bus.Send(commands);
+                foreach (var command in commands)
+                {
+                    this.commandService.Send(command);
+                }
             }
 
             return RedirectToAction("Display", new { orderId = saved.OrderId });

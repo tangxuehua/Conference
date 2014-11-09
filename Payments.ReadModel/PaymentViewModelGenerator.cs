@@ -3,6 +3,7 @@
     using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;
+    using Conference.Common;
     using ECommon.Components;
     using ECommon.Dapper;
     using ENode.Eventing;
@@ -83,7 +84,7 @@
 
         private IDbConnection GetConnection()
         {
-            return new SqlConnection(ConfigurationManager.AppSettings["connectionString"]);
+            return new SqlConnection(ConfigSettings.ConnectionString);
         }
     }
 }

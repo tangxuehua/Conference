@@ -55,8 +55,6 @@ namespace Conference.Web.Public
         {
             var assemblies = new[]
             {
-                Assembly.Load("Infrastructure"),
-
                 Assembly.Load("Registration"),
                 Assembly.Load("Registration.CommandHandlers"),
                 Assembly.Load("Registration.EventHandlers"),

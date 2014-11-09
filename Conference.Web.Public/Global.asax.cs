@@ -64,6 +64,8 @@ namespace Conference.Web.Public
                 Assembly.Load("Payments.CommandHandlers"),
                 Assembly.Load("Payments.EventHandlers"),
                 Assembly.Load("Payments.ReadModel"),
+
+                Assembly.Load("Conference.Web.Public")
             };
 
             var setting = new ConfigurationSetting { SqlServerDefaultConnectionString = ConfigSettings.ConnectionString };

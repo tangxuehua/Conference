@@ -4,6 +4,7 @@ using ENode.Commanding;
 
 namespace Registration.Commands
 {
+    [Serializable]
     public class MarkSeatsAsReserved : AggregateCommand<Guid>
     {
         public IEnumerable<SeatInfo> Seats { get; set; }

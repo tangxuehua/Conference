@@ -2,10 +2,12 @@
 
 namespace Registration.Orders
 {
+    [Serializable]
     public class OrderLine
     {
         public decimal LineTotal { get; set; }
     }
+    [Serializable]
     public class SeatOrderLine : OrderLine
     {
         public Guid SeatType { get; set; }

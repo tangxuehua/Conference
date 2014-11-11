@@ -19,17 +19,23 @@ namespace Registration.ReadModel
 
     public class PricedOrder
     {
-        public PricedOrder()
-        {
-            this.Lines = new ObservableCollection<PricedOrderLine>();
-        }
+        private IList<PricedOrderLine> _lines = new List<PricedOrderLine>();
+
         public Guid OrderId { get; set; }
         public Guid? AssignmentsId { get; set; }
-        public IList<PricedOrderLine> Lines { get; set; }
         public decimal Total { get; set; }
         public int OrderVersion { get; set; }
         public bool IsFreeOfCharge { get; set; }
         public DateTime? ReservationExpirationDate { get; set; }
+
+        public void SetLines(IList<PricedOrderLine> lines)
+        {
+            _lines = lines;
+        }
+        public IEnumerable<PricedOrderLine> GetLines()
+        {
+            return _lines;
+        }
     }
 
     public class PricedOrderLine

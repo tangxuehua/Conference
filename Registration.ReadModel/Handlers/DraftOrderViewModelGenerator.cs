@@ -28,10 +28,10 @@ namespace Registration.Handlers
                 try
                 {
                     var order = new DraftOrder(evnt.AggregateRootId, evnt.ConferenceId, DraftOrder.States.PendingReservation, evnt.Version) { AccessCode = evnt.AccessCode, };
-                    connection.Insert(order, "OrdersViewV3");
+                    connection.Insert(order, "OrdersViewV3", transaction);
                     foreach (var seat in evnt.Seats)
                     {
-                        connection.Insert(new DraftOrderItem(seat.SeatType, seat.Quantity) { OrderId = evnt.AggregateRootId }, "OrderItemsViewV3");
+                        connection.Insert(new DraftOrderItem(seat.SeatType, seat.Quantity) { OrderId = evnt.AggregateRootId }, "OrderItemsViewV3", transaction);
                     }
                     transaction.Commit();
                 }
@@ -73,10 +73,10 @@ namespace Registration.Handlers
                 var transaction = connection.BeginTransaction();
                 try
                 {
-                    connection.Update(new { State = state }, new { OrderId = orderId }, "OrdersViewV3");
+                    connection.Update(new { State = state }, new { OrderId = orderId }, "OrdersViewV3", transaction);
                     foreach (var seat in seats)
                     {
-                        connection.Update(new { ReservedSeats = seat.Quantity }, new { OrderId = orderId }, "OrderItemsViewV3");
+                        connection.Update(new { ReservedSeats = seat.Quantity }, new { OrderId = orderId }, "OrderItemsViewV3", transaction);
                     }
                     transaction.Commit();
                 }

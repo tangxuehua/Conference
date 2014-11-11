@@ -290,7 +290,7 @@ namespace Conference.Web.Public.Controllers
                     OrderId = order.OrderId,
                     Description = description,
                     TotalAmount = totalAmount,
-                    Lines = order.Lines.Select(x => new PaymentLine { Description = x.Description, Amount = x.LineTotal })
+                    Lines = order.GetLines().Select(x => new PaymentLine { Description = x.Description, Amount = x.LineTotal })
                 };
 
             return paymentCommand;
@@ -337,7 +337,7 @@ namespace Conference.Web.Public.Controllers
 
             // TODO check DTO matches view model
 
-            foreach (var line in order.Lines)
+            foreach (var line in order.GetLines())
             {
                 var seat = viewModel.Items.First(s => s.SeatType.Id == line.SeatType);
                 seat.OrderItem = line;
@@ -352,7 +352,7 @@ namespace Conference.Web.Public.Controllers
             return
                 TimerTaskFactory.StartNew<DraftOrder>(
                     () => this.orderDao.FindDraftOrder(orderId),
-                    order => order != null && order.StateValue != DraftOrder.States.PendingReservation && order.OrderVersion > lastOrderVersion,
+                    order => order != null && order.StateValue != DraftOrder.States.PendingReservation && order.OrderVersion > lastOrderVersion + 1,
                     DraftOrderPollInterval,
                     DraftOrderWaitTimeout);
         }
@@ -362,7 +362,7 @@ namespace Conference.Web.Public.Controllers
             return
                 TimerTaskFactory.StartNew<PricedOrder>(
                     () => this.orderDao.FindPricedOrder(orderId),
-                    order => order != null && order.OrderVersion > lastOrderVersion,
+                    order => order != null && order.OrderVersion > lastOrderVersion + 1,
                     PricedOrderPollInterval,
                     PricedOrderWaitTimeout);
         }

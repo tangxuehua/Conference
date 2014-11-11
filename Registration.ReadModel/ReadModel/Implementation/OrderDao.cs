@@ -31,7 +31,7 @@ namespace Registration.ReadModel.Implementation
                 var draftOrder = connection.QueryList<DraftOrder>(new { OrderId = orderId }, "OrdersViewV3").FirstOrDefault();
                 if (draftOrder != null)
                 {
-                    draftOrder.Lines = connection.QueryList<DraftOrderItem>(new { OrderId = orderId }, "OrderItemsViewV3").ToList();
+                    draftOrder.SetLines(connection.QueryList<DraftOrderItem>(new { OrderId = orderId }, "OrderItemsViewV3").ToList());
                     return draftOrder;
                 }
                 return null;
@@ -45,7 +45,7 @@ namespace Registration.ReadModel.Implementation
                 var pricedOrder = connection.QueryList<PricedOrder>(new { OrderId = orderId }, "PricedOrdersV3").FirstOrDefault();
                 if (pricedOrder != null)
                 {
-                    pricedOrder.Lines = connection.QueryList<PricedOrderLine>(new { OrderId = orderId }, "PricedOrderLinesV3").ToList();
+                    pricedOrder.SetLines(connection.QueryList<PricedOrderLine>(new { OrderId = orderId }, "PricedOrderLinesV3").ToList());
                     return pricedOrder;
                 }
                 return null;

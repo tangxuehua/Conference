@@ -30,7 +30,7 @@
                         StateValue = (int)PaymentState.Initiated,
                         Description = evnt.Description,
                         Amount = evnt.TotalAmount
-                    }, "ThirdPartyProcessorPayments");
+                    }, "ThirdPartyProcessorPayments", transaction);
                     foreach (var item in evnt.Items)
                     {
                         connection.Insert(
@@ -40,7 +40,7 @@
                             ThirdPartyProcessorPayment_Id = evnt.AggregateRootId,
                             Description = item.Description,
                             Amount = item.Amount
-                        }, "ThidPartyProcessorPaymentItems");
+                        }, "ThidPartyProcessorPaymentItems", transaction);
                     }
                     transaction.Commit();
                 }

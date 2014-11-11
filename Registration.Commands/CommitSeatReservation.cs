@@ -2,6 +2,7 @@
 
 namespace Registration.Commands
 {
+    [Serializable]
     public class CommitSeatReservation : SeatsAvailabilityCommand
     {
         public Guid ReservationId { get; set; }

@@ -5,6 +5,7 @@ using ENode.Commanding;
 
 namespace Registration.Commands
 {
+    [Serializable]
     public class RegisterToConference : AggregateCommand<Guid>, ICreatingAggregateCommand
     {
         public RegisterToConference() : base(Guid.NewGuid())

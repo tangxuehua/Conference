@@ -33,7 +33,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.ReadModel", "Payme
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.CommandHandlers", "Payments.CommandHandlers\Payments.CommandHandlers.csproj", "{BC3D3AAC-E5A0-4AE0-AC38-1B247F83B692}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B26CE90F-E736-436F-9CB1-C182D157FB31}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{B26CE90F-E736-436F-9CB1-C182D157FB31}"
 	ProjectSection(SolutionItems) = preProject
 		InstallDB.sql = InstallDB.sql
 	EndProjectSection

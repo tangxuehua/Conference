@@ -20,14 +20,14 @@ namespace Registration.EventHandlers
             context.AddCommand(new MakeSeatReservation(evnt.ConferenceId)
             {
                 ReservationId = evnt.AggregateRootId,
-                Seats = evnt.Seats.Select(x => new SeatInfo { SeatType = x.SeatType, Quantity = x.Quantity })
+                Seats = evnt.Seats.Select(x => new SeatInfo { SeatType = x.SeatType, Quantity = x.Quantity }).ToList()
             });
         }
         public void Handle(IEventContext context, SeatsReserved evnt)
         {
-            context.AddCommand(new MarkSeatsAsReserved(evnt.AggregateRootId)
+            context.AddCommand(new MarkSeatsAsReserved(evnt.OrderId)
             {
-                Seats = evnt.ReservationDetails.Select(x => new SeatInfo { SeatType = x.SeatType, Quantity = x.Quantity })
+                Seats = evnt.ReservationDetails.Select(x => new SeatInfo { SeatType = x.SeatType, Quantity = x.Quantity }).ToList()
             });
         }
         public void Handle(IEventContext context, PaymentCompletedEvent evnt)

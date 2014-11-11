@@ -30,7 +30,7 @@ namespace Registration.CommandHandlers
         }
         public void Handle(ICommandContext context, MakeSeatReservation command)
         {
-            context.Get<SeatsAvailability>(command.AggregateRootId).MakeReservation(command.ReservationId, command.Seats.Select(x => new SeatQuantity(x.SeatType, x.Quantity)));
+            context.Get<SeatsAvailability>(command.AggregateRootId).MakeReservation(command.ReservationId, command.Seats.Select(x => new SeatQuantity(x.SeatType, x.Quantity)).ToList());
         }
         public void Handle(ICommandContext context, CancelSeatReservation command)
         {

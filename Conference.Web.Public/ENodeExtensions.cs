@@ -1,4 +1,5 @@
-﻿using ECommon.Components;
+﻿using Conference.Common;
+using ECommon.Components;
 using ECommon.Extensions;
 using ENode.Commanding;
 using ENode.Configurations;
@@ -24,7 +25,20 @@ namespace Conference.Web.Public
         {
             var configuration = enodeConfiguration.GetCommonConfiguration();
 
-            configuration.RegisterEQueueComponents();
+            var messageStoreSetting = new SqlServerMessageStoreSetting
+            {
+                ConnectionString = ConfigSettings.ConnectionString,
+                DeleteMessageHourOfDay = -1
+            };
+            var offsetManagerSetting = new SqlServerOffsetManagerSetting
+            {
+                ConnectionString = ConfigSettings.ConnectionString
+            };
+
+            configuration
+                .RegisterEQueueComponents()
+                .UseSqlServerMessageStore(messageStoreSetting)
+                .UseSqlServerOffsetManager(offsetManagerSetting);
 
             _broker = new BrokerController();
             _commandResultProcessor = new CommandResultProcessor();

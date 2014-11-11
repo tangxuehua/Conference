@@ -38,15 +38,16 @@ namespace Registration.Handlers
                 {
                     var seatTypeIds = evnt.Lines.OfType<SeatOrderLine>().Select(x => x.SeatType).Distinct().ToArray();
 
-                    connection.Delete(new { OrderId = evnt.AggregateRootId }, "PricedOrderLinesV3");
+                    connection.Delete(new { OrderId = evnt.AggregateRootId }, "PricedOrderLinesV3", transaction);
 
-                    var seatTypeDescriptions = GetSeatTypeDescriptions(seatTypeIds, connection);
+                    var seatTypeDescriptions = GetSeatTypeDescriptions(seatTypeIds, connection, transaction);
 
                     for (int i = 0; i < evnt.Lines.Length; i++)
                     {
                         var orderLine = evnt.Lines[i];
                         var line = new PricedOrderLine
                         {
+                            OrderId = evnt.AggregateRootId,
                             LineTotal = orderLine.LineTotal,
                             Position = i,
                         };
@@ -59,10 +60,10 @@ namespace Registration.Handlers
                             line.Quantity = seatOrderLine.Quantity;
                         }
 
-                        connection.Insert(line, "PricedOrderLinesV3");
+                        connection.Insert(line, "PricedOrderLinesV3", transaction);
                     }
 
-                    connection.Update(new { Total = evnt.Total, IsFreeOfCharge = evnt.IsFreeOfCharge, OrderVersion = evnt.Version }, new { OrderId = evnt.AggregateRootId }, "PricedOrdersV3");
+                    connection.Update(new { Total = evnt.Total, IsFreeOfCharge = evnt.IsFreeOfCharge, OrderVersion = evnt.Version }, new { OrderId = evnt.AggregateRootId }, "PricedOrdersV3", transaction);
 
                     transaction.Commit();
                 }
@@ -88,12 +89,12 @@ namespace Registration.Handlers
             }
         }
 
-        private List<PricedOrderLineSeatTypeDescription> GetSeatTypeDescriptions(IEnumerable<Guid> seatTypeIds, IDbConnection connection)
+        private List<PricedOrderLineSeatTypeDescription> GetSeatTypeDescriptions(IEnumerable<Guid> seatTypeIds, IDbConnection connection, IDbTransaction transaction)
         {
             var result = new List<PricedOrderLineSeatTypeDescription>();
             foreach (var seatTypeId in seatTypeIds)
             {
-                var item = connection.QueryList<PricedOrderLineSeatTypeDescription>(new { SeatTypeId = seatTypeId }, "PricedOrderLineSeatTypeDescriptionsV3").SingleOrDefault();
+                var item = connection.QueryList<PricedOrderLineSeatTypeDescription>(new { SeatTypeId = seatTypeId }, "PricedOrderLineSeatTypeDescriptionsV3", transaction: transaction).SingleOrDefault();
                 if (item != null)
                 {
                     result.Add(item);

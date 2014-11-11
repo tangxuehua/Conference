@@ -3,6 +3,7 @@ using ENode.Commanding;
 
 namespace Registration.Commands
 {
+    [Serializable]
     public class AssignRegistrantDetails : AggregateCommand<Guid>
     {
         public string FirstName { get; set; }

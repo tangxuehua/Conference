@@ -1,7 +1,9 @@
-﻿using ECommon.Utilities;
+﻿using System;
+using ECommon.Utilities;
 
 namespace Registration.Orders
 {
+    [Serializable]
     public class RegistrantInfo
     {
         public string FirstName { get; private set; }

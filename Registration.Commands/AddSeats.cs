@@ -2,6 +2,7 @@
 
 namespace Registration.Commands
 {
+    [Serializable]
     public class AddSeats : SeatsAvailabilityCommand
     {
         public Guid SeatType { get; set; }

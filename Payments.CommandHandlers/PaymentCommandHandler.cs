@@ -20,7 +20,7 @@ namespace Payments.CommandHandlers
                 command.ConferenceId,
                 command.Description,
                 command.TotalAmount,
-                command.Lines.Select(x => new PaymentItem(x.Description, x.Amount))));
+                command.Lines.Select(x => new PaymentItem(x.Description, x.Amount)).ToList()));
         }
         public void Handle(ICommandContext context, CompletePayment command)
         {

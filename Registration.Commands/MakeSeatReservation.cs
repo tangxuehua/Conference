@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Registration.Commands
 {
+    [Serializable]
     public class MakeSeatReservation : SeatsAvailabilityCommand
     {
         public Guid ReservationId { get; set; }

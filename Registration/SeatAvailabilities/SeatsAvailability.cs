@@ -50,8 +50,9 @@ namespace Registration.SeatAvailabilities
                 }
             }
 
-            var reservation = new SeatsReserved(reservationId)
+            var reservation = new SeatsReserved(_id)
             {
+                OrderId = reservationId,
                 ReservationDetails = difference.Select(x => new SeatQuantity(x.Key, x.Value.Actual)).Where(x => x.Quantity != 0).ToList(),
                 AvailableSeatsChanged = difference.Select(x => new SeatQuantity(x.Key, -x.Value.DeltaSinceLast)).Where(x => x.Quantity != 0).ToList()
             };
@@ -62,14 +63,14 @@ namespace Registration.SeatAvailabilities
         {
             if (this._pendingReservations.ContainsKey(reservationId))
             {
-                ApplyEvent(new SeatsReservationCommitted(reservationId));
+                ApplyEvent(new SeatsReservationCommitted(_id) { OrderId = reservationId });
             }
         }
         public void CancelReservation(Guid reservationId)
         {
             if (this._pendingReservations.ContainsKey(reservationId))
             {
-                ApplyEvent(new SeatsReservationCancelled(reservationId));
+                ApplyEvent(new SeatsReservationCancelled(_id) { OrderId = reservationId });
             }
         }
 

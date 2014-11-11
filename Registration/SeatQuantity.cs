@@ -2,6 +2,7 @@
 
 namespace Registration
 {
+    [Serializable]
     public class SeatQuantity
     {
         public SeatQuantity(Guid seatType, int quantity)

@@ -22,11 +22,11 @@ namespace Registration.CommandHandlers
 
         public void Handle(ICommandContext context, RegisterToConference command)
         {
-            context.Add(new Order(command.AggregateRootId, command.ConferenceId, command.Seats.Select(t => new SeatQuantity(t.SeatType, t.Quantity)), _pricingService));
+            context.Add(new Order(command.AggregateRootId, command.ConferenceId, command.Seats.Select(t => new SeatQuantity(t.SeatType, t.Quantity)).ToList(), _pricingService));
         }
         public void Handle(ICommandContext context, MarkSeatsAsReserved command)
         {
-            context.Get<Order>(command.AggregateRootId).MarkAsReserved(_pricingService, command.Seats.Select(x => new SeatQuantity(x.SeatType, x.Quantity)));
+            context.Get<Order>(command.AggregateRootId).MarkAsReserved(_pricingService, command.Seats.Select(x => new SeatQuantity(x.SeatType, x.Quantity)).ToList());
         }
         public void Handle(ICommandContext context, AssignRegistrantDetails command)
         {

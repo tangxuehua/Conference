@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{223579DD-4650-4F51-A3AE-E7F8AF00972C}</ProjectGuid>
+    <ProjectGuid>{0CED18F4-5318-4B90-8F09-D1E4B2E75B08}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Registration.ReadModel</RootNamespace>
-    <AssemblyName>Registration.ReadModel</AssemblyName>
+    <RootNamespace>ConferenceManagement.ReadModel</RootNamespace>
+    <AssemblyName>ConferenceManagement.ReadModel</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -38,35 +38,17 @@
     <Reference Include="ENode">
       <HintPath>..\packages\ENode.2.4.9\lib\net40\ENode.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\DraftOrderViewModelGenerator.cs" />
-    <Compile Include="Handlers\PricedOrderViewModelGenerator.cs" />
-    <Compile Include="Handlers\SeatAssignmentsViewModelGenerator.cs" />
-    <Compile Include="PricingService.cs" />
+    <Compile Include="Handlers\ConferenceEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadModel\Conference.cs" />
-    <Compile Include="ReadModel\ConferenceAlias.cs" />
-    <Compile Include="ReadModel\ConferenceDetails.cs" />
-    <Compile Include="ReadModel\DraftOrder.cs" />
-    <Compile Include="ReadModel\DraftOrderItem.cs" />
-    <Compile Include="ReadModel\IConferenceDao.cs" />
-    <Compile Include="ReadModel\Implementation\ConferenceDao.cs" />
-    <Compile Include="ReadModel\Implementation\OrderDao.cs" />
-    <Compile Include="ReadModel\Implementation\PricedOrderLineSeatTypeDescription.cs" />
-    <Compile Include="ReadModel\IOrderDao.cs" />
-    <Compile Include="ReadModel\OrderSeat.cs" />
-    <Compile Include="ReadModel\OrderSeats.cs" />
-    <Compile Include="ReadModel\PricedOrder.cs" />
-    <Compile Include="ReadModel\SeatType.cs" />
-    <Compile Include="ReadModel\SeatTypeName.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -74,11 +56,12 @@
       <Project>{baf088f8-3fcb-45ef-a228-6424c34c65ca}</Project>
       <Name>Conference.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Registration\Registration.csproj">
-      <Project>{ba3dd497-5943-4e10-b586-12d9447a95a2}</Project>
-      <Name>Registration</Name>
+    <ProjectReference Include="..\ConferenceManagement\ConferenceManagement.csproj">
+      <Project>{44034f86-8d91-4489-a88a-a78886c772d7}</Project>
+      <Name>ConferenceManagement</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

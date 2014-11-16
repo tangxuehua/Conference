@@ -14,7 +14,6 @@ CREATE TABLE [dbo].[Conferences](
     [OwnerName] [nvarchar](max) NOT NULL,
     [OwnerEmail] [nvarchar](max) NOT NULL,
     [Slug] [nvarchar](max) NOT NULL,
-    [WasEverPublished] [bit] NOT NULL,
     [Name] [nvarchar](max) NOT NULL,
     [Description] [nvarchar](max) NOT NULL,
     [Location] [nvarchar](max) NOT NULL,
@@ -182,7 +181,7 @@ CREATE TABLE [dbo].[ConferenceSeatTypesView](
     [Price] [decimal](18, 2) NOT NULL,
     [Quantity] [int] NOT NULL,
     [AvailableQuantity] [int] NOT NULL,
-    [SeatsAvailabilityVersion] [int] NOT NULL,
+    [ConferenceVersion] [int] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
     [Id] ASC
@@ -218,6 +217,32 @@ PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 
 GO
+
+USE [Conference]
+GO
+
+/****** Object:  Table [dbo].[ConferenceReservationItems]    Script Date: 11/10/2014 09:07:17 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[ReservationItems](
+    [ConferenceId] [uniqueidentifier] NOT NULL,
+    [ReservationId] [uniqueidentifier] NOT NULL,
+    [SeatTypeId] [uniqueidentifier] NOT NULL,
+    [Quantity] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+    [ConferenceId] ASC,
+    [ReservationId] ASC,
+    [SeatTypeId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
 
 USE [Conference]
 GO

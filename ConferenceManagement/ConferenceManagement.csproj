@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{223579DD-4650-4F51-A3AE-E7F8AF00972C}</ProjectGuid>
+    <ProjectGuid>{44034F86-8D91-4489-A88A-A78886C772D7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Registration.ReadModel</RootNamespace>
-    <AssemblyName>Registration.ReadModel</AssemblyName>
+    <RootNamespace>ConferenceManagement</RootNamespace>
+    <AssemblyName>ConferenceManagement</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -40,44 +40,37 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\DraftOrderViewModelGenerator.cs" />
-    <Compile Include="Handlers\PricedOrderViewModelGenerator.cs" />
-    <Compile Include="Handlers\SeatAssignmentsViewModelGenerator.cs" />
-    <Compile Include="PricingService.cs" />
+    <Compile Include="ConferenceOwner.cs" />
+    <Compile Include="ConferenceInfo.cs" />
+    <Compile Include="Conference.cs" />
+    <Compile Include="SeatInsufficientException.cs" />
+    <Compile Include="ReservationItem.cs" />
+    <Compile Include="SeatsReservationCancelled.cs" />
+    <Compile Include="SeatsReservationCommitted.cs" />
+    <Compile Include="SeatsReservationAdded.cs" />
+    <Compile Include="SeatTypeInfo.cs" />
+    <Compile Include="SeatTypeRemoved.cs" />
+    <Compile Include="SeatTypeEvent.cs" />
+    <Compile Include="SeatTypeQuantityChanged.cs" />
+    <Compile Include="SeatTypeUpdated.cs" />
+    <Compile Include="SeatTypeAdded.cs" />
+    <Compile Include="ConferenceCreated.cs" />
+    <Compile Include="ConferenceEvent.cs" />
+    <Compile Include="ConferencePublished.cs" />
+    <Compile Include="ConferenceUnpublished.cs" />
+    <Compile Include="ConferenceUpdated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadModel\Conference.cs" />
-    <Compile Include="ReadModel\ConferenceAlias.cs" />
-    <Compile Include="ReadModel\ConferenceDetails.cs" />
-    <Compile Include="ReadModel\DraftOrder.cs" />
-    <Compile Include="ReadModel\DraftOrderItem.cs" />
-    <Compile Include="ReadModel\IConferenceDao.cs" />
-    <Compile Include="ReadModel\Implementation\ConferenceDao.cs" />
-    <Compile Include="ReadModel\Implementation\OrderDao.cs" />
-    <Compile Include="ReadModel\Implementation\PricedOrderLineSeatTypeDescription.cs" />
-    <Compile Include="ReadModel\IOrderDao.cs" />
-    <Compile Include="ReadModel\OrderSeat.cs" />
-    <Compile Include="ReadModel\OrderSeats.cs" />
-    <Compile Include="ReadModel\PricedOrder.cs" />
-    <Compile Include="ReadModel\SeatType.cs" />
-    <Compile Include="ReadModel\SeatTypeName.cs" />
+    <Compile Include="SeatType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Conference.Common\Conference.Common.csproj">
-      <Project>{baf088f8-3fcb-45ef-a228-6424c34c65ca}</Project>
-      <Name>Conference.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Registration\Registration.csproj">
-      <Project>{ba3dd497-5943-4e10-b586-12d9447a95a2}</Project>
-      <Name>Registration</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

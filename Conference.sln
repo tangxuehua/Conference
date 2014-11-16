@@ -38,6 +38,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{B26C
 		InstallDB.sql = InstallDB.sql
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConferenceManagement", "ConferenceManagement", "{D986C94C-06C0-4E9F-9E20-454673DAE696}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement", "ConferenceManagement\ConferenceManagement.csproj", "{44034F86-8D91-4489-A88A-A78886C772D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.ReadModel", "ConferenceManagement.ReadModel\ConferenceManagement.ReadModel.csproj", "{0CED18F4-5318-4B90-8F09-D1E4B2E75B08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Commands", "ConferenceManagement.Commands\ConferenceManagement.Commands.csproj", "{F522345E-1872-42B6-B5C2-9F158B91F3E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.CommandHandlers", "ConferenceManagement.CommandHandlers\ConferenceManagement.CommandHandlers.csproj", "{22EAB61C-5473-4298-A767-BDC88EA09053}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +133,30 @@ Global
 		{BC3D3AAC-E5A0-4AE0-AC38-1B247F83B692}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{BC3D3AAC-E5A0-4AE0-AC38-1B247F83B692}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC3D3AAC-E5A0-4AE0-AC38-1B247F83B692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44034F86-8D91-4489-A88A-A78886C772D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44034F86-8D91-4489-A88A-A78886C772D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44034F86-8D91-4489-A88A-A78886C772D7}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{44034F86-8D91-4489-A88A-A78886C772D7}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{44034F86-8D91-4489-A88A-A78886C772D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44034F86-8D91-4489-A88A-A78886C772D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CED18F4-5318-4B90-8F09-D1E4B2E75B08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CED18F4-5318-4B90-8F09-D1E4B2E75B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CED18F4-5318-4B90-8F09-D1E4B2E75B08}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CED18F4-5318-4B90-8F09-D1E4B2E75B08}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{0CED18F4-5318-4B90-8F09-D1E4B2E75B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CED18F4-5318-4B90-8F09-D1E4B2E75B08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F522345E-1872-42B6-B5C2-9F158B91F3E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F522345E-1872-42B6-B5C2-9F158B91F3E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F522345E-1872-42B6-B5C2-9F158B91F3E3}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{F522345E-1872-42B6-B5C2-9F158B91F3E3}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{F522345E-1872-42B6-B5C2-9F158B91F3E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F522345E-1872-42B6-B5C2-9F158B91F3E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22EAB61C-5473-4298-A767-BDC88EA09053}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22EAB61C-5473-4298-A767-BDC88EA09053}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22EAB61C-5473-4298-A767-BDC88EA09053}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{22EAB61C-5473-4298-A767-BDC88EA09053}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{22EAB61C-5473-4298-A767-BDC88EA09053}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22EAB61C-5473-4298-A767-BDC88EA09053}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -139,6 +173,10 @@ Global
 		{34477AE1-228F-40DF-B463-3CFC85841A82} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{BC3D3AAC-E5A0-4AE0-AC38-1B247F83B692} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
+		{44034F86-8D91-4489-A88A-A78886C772D7} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
+		{0CED18F4-5318-4B90-8F09-D1E4B2E75B08} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
+		{F522345E-1872-42B6-B5C2-9F158B91F3E3} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
+		{22EAB61C-5473-4298-A767-BDC88EA09053} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\DesignTime;packages\TransientFaultHandling.Core.5.0.1118.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35

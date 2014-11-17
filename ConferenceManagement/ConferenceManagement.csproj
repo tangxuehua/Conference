@@ -54,7 +54,7 @@
     <Compile Include="ReservationItem.cs" />
     <Compile Include="SeatsReservationCancelled.cs" />
     <Compile Include="SeatsReservationCommitted.cs" />
-    <Compile Include="SeatsReservationAdded.cs" />
+    <Compile Include="SeatsReserved.cs" />
     <Compile Include="SeatTypeInfo.cs" />
     <Compile Include="SeatTypeRemoved.cs" />
     <Compile Include="SeatTypeEvent.cs" />

@@ -47,6 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CancelSeatReservation.cs" />
+    <Compile Include="CommitSeatReservation.cs" />
+    <Compile Include="MakeSeatReservation.cs" />
+    <Compile Include="SeatReservationItemInfo.cs" />
     <Compile Include="UnpublishConference.cs" />
     <Compile Include="PublishConference.cs" />
     <Compile Include="UpdateConference.cs" />

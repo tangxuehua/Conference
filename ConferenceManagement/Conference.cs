@@ -69,7 +69,7 @@ namespace ConferenceManagement
             }
             ApplyEvent(new SeatTypeRemoved(_id, seatTypeId));
         }
-        public void AddSeatsReservation(Guid reservationId, IEnumerable<ReservationItem> reservationItems)
+        public void MakeReservation(Guid reservationId, IEnumerable<ReservationItem> reservationItems)
         {
             if (!_isPublished)
             {
@@ -101,7 +101,7 @@ namespace ConferenceManagement
                     throw new SeatInsufficientException(_id, reservationId);
                 }
             }
-            ApplyEvent(new SeatsReservationAdded(_id, reservationId, reservationItems));
+            ApplyEvent(new SeatsReserved(_id, reservationId, reservationItems));
         }
         public void CommitReservation(Guid reservationId)
         {
@@ -174,7 +174,7 @@ namespace ConferenceManagement
         {
             _seatTypes.Remove(_seatTypes.Single(x => x.Id == evnt.SeatTypeId));
         }
-        private void Handle(SeatsReservationAdded evnt)
+        private void Handle(SeatsReserved evnt)
         {
             _reservations.Add(evnt.ReservationId, evnt.ReservationItems.ToList());
         }

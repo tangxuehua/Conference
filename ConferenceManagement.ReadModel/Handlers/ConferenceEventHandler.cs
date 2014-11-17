@@ -16,7 +16,7 @@ namespace ConferenceManagement.ReadModel.Handlers
         IEventHandler<SeatTypeUpdated>,
         IEventHandler<SeatTypeQuantityChanged>,
         IEventHandler<SeatTypeRemoved>,
-        IEventHandler<SeatsReservationAdded>,
+        IEventHandler<SeatsReserved>,
         IEventHandler<SeatsReservationCommitted>,
         IEventHandler<SeatsReservationCancelled>
     {
@@ -130,7 +130,7 @@ namespace ConferenceManagement.ReadModel.Handlers
                 connection.Delete(new { Id = evnt.SeatTypeId }, ConfigSettings.SeatTypeTable);
             }
         }
-        public void Handle(IEventContext context, SeatsReservationAdded evnt)
+        public void Handle(IEventContext context, SeatsReserved evnt)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {

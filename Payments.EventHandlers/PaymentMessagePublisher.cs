@@ -8,7 +8,6 @@ namespace Payments.EventHandlers
 {
     [Component]
     public class PaymentMessagePublisher :
-        IEventHandler<PaymentInitiated>,
         IEventHandler<PaymentCompleted>,
         IEventHandler<PaymentRejected>
     {
@@ -19,17 +18,6 @@ namespace Payments.EventHandlers
             _messagePublisher = messagePublisher;
         }
 
-        public void Handle(IHandlingContext context, PaymentInitiated evnt)
-        {
-            _messagePublisher.Publish(new PaymentInitiatedMessage
-            {
-                SourceId = evnt.AggregateRootId,
-                Version = evnt.Version,
-                Timestamp = evnt.Timestamp,
-                ConferenceId = evnt.ConferenceId,
-                OrderId = evnt.OrderId
-            });
-        }
         public void Handle(IHandlingContext context, PaymentCompleted evnt)
         {
             _messagePublisher.Publish(new PaymentCompletedMessage

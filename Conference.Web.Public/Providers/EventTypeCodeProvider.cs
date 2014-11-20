@@ -31,9 +31,8 @@ namespace Conference.Web.Public.Providers
             RegisterType<PaymentInitiated>(200);
             RegisterType<PaymentCompleted>(201);
             RegisterType<PaymentRejected>(202);
-            RegisterType<PaymentInitiatedMessage>(203);
-            RegisterType<PaymentCompletedMessage>(204);
-            RegisterType<PaymentRejectedMessage>(205);
+            RegisterType<PaymentCompletedMessage>(203);
+            RegisterType<PaymentRejectedMessage>(204);
         }
     }
 }

@@ -32,7 +32,6 @@ namespace Conference.Web.Public.Providers
                 typeof(PaymentInitiated),
                 typeof(PaymentCompleted),
                 typeof(PaymentRejected),
-                typeof(PaymentInitiatedMessage),
                 typeof(PaymentCompletedMessage),
                 typeof(PaymentRejectedMessage));
         }

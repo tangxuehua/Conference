@@ -47,9 +47,6 @@
     <Compile Include="PaymentCompletedMessage.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PaymentInitiatedMessage.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="PaymentMessage.cs">
       <SubType>Code</SubType>
     </Compile>

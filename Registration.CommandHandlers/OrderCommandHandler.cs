@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using ECommon.Components;
 using ENode.Commanding;
-using Registration.Commands;
+using Registration.Commands.Orders;
 using Registration.Orders;
 
 namespace Registration.CommandHandlers
@@ -10,8 +10,9 @@ namespace Registration.CommandHandlers
     public class OrderCommandHandler :
         ICommandHandler<PlaceOrder>,
         ICommandHandler<ConfirmReservation>,
-        ICommandHandler<AssignRegistrantDetails>,
-        ICommandHandler<ConfirmPayment>
+        ICommandHandler<ConfirmPayment>,
+        ICommandHandler<MarkAsSuccess>,
+        ICommandHandler<CloseOrder>
     {
         private readonly IPricingService _pricingService;
 
@@ -22,19 +23,28 @@ namespace Registration.CommandHandlers
 
         public void Handle(ICommandContext context, PlaceOrder command)
         {
-            context.Add(new Order(command.AggregateRootId, command.ConferenceId, command.Seats.Select(t => new SeatQuantity(t.SeatType, t.Quantity)).ToList(), _pricingService));
+            context.Add(new Order(
+                command.AggregateRootId, 
+                command.ConferenceId, 
+                command.Seats.Select(t => new SeatQuantity(t.SeatType, t.Quantity)).ToList(),
+                new Registrant(command.Registrant.FirstName, command.Registrant.LastName, command.Registrant.Email),
+                _pricingService));
         }
         public void Handle(ICommandContext context, ConfirmReservation command)
         {
-            context.Get<Order>(command.AggregateRootId).ConfirmReservation();
-        }
-        public void Handle(ICommandContext context, AssignRegistrantDetails command)
-        {
-            context.Get<Order>(command.AggregateRootId).AssignRegistrant(new RegistrantInfo(command.FirstName, command.LastName, command.Email));
+            context.Get<Order>(command.AggregateRootId).ConfirmReservation(command.IsReservationSuccess);
         }
         public void Handle(ICommandContext context, ConfirmPayment command)
         {
-            context.Get<Order>(command.AggregateRootId).ConfirmPayment();
+            context.Get<Order>(command.AggregateRootId).ConfirmPayment(command.IsPaymentSuccess);
+        }
+        public void Handle(ICommandContext context, MarkAsSuccess command)
+        {
+            context.Get<Order>(command.AggregateRootId).MarkAsSuccess();
+        }
+        public void Handle(ICommandContext context, CloseOrder command)
+        {
+            context.Get<Order>(command.AggregateRootId).Close();
         }
     }
 }

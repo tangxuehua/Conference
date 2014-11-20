@@ -20,6 +20,6 @@ namespace Conference.Web.Public.Models
     {
         public PricedOrder Order { get; set; }
 
-        public AssignRegistrantDetails RegistrantDetails { get; set; }
+        //public AssignRegistrantDetails RegistrantDetails { get; set; }
     }
 }

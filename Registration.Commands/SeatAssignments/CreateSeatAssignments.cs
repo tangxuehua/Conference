@@ -1,7 +1,7 @@
 ﻿using System;
 using ENode.Commanding;
 
-namespace Registration.Commands
+namespace Registration.Commands.SeatAssignments
 {
     [Serializable]
     public class CreateSeatAssignments : AggregateCommand<Guid>, ICreatingAggregateCommand

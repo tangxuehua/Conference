@@ -16,7 +16,7 @@ namespace Conference.Web.Public.Providers
             //RegisterType<OrderConfirmed>(100);
             //RegisterType<OrderPartiallyReserved>(101);
             RegisterType<OrderPlaced>(102);
-            RegisterType<OrderRegistrantAssigned>(103);
+            //RegisterType<OrderRegistrantAssigned>(103);
             //RegisterType<OrderReservationCompleted>(104);
             //RegisterType<OrderTotalsCalculated>(105);
             RegisterType<SeatAssigned>(106);

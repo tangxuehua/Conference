@@ -8,6 +8,9 @@ namespace ConferenceManagement.Commands
     {
         public Guid ReservationId { get; set; }
 
-        public CancelSeatReservation(Guid conferenceId) : base(conferenceId) { }
+        public CancelSeatReservation(Guid conferenceId, Guid reservationId) : base(conferenceId)
+        {
+            ReservationId = reservationId;
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ENode.Commanding;
 
-namespace Registration.Commands
+namespace Registration.Commands.Orders
 {
     [Serializable]
     public class PlaceOrder : AggregateCommand<Guid>, ICreatingAggregateCommand
@@ -14,6 +14,7 @@ namespace Registration.Commands
         }
 
         public Guid ConferenceId { get; set; }
-        public ICollection<SeatInfo> Seats { get; set; }
+        public PersonalInfo Registrant { get; set; }
+        public IList<SeatInfo> Seats { get; set; }
     }
 }

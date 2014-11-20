@@ -44,17 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CreateSeatAssignments.cs" />
-    <Compile Include="AssignRegistrantDetails.cs" />
-    <Compile Include="AssignSeat.cs" />
-    <Compile Include="ConfirmPayment.cs" />
-    <Compile Include="ConfirmReservation.cs" />
+    <Compile Include="Orders\CloseOrder.cs" />
+    <Compile Include="Orders\MarkAsSuccess.cs" />
+    <Compile Include="SeatAssignments\CreateSeatAssignments.cs" />
+    <Compile Include="SeatAssignments\AssignSeat.cs" />
+    <Compile Include="Orders\ConfirmPayment.cs" />
+    <Compile Include="Orders\ConfirmReservation.cs" />
     <Compile Include="PersonalInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PlaceOrder.cs" />
-    <Compile Include="RejectOrder.cs" />
-    <Compile Include="SeatInfo.cs" />
-    <Compile Include="UnassignSeat.cs" />
+    <Compile Include="Orders\PlaceOrder.cs" />
+    <Compile Include="Orders\SeatInfo.cs" />
+    <Compile Include="SeatAssignments\UnassignSeat.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

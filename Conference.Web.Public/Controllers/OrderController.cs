@@ -19,6 +19,7 @@ namespace Conference.Web.Public.Controllers
     using System.Web.Mvc;
     using ENode.Commanding;
     using Registration.Commands;
+    using Registration.Commands.SeatAssignments;
     using Registration.ReadModel;
 
     public class OrderController : ConferenceTenantController
@@ -99,7 +100,7 @@ namespace Conference.Web.Public.Controllers
                 .Select(x => new AssignSeat(saved.AssignmentsId)
                 {
                     Position = x.Saved.Position,
-                    Attendee = new PersonalInfo
+                    PersonalInfo = new PersonalInfo
                         {
                             Email = x.New.Attendee.Email,
                             FirstName = x.New.Attendee.FirstName,

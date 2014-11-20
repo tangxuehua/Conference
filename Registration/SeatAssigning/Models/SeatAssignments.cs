@@ -10,7 +10,7 @@ namespace Registration.SeatAssigning
     public class SeatAssignments : AggregateRoot<Guid>
     {
         private Guid _orderId;
-        private IEnumerable<SeatAssignment> _seats;
+        private IEnumerable<SeatAssignment> _assignments;
 
         public SeatAssignments(Guid id, Guid orderId, IEnumerable<SeatQuantity> seats) : base(id)
         {
@@ -25,55 +25,41 @@ namespace Registration.SeatAssigning
             }
             ApplyEvent(new SeatAssignmentsCreated(id, orderId, all));
         }
-
-        public void AssignSeat(int position, RegistrantInfo attendee)
+        public void AssignSeat(int position, Attendee attendee)
         {
-            var current = this._seats.SingleOrDefault(x => x.Position == position);
+            var current = _assignments.SingleOrDefault(x => x.Position == position);
             if (current == null)
             {
                 throw new ArgumentOutOfRangeException("position");
             }
             if (attendee.Email != current.Attendee.Email || attendee.FirstName != current.Attendee.FirstName || attendee.LastName != current.Attendee.LastName)
             {
-                ApplyEvent(new SeatAssigned(this._id, current.Position, current.SeatType, attendee));
+                ApplyEvent(new SeatAssigned(_id, current.Position, current.SeatType, attendee));
             }
         }
         public void UnassignSeat(int position)
         {
-            var current = this._seats.SingleOrDefault(x => x.Position == position);
+            var current = _assignments.SingleOrDefault(x => x.Position == position);
             if (current == null)
             {
                 throw new ArgumentOutOfRangeException("position");
             }
-            ApplyEvent(new SeatUnassigned(this._id, position));
+            ApplyEvent(new SeatUnassigned(_id, position));
         }
 
-        private void Handle(SeatAssignmentsCreated e)
+        private void Handle(SeatAssignmentsCreated evnt)
         {
-            this._id = e.AggregateRootId;
-            this._orderId = e.OrderId;
-            this._seats = e.Seats;
+            _id = evnt.AggregateRootId;
+            _orderId = evnt.OrderId;
+            _assignments = evnt.Assignments;
         }
-        private void Handle(SeatAssigned e)
+        private void Handle(SeatAssigned evnt)
         {
-            this._seats.Single(x => x.Position == e.Position).Attendee = e.Attendee;
+            _assignments.Single(x => x.Position == evnt.Position).Attendee = evnt.Attendee;
         }
-        private void Handle(SeatUnassigned e)
+        private void Handle(SeatUnassigned evnt)
         {
-            this._seats.Single(x => x.Position == e.Position).Attendee = null;
-        }
-    }
-    [Serializable]
-    public class SeatAssignment
-    {
-        public int Position { get; private set; }
-        public Guid SeatType { get; private set; }
-        public RegistrantInfo Attendee { get; set; }
-
-        public SeatAssignment(int position, Guid seatType)
-        {
-            Position = position;
-            SeatType = seatType;
+            _assignments.Single(x => x.Position == evnt.Position).Attendee = null;
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Conference.Web.Public.Providers
                 //typeof(OrderConfirmed),
                 //typeof(OrderPartiallyReserved),
                 typeof(OrderPlaced),
-                typeof(OrderRegistrantAssigned),
+                //typeof(OrderRegistrantAssigned),
                 //typeof(OrderReservationCompleted),
                 //typeof(OrderTotalsCalculated),
                 typeof(SeatAssigned),

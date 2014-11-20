@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Registration.Commands
+namespace Registration.Commands.Orders
 {
     [Serializable]
     public class SeatInfo

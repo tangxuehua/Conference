@@ -6,7 +6,7 @@ using ENode.Eventing;
 using ENode.Infrastructure;
 using ENode.Messaging;
 using Payments.Messages;
-using Registration.Commands;
+using Registration.Commands.Orders;
 using Registration.Orders;
 
 namespace Registration.ProcessManagers
@@ -15,7 +15,9 @@ namespace Registration.ProcessManagers
     public class RegistrationProcessManager :
         IEventHandler<OrderPlaced>,
         IMessageHandler<SeatsReservedMessage>,
+        IMessageHandler<SeatInsufficientMessage>,
         IMessageHandler<PaymentCompletedMessage>,
+        IMessageHandler<PaymentRejectedMessage>,
         IEventHandler<OrderPaymentConfirmed>
     {
         public void Handle(IHandlingContext context, OrderPlaced evnt)
@@ -28,19 +30,38 @@ namespace Registration.ProcessManagers
         }
         public void Handle(IHandlingContext context, SeatsReservedMessage message)
         {
-            context.AddCommand(new ConfirmReservation(message.ReservationId));
+            context.AddCommand(new ConfirmReservation(message.ReservationId, true));
+        }
+        public void Handle(IHandlingContext context, SeatInsufficientMessage message)
+        {
+            context.AddCommand(new ConfirmReservation(message.ReservationId, false));
         }
         public void Handle(IHandlingContext context, PaymentCompletedMessage message)
         {
-            context.AddCommand(new ConfirmPayment(message.OrderId));
+            context.AddCommand(new ConfirmPayment(message.OrderId, true));
+        }
+        public void Handle(IHandlingContext context, PaymentRejectedMessage message)
+        {
+            context.AddCommand(new ConfirmPayment(message.OrderId, false));
         }
         public void Handle(IHandlingContext context, OrderPaymentConfirmed evnt)
         {
-            context.AddCommand(new CommitSeatReservation(evnt.ConferenceId)
+            if (evnt.IsPaymentSuccess)
             {
-                ReservationId = evnt.AggregateRootId
-            });
-            context.AddCommand(new CreateSeatAssignments(evnt.AggregateRootId));
+                context.AddCommand(new CommitSeatReservation(evnt.ConferenceId, evnt.AggregateRootId));
+            }
+            else
+            {
+                context.AddCommand(new CancelSeatReservation(evnt.ConferenceId, evnt.AggregateRootId));
+            }
+        }
+        public void Handle(IHandlingContext context, SeatsReservationCommittedMessage message)
+        {
+            context.AddCommand(new MarkAsSuccess(message.ReservationId));
+        }
+        public void Handle(IHandlingContext context, SeatsReservationCancelledMessage message)
+        {
+            context.AddCommand(new CloseOrder(message.ReservationId));
         }
     }
 }

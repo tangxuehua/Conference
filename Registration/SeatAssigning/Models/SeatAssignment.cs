@@ -1,21 +1,22 @@
 ﻿using System;
-using ENode.Eventing;
+using System.Collections.Generic;
+using System.Linq;
+using ENode.Domain;
 using Registration.Orders;
 
 namespace Registration.SeatAssigning
 {
     [Serializable]
-    public class SeatAssigned : DomainEvent<Guid>
+    public class SeatAssignment
     {
         public int Position { get; private set; }
         public Guid SeatType { get; private set; }
-        public Attendee Attendee { get; private set; }
+        public Attendee Attendee { get; set; }
 
-        public SeatAssigned(Guid sourceId, int position, Guid seatType, Attendee attendee) : base(sourceId)
+        public SeatAssignment(int position, Guid seatType)
         {
             Position = position;
             SeatType = seatType;
-            Attendee = attendee;
         }
     }
 }

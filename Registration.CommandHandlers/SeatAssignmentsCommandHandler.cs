@@ -1,6 +1,6 @@
 ﻿using ECommon.Components;
 using ENode.Commanding;
-using Registration.Commands;
+using Registration.Commands.SeatAssignments;
 using Registration.Orders;
 using Registration.SeatAssigning;
 
@@ -18,7 +18,7 @@ namespace Registration.CommandHandlers
         }
         public void Handle(ICommandContext context, AssignSeat command)
         {
-            context.Get<SeatAssignments>(command.AggregateRootId).AssignSeat(command.Position, new RegistrantInfo(command.Attendee.FirstName, command.Attendee.LastName, command.Attendee.Email));
+            context.Get<SeatAssignments>(command.AggregateRootId).AssignSeat(command.Position, new Attendee(command.PersonalInfo.FirstName, command.PersonalInfo.LastName, command.PersonalInfo.Email));
         }
         public void Handle(ICommandContext context, UnassignSeat command)
         {

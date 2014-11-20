@@ -8,12 +8,12 @@ namespace Registration.SeatAssigning
     public class SeatAssignmentsCreated : DomainEvent<Guid>
     {
         public Guid OrderId { get; private set; }
-        public IEnumerable<SeatAssignment> Seats { get; private set; }
+        public IEnumerable<SeatAssignment> Assignments { get; private set; }
 
-        public SeatAssignmentsCreated(Guid sourceId, Guid orderId, IEnumerable<SeatAssignment> seats) : base(sourceId)
+        public SeatAssignmentsCreated(Guid sourceId, Guid orderId, IEnumerable<SeatAssignment> assignments) : base(sourceId)
         {
             OrderId = orderId;
-            Seats = seats;
+            Assignments = assignments;
         }
     }
 }

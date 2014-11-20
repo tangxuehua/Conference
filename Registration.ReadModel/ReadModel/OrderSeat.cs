@@ -26,6 +26,6 @@ namespace Registration.ReadModel
 
         public int Position { get; set; }
         public string SeatName { get; set; }
-        public RegistrantInfo Attendee { get; set; }
+        public Registrant Attendee { get; set; }
     }
 }

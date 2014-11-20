@@ -19,6 +19,7 @@ using Conference.Web.Public.Models;
 using ENode.Commanding;
 using Payments.Commands;
 using Registration.Commands;
+using Registration.Commands.Orders;
 using Registration.ReadModel;
 
 namespace Conference.Web.Public.Controllers
@@ -137,52 +138,52 @@ namespace Conference.Web.Public.Controllers
                 new { conferenceCode = this.ConferenceCode, orderId = command.AggregateRootId, orderVersion = orderVersion });
         }
 
-        [HttpGet]
-        [OutputCache(Duration = 0, NoStore = true)]
-        public Task<ActionResult> SpecifyRegistrantAndPaymentDetails(Guid orderId, int orderVersion)
-        {
-            return this.WaitUntilOrderIsPriced(orderId, orderVersion)
-            .ContinueWith<ActionResult>(t =>
-            {
-                var pricedOrder = t.Result;
-                if (pricedOrder == null)
-                {
-                    return View("PricedOrderUnknown");
-                }
+        //[HttpGet]
+        //[OutputCache(Duration = 0, NoStore = true)]
+        //public Task<ActionResult> SpecifyRegistrantAndPaymentDetails(Guid orderId, int orderVersion)
+        //{
+        //    return this.WaitUntilOrderIsPriced(orderId, orderVersion)
+        //    .ContinueWith<ActionResult>(t =>
+        //    {
+        //        var pricedOrder = t.Result;
+        //        if (pricedOrder == null)
+        //        {
+        //            return View("PricedOrderUnknown");
+        //        }
 
-                if (!pricedOrder.ReservationExpirationDate.HasValue)
-                {
-                    return View("ShowCompletedOrder");
-                }
+        //        if (!pricedOrder.ReservationExpirationDate.HasValue)
+        //        {
+        //            return View("ShowCompletedOrder");
+        //        }
 
-                if (pricedOrder.ReservationExpirationDate < DateTime.UtcNow)
-                {
-                    return RedirectToAction("ShowExpiredOrder", new { conferenceCode = this.ConferenceAlias.Code, orderId = orderId });
-                }
+        //        if (pricedOrder.ReservationExpirationDate < DateTime.UtcNow)
+        //        {
+        //            return RedirectToAction("ShowExpiredOrder", new { conferenceCode = this.ConferenceAlias.Code, orderId = orderId });
+        //        }
 
-                return View(
-                    new RegistrationViewModel
-                    {
-                        RegistrantDetails = new AssignRegistrantDetails(orderId),
-                        Order = pricedOrder
-                    });
-            });
-        }
+        //        return View(
+        //            new RegistrationViewModel
+        //            {
+        //                RegistrantDetails = new AssignRegistrantDetails(orderId),
+        //                Order = pricedOrder
+        //            });
+        //    });
+        //}
 
-        [HttpPost]
-        public Task<ActionResult> SpecifyRegistrantAndPaymentDetails(AssignRegistrantDetails command, string paymentType, int orderVersion)
-        {
-            var orderId = command.AggregateRootId;
+        //[HttpPost]
+        //public Task<ActionResult> SpecifyRegistrantAndPaymentDetails(AssignRegistrantDetails command, string paymentType, int orderVersion)
+        //{
+        //    var orderId = command.AggregateRootId;
 
-            if (!ModelState.IsValid)
-            {
-                return SpecifyRegistrantAndPaymentDetails(orderId, orderVersion);
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return SpecifyRegistrantAndPaymentDetails(orderId, orderVersion);
+        //    }
 
-            this.commandService.Send(command);
+        //    this.commandService.Send(command);
 
-            return this.StartPayment(orderId, paymentType, orderVersion);
-        }
+        //    return this.StartPayment(orderId, paymentType, orderVersion);
+        //}
 
         [HttpPost]
         public Task<ActionResult> StartPayment(Guid orderId, string paymentType, int orderVersion)
@@ -298,9 +299,9 @@ namespace Conference.Web.Public.Controllers
 
         private ActionResult CompleteRegistrationWithoutPayment(Guid orderId)
         {
-            var confirmationCommand = new ConfirmPayment(orderId);
+            //var confirmationCommand = new ConfirmPayment(orderId);
 
-            this.commandService.Send(confirmationCommand);
+            //this.commandService.Send(confirmationCommand);
 
             return RedirectToAction("ThankYou", new { conferenceCode = this.ConferenceAlias.Code, orderId });
         }

@@ -3,6 +3,7 @@ using Conference.Common;
 using ECommon.Components;
 using ECommon.Dapper;
 using ENode.Eventing;
+using ENode.Infrastructure;
 
 namespace ConferenceManagement.ReadModel.Handlers
 {
@@ -27,7 +28,7 @@ namespace ConferenceManagement.ReadModel.Handlers
             _connectionFactory = connectionFactory;
         }
 
-        public void Handle(IEventContext context, ConferenceCreated evnt)
+        public void Handle(IHandlingContext context, ConferenceCreated evnt)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
@@ -50,7 +51,7 @@ namespace ConferenceManagement.ReadModel.Handlers
                 }, ConfigSettings.ConferenceTable);
             }
         }
-        public void Handle(IEventContext context, ConferenceUpdated evnt)
+        public void Handle(IHandlingContext context, ConferenceUpdated evnt)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
@@ -72,21 +73,21 @@ namespace ConferenceManagement.ReadModel.Handlers
                 }, new { Id = evnt.AggregateRootId }, ConfigSettings.ConferenceTable);
             }
         }
-        public void Handle(IEventContext context, ConferencePublished evnt)
+        public void Handle(IHandlingContext context, ConferencePublished evnt)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
                 connection.Update(new { IsPublished = 1 }, new { Id = evnt.AggregateRootId }, ConfigSettings.ConferenceTable);
             }
         }
-        public void Handle(IEventContext context, ConferenceUnpublished evnt)
+        public void Handle(IHandlingContext context, ConferenceUnpublished evnt)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
                 connection.Update(new { IsPublished = 0 }, new { Id = evnt.AggregateRootId }, ConfigSettings.ConferenceTable);
             }
         }
-        public void Handle(IEventContext context, SeatTypeAdded evnt)
+        public void Handle(IHandlingContext context, SeatTypeAdded evnt)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
@@ -101,7 +102,7 @@ namespace ConferenceManagement.ReadModel.Handlers
                 }, ConfigSettings.SeatTypeTable);
             }
         }
-        public void Handle(IEventContext context, SeatTypeUpdated evnt)
+        public void Handle(IHandlingContext context, SeatTypeUpdated evnt)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
@@ -113,7 +114,7 @@ namespace ConferenceManagement.ReadModel.Handlers
                 }, new { Id = evnt.SeatTypeId }, ConfigSettings.SeatTypeTable);
             }
         }
-        public void Handle(IEventContext context, SeatTypeQuantityChanged evnt)
+        public void Handle(IHandlingContext context, SeatTypeQuantityChanged evnt)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
@@ -123,14 +124,14 @@ namespace ConferenceManagement.ReadModel.Handlers
                 }, new { Id = evnt.SeatTypeId }, ConfigSettings.SeatTypeTable);
             }
         }
-        public void Handle(IEventContext context, SeatTypeRemoved evnt)
+        public void Handle(IHandlingContext context, SeatTypeRemoved evnt)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
                 connection.Delete(new { Id = evnt.SeatTypeId }, ConfigSettings.SeatTypeTable);
             }
         }
-        public void Handle(IEventContext context, SeatsReserved evnt)
+        public void Handle(IHandlingContext context, SeatsReserved evnt)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
@@ -163,7 +164,7 @@ namespace ConferenceManagement.ReadModel.Handlers
                 }
             }
         }
-        public void Handle(IEventContext context, SeatsReservationCommitted evnt)
+        public void Handle(IHandlingContext context, SeatsReservationCommitted evnt)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {
@@ -195,7 +196,7 @@ namespace ConferenceManagement.ReadModel.Handlers
                 }
             }
         }
-        public void Handle(IEventContext context, SeatsReservationCancelled evnt)
+        public void Handle(IHandlingContext context, SeatsReservationCancelled evnt)
         {
             using (var connection = _connectionFactory.CreateConnection())
             {

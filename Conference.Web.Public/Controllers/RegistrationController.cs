@@ -87,7 +87,7 @@ namespace Conference.Web.Public.Controllers
         }
 
         [HttpPost]
-        public ActionResult StartRegistration(RegisterToConference command, int orderVersion)
+        public ActionResult StartRegistration(PlaceOrder command, int orderVersion)
         {
             var existingOrder = orderVersion != 0 ? this.orderDao.FindDraftOrder(command.AggregateRootId) : null;
             var viewModel = this.CreateViewModel();
@@ -298,7 +298,7 @@ namespace Conference.Web.Public.Controllers
 
         private ActionResult CompleteRegistrationWithoutPayment(Guid orderId)
         {
-            var confirmationCommand = new ConfirmOrder(orderId);
+            var confirmationCommand = new ConfirmPayment(orderId);
 
             this.commandService.Send(confirmationCommand);
 

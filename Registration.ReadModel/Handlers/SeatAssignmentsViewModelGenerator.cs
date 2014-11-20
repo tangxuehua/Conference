@@ -1,5 +1,6 @@
 ﻿using ECommon.Components;
 using ENode.Eventing;
+using ENode.Infrastructure;
 using Registration.SeatAssigning;
 
 namespace Registration.Handlers
@@ -10,8 +11,8 @@ namespace Registration.Handlers
         IEventHandler<SeatAssigned>,
         IEventHandler<SeatUnassigned>
     {
-        public void Handle(IEventContext eventContext, SeatAssignmentsCreated evnt) { }
-        public void Handle(IEventContext eventContext, SeatAssigned evnt) { }
-        public void Handle(IEventContext eventContext, SeatUnassigned evnt) { }
+        public void Handle(IHandlingContext eventContext, SeatAssignmentsCreated evnt) { }
+        public void Handle(IHandlingContext eventContext, SeatAssigned evnt) { }
+        public void Handle(IHandlingContext eventContext, SeatUnassigned evnt) { }
     }
 }

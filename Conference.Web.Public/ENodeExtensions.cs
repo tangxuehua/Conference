@@ -46,9 +46,9 @@ namespace Conference.Web.Public
             _eventPublisher = new EventPublisher();
 
             configuration.SetDefault<ICommandService, CommandService>(_commandService);
-            configuration.SetDefault<IMessagePublisher<EventStream>, EventPublisher>(_eventPublisher);
-            configuration.SetDefault<IMessagePublisher<DomainEventStream>, EventPublisher>(_eventPublisher);
-            configuration.SetDefault<IEventPublisher, EventPublisher>(_eventPublisher);
+            configuration.SetDefault<IPublisher<EventStream>, EventPublisher>(_eventPublisher);
+            configuration.SetDefault<IPublisher<DomainEventStream>, EventPublisher>(_eventPublisher);
+            configuration.SetDefault<IPublisher<IEvent>, EventPublisher>(_eventPublisher);
 
             _commandConsumer = new CommandConsumer();
             _eventConsumer = new EventConsumer();

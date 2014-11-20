@@ -36,7 +36,7 @@
       <HintPath>..\packages\ECommon.1.3.8\lib\net40\ECommon.dll</HintPath>
     </Reference>
     <Reference Include="ENode">
-      <HintPath>..\packages\ENode.2.4.9\lib\net40\ENode.dll</HintPath>
+      <HintPath>..\packages\ENode.2.5.1\lib\net40\ENode.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -47,27 +47,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConferenceOwner.cs" />
-    <Compile Include="ConferenceInfo.cs" />
-    <Compile Include="Conference.cs" />
-    <Compile Include="SeatInsufficientException.cs" />
-    <Compile Include="ReservationItem.cs" />
-    <Compile Include="SeatsReservationCancelled.cs" />
-    <Compile Include="SeatsReservationCommitted.cs" />
-    <Compile Include="SeatsReserved.cs" />
-    <Compile Include="SeatTypeInfo.cs" />
-    <Compile Include="SeatTypeRemoved.cs" />
-    <Compile Include="SeatTypeEvent.cs" />
-    <Compile Include="SeatTypeQuantityChanged.cs" />
-    <Compile Include="SeatTypeUpdated.cs" />
-    <Compile Include="SeatTypeAdded.cs" />
-    <Compile Include="ConferenceCreated.cs" />
-    <Compile Include="ConferenceEvent.cs" />
-    <Compile Include="ConferencePublished.cs" />
-    <Compile Include="ConferenceUnpublished.cs" />
-    <Compile Include="ConferenceUpdated.cs" />
+    <Compile Include="Models\ConferenceOwner.cs" />
+    <Compile Include="Models\ConferenceInfo.cs" />
+    <Compile Include="Models\Conference.cs" />
+    <Compile Include="PublishableExceptions\SeatInsufficientException.cs" />
+    <Compile Include="Models\ReservationItem.cs" />
+    <Compile Include="Events\SeatsReservationCancelled.cs" />
+    <Compile Include="Events\SeatsReservationCommitted.cs" />
+    <Compile Include="Events\SeatsReserved.cs" />
+    <Compile Include="Models\SeatTypeInfo.cs" />
+    <Compile Include="Events\SeatTypeRemoved.cs" />
+    <Compile Include="Events\SeatTypeEvent.cs" />
+    <Compile Include="Events\SeatTypeQuantityChanged.cs" />
+    <Compile Include="Events\SeatTypeUpdated.cs" />
+    <Compile Include="Events\SeatTypeAdded.cs" />
+    <Compile Include="Events\ConferenceCreated.cs" />
+    <Compile Include="Events\ConferenceEvent.cs" />
+    <Compile Include="Events\ConferencePublished.cs" />
+    <Compile Include="Events\ConferenceUnpublished.cs" />
+    <Compile Include="Events\ConferenceUpdated.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SeatType.cs" />
+    <Compile Include="Models\SeatType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

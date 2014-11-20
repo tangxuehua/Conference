@@ -36,20 +36,20 @@
       <HintPath>..\packages\ECommon.1.3.8\lib\net40\ECommon.dll</HintPath>
     </Reference>
     <Reference Include="ENode">
-      <HintPath>..\packages\ENode.2.4.9\lib\net40\ENode.dll</HintPath>
+      <HintPath>..\packages\ENode.2.5.1\lib\net40\ENode.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UpdateSeatType.cs" />
+    <Compile Include="AddSeatType.cs" />
     <Compile Include="CancelSeatReservation.cs" />
     <Compile Include="CommitSeatReservation.cs" />
     <Compile Include="MakeSeatReservation.cs" />
+    <Compile Include="RemoveSeatType.cs" />
     <Compile Include="SeatReservationItemInfo.cs" />
     <Compile Include="UnpublishConference.cs" />
     <Compile Include="PublishConference.cs" />

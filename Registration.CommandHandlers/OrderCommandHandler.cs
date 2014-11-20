@@ -8,33 +8,33 @@ namespace Registration.CommandHandlers
 {
     [Component]
     public class OrderCommandHandler :
-        ICommandHandler<RegisterToConference>,
-        ICommandHandler<MarkSeatsAsReserved>,
+        ICommandHandler<PlaceOrder>,
+        ICommandHandler<ConfirmReservation>,
         ICommandHandler<AssignRegistrantDetails>,
-        ICommandHandler<ConfirmOrder>
+        ICommandHandler<ConfirmPayment>
     {
         private readonly IPricingService _pricingService;
 
         public OrderCommandHandler(IPricingService pricingService)
         {
-            this._pricingService = pricingService;
+            _pricingService = pricingService;
         }
 
-        public void Handle(ICommandContext context, RegisterToConference command)
+        public void Handle(ICommandContext context, PlaceOrder command)
         {
             context.Add(new Order(command.AggregateRootId, command.ConferenceId, command.Seats.Select(t => new SeatQuantity(t.SeatType, t.Quantity)).ToList(), _pricingService));
         }
-        public void Handle(ICommandContext context, MarkSeatsAsReserved command)
+        public void Handle(ICommandContext context, ConfirmReservation command)
         {
-            context.Get<Order>(command.AggregateRootId).MarkAsReserved(_pricingService, command.Seats.Select(x => new SeatQuantity(x.SeatType, x.Quantity)).ToList());
+            context.Get<Order>(command.AggregateRootId).ConfirmReservation();
         }
         public void Handle(ICommandContext context, AssignRegistrantDetails command)
         {
             context.Get<Order>(command.AggregateRootId).AssignRegistrant(new RegistrantInfo(command.FirstName, command.LastName, command.Email));
         }
-        public void Handle(ICommandContext context, ConfirmOrder command)
+        public void Handle(ICommandContext context, ConfirmPayment command)
         {
-            context.Get<Order>(command.AggregateRootId).Confirm();
+            context.Get<Order>(command.AggregateRootId).ConfirmPayment();
         }
     }
 }

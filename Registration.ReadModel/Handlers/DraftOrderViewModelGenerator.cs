@@ -6,6 +6,7 @@ using Conference.Common;
 using ECommon.Components;
 using ECommon.Dapper;
 using ENode.Eventing;
+using ENode.Infrastructure;
 using Registration.Orders;
 using Registration.ReadModel;
 
@@ -19,7 +20,7 @@ namespace Registration.Handlers
         IEventHandler<OrderRegistrantAssigned>,
         IEventHandler<OrderConfirmed>
     {
-        public void Handle(IEventContext eventContext, OrderPlaced evnt)
+        public void Handle(IHandlingContext eventContext, OrderPlaced evnt)
         {
             using (var connection = GetConnection())
             {
@@ -42,22 +43,18 @@ namespace Registration.Handlers
                 }
             }
         }
-        public void Handle(IEventContext eventContext, OrderRegistrantAssigned evnt)
+        public void Handle(IHandlingContext eventContext, OrderRegistrantAssigned evnt)
         {
             using (var connection = GetConnection())
             {
                 connection.Update(new { RegistrantEmail = evnt.Registrant.Email, OrderVersion = evnt.Version }, new { OrderId = evnt.AggregateRootId }, "OrdersViewV3");
             }
         }
-        public void Handle(IEventContext eventContext, OrderPartiallyReserved evnt)
-        {
-            UpdateReserved(evnt.AggregateRootId, DraftOrder.States.PartiallyReserved, evnt.Version, evnt.Seats);
-        }
-        public void Handle(IEventContext eventContext, OrderReservationCompleted evnt)
+        public void Handle(IHandlingContext eventContext, OrderReservationCompleted evnt)
         {
             UpdateReserved(evnt.AggregateRootId, DraftOrder.States.ReservationCompleted, evnt.Version, evnt.Seats);
         }
-        public void Handle(IEventContext eventContext, OrderConfirmed evnt)
+        public void Handle(IHandlingContext eventContext, OrderConfirmed evnt)
         {
             using (var connection = GetConnection())
             {

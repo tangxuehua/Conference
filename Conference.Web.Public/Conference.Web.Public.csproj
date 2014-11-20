@@ -64,12 +64,12 @@
     <Reference Include="ECommon.Log4Net">
       <HintPath>..\packages\ECommon.Log4Net.1.3.8\lib\net40\ECommon.Log4Net.dll</HintPath>
     </Reference>
-    <Reference Include="ENode, Version=2.4.9.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ENode, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ENode.2.4.9\lib\net40\ENode.dll</HintPath>
+      <HintPath>..\packages\ENode.2.5.1\lib\net40\ENode.dll</HintPath>
     </Reference>
     <Reference Include="ENode.EQueue">
-      <HintPath>..\packages\enode.equeue.1.5.3\lib\net40\ENode.EQueue.dll</HintPath>
+      <HintPath>..\packages\enode.equeue.1.5.5\lib\net40\ENode.EQueue.dll</HintPath>
     </Reference>
     <Reference Include="EQueue">
       <HintPath>..\packages\EQueue.1.3.3\lib\net40\EQueue.dll</HintPath>
@@ -280,13 +280,13 @@
       <Project>{914b7e07-3bd2-4eb6-b1c8-e37ff94d662b}</Project>
       <Name>Payments.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Payments.EventHandlers\Payments.EventHandlers.csproj">
+    <ProjectReference Include="..\Payments.EventHandlers\Payments.MessagePublishers.csproj">
       <Project>{34477ae1-228f-40df-b463-3cfc85841a82}</Project>
-      <Name>Payments.EventHandlers</Name>
+      <Name>Payments.MessagePublishers</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Payments.Contracts\Payments.Contracts.csproj">
-      <Project>{C6E446B0-29C8-4A97-AFE9-9F643B2115DA}</Project>
-      <Name>Payments.Contracts</Name>
+    <ProjectReference Include="..\Payments.Contracts\Payments.Messages.csproj">
+      <Project>{C39BCB0A-AB88-45EB-9CEE-9EF4157B22C6}</Project>
+      <Name>Payments.Messages</Name>
     </ProjectReference>
     <ProjectReference Include="..\Payments.ReadModel\Payments.ReadModel.csproj">
       <Project>{efc691df-0eed-4e91-a2c2-e5df41f09fd4}</Project>
@@ -304,9 +304,9 @@
       <Project>{eb602d2f-5fc3-4a4f-aaf3-63bb43d02a5d}</Project>
       <Name>Registration.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Registration.EventHandlers\Registration.EventHandlers.csproj">
+    <ProjectReference Include="..\Registration.EventHandlers\Registration.ProcessManagers.csproj">
       <Project>{f9ce88c9-d44f-40a5-a30c-bfa90355a819}</Project>
-      <Name>Registration.EventHandlers</Name>
+      <Name>Registration.ProcessManagers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Registration.ReadModel\Registration.ReadModel.csproj">
       <Project>{223579dd-4650-4f51-a3ae-e7f8af00972c}</Project>

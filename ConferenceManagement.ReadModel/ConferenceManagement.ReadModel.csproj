@@ -36,7 +36,7 @@
       <HintPath>..\packages\ECommon.1.3.8\lib\net40\ECommon.dll</HintPath>
     </Reference>
     <Reference Include="ENode">
-      <HintPath>..\packages\ENode.2.4.9\lib\net40\ENode.dll</HintPath>
+      <HintPath>..\packages\ENode.2.5.1\lib\net40\ENode.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />

@@ -7,6 +7,7 @@ using Conference.Common;
 using ECommon.Components;
 using ECommon.Dapper;
 using ENode.Eventing;
+using ENode.Infrastructure;
 using Registration.Orders;
 using Registration.ReadModel;
 using Registration.ReadModel.Implementation;
@@ -21,14 +22,14 @@ namespace Registration.Handlers
         IEventHandler<OrderConfirmed>,
         IEventHandler<SeatAssignmentsCreated>
     {
-        public void Handle(IEventContext eventContext, OrderPlaced evnt)
+        public void Handle(IHandlingContext eventContext, OrderPlaced evnt)
         {
             using (var connection = GetConnection())
             {
                 connection.Insert(new PricedOrder { OrderId = evnt.AggregateRootId, OrderVersion = evnt.Version }, "PricedOrdersV3");
             }
         }
-        public void Handle(IEventContext eventContext, OrderTotalsCalculated evnt)
+        public void Handle(IHandlingContext eventContext, OrderTotalsCalculated evnt)
         {
             using (var connection = GetConnection())
             {
@@ -74,14 +75,14 @@ namespace Registration.Handlers
                 }
             }
         }
-        public void Handle(IEventContext eventContext, OrderConfirmed evnt)
+        public void Handle(IHandlingContext eventContext, OrderConfirmed evnt)
         {
             using (var connection = GetConnection())
             {
                 connection.Update(new { ReservationExpirationDate = default(DateTime?), OrderVersion = evnt.Version }, new { OrderId = evnt.AggregateRootId }, "PricedOrdersV3");
             }
         }
-        public void Handle(IEventContext eventContext, SeatAssignmentsCreated evnt)
+        public void Handle(IHandlingContext eventContext, SeatAssignmentsCreated evnt)
         {
             using (var connection = GetConnection())
             {

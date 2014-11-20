@@ -1,40 +1,40 @@
 ﻿using System.Linq;
+using ConferenceManagement.Commands;
+using ConferenceManagement.Messages;
 using ECommon.Components;
 using ENode.Eventing;
-using Payments.Contracts;
+using ENode.Infrastructure;
+using ENode.Messaging;
+using Payments.Messages;
 using Registration.Commands;
 using Registration.Orders;
-using Registration.SeatAvailabilities;
 
-namespace Registration.EventHandlers
+namespace Registration.ProcessManagers
 {
     [Component]
     public class RegistrationProcessManager :
         IEventHandler<OrderPlaced>,
-        IEventHandler<SeatsReserved>,
-        IEventHandler<PaymentCompletedEvent>,
-        IEventHandler<OrderConfirmed>
+        IMessageHandler<SeatsReservedMessage>,
+        IMessageHandler<PaymentCompletedMessage>,
+        IEventHandler<OrderPaymentConfirmed>
     {
-        public void Handle(IEventContext context, OrderPlaced evnt)
+        public void Handle(IHandlingContext context, OrderPlaced evnt)
         {
             context.AddCommand(new MakeSeatReservation(evnt.ConferenceId)
             {
                 ReservationId = evnt.AggregateRootId,
-                Seats = evnt.Seats.Select(x => new SeatInfo { SeatType = x.SeatType, Quantity = x.Quantity }).ToList()
+                Seats = evnt.Total.Lines.Select(x => new SeatReservationItemInfo { SeatType = x.SeatType, Quantity = x.Quantity }).ToList()
             });
         }
-        public void Handle(IEventContext context, SeatsReserved evnt)
+        public void Handle(IHandlingContext context, SeatsReservedMessage message)
         {
-            context.AddCommand(new MarkSeatsAsReserved(evnt.OrderId)
-            {
-                Seats = evnt.ReservationDetails.Select(x => new SeatInfo { SeatType = x.SeatType, Quantity = x.Quantity }).ToList()
-            });
+            context.AddCommand(new ConfirmReservation(message.ReservationId));
         }
-        public void Handle(IEventContext context, PaymentCompletedEvent evnt)
+        public void Handle(IHandlingContext context, PaymentCompletedMessage message)
         {
-            context.AddCommand(new ConfirmOrder(evnt.AggregateRootId));
+            context.AddCommand(new ConfirmPayment(message.OrderId));
         }
-        public void Handle(IEventContext context, OrderConfirmed evnt)
+        public void Handle(IHandlingContext context, OrderPaymentConfirmed evnt)
         {
             context.AddCommand(new CommitSeatReservation(evnt.ConferenceId)
             {

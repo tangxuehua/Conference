@@ -7,6 +7,7 @@
     using ECommon.Components;
     using ECommon.Dapper;
     using ENode.Eventing;
+    using ENode.Infrastructure;
 
     [Component]
     public class PaymentViewModelGenerator :
@@ -14,7 +15,7 @@
         IEventHandler<PaymentCompleted>,
         IEventHandler<PaymentRejected>
     {
-        public void Handle(IEventContext context, PaymentInitiated evnt)
+        public void Handle(IHandlingContext context, PaymentInitiated evnt)
         {
             using (var connection = GetConnection())
             {
@@ -51,7 +52,7 @@
                 }
             }
         }
-        public void Handle(IEventContext context, PaymentCompleted evnt)
+        public void Handle(IHandlingContext context, PaymentCompleted evnt)
         {
             using (var connection = GetConnection())
             {
@@ -66,7 +67,7 @@
                     }, "ThirdPartyProcessorPayments");
             }
         }
-        public void Handle(IEventContext context, PaymentRejected evnt)
+        public void Handle(IHandlingContext context, PaymentRejected evnt)
         {
             using (var connection = GetConnection())
             {

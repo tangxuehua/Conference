@@ -11,20 +11,20 @@ namespace Conference.Web.Public.Providers
     {
         public CommandTypeCodeProvider()
         {
-            RegisterType<AddSeats>(100);
-            RegisterType<AssignRegistrantDetails>(101);
-            RegisterType<AssignSeat>(102);
-            RegisterType<CancelSeatReservation>(103);
-            RegisterType<CommitSeatReservation>(104);
-            RegisterType<ConfirmOrder>(105);
-            RegisterType<CreateSeatAssignments>(106);
-            RegisterType<MakeSeatReservation>(107);
-            RegisterType<MarkSeatsAsReserved>(108);
-            RegisterType<RegisterToConference>(109);
-            RegisterType<RejectOrder>(110);
-            RegisterType<RemoveSeats>(111);
-            RegisterType<SeatsAvailabilityCommand>(112);
-            RegisterType<UnassignSeat>(113);
+            //RegisterType<AddSeats>(100);
+            //RegisterType<AssignRegistrantDetails>(101);
+            //RegisterType<AssignSeat>(102);
+            //RegisterType<CancelSeatReservation>(103);
+            //RegisterType<CommitSeatReservation>(104);
+            //RegisterType<ConfirmPayment>(105);
+            //RegisterType<CreateSeatAssignments>(106);
+            //RegisterType<MakeSeatReservation>(107);
+            //RegisterType<ConfirmReservation>(108);
+            //RegisterType<PlaceOrder>(109);
+            //RegisterType<RejectOrder>(110);
+            //RegisterType<RemoveSeats>(111);
+            //RegisterType<SeatsAvailabilityCommand>(112);
+            //RegisterType<UnassignSeat>(113);
 
             RegisterType<CreatePayment>(200);
             RegisterType<CompletePayment>(201);

@@ -18,7 +18,8 @@ namespace Registration.ProcessManagers
         IMessageHandler<SeatInsufficientMessage>,
         IMessageHandler<PaymentCompletedMessage>,
         IMessageHandler<PaymentRejectedMessage>,
-        IEventHandler<OrderPaymentConfirmed>
+        IEventHandler<OrderPaymentConfirmed>,
+        IEventHandler<OrderExpired>
     {
         public void Handle(IHandlingContext context, OrderPlaced evnt)
         {
@@ -62,6 +63,10 @@ namespace Registration.ProcessManagers
         public void Handle(IHandlingContext context, SeatsReservationCancelledMessage message)
         {
             context.AddCommand(new CloseOrder(message.ReservationId));
+        }
+        public void Handle(IHandlingContext context, OrderExpired evnt)
+        {
+            context.AddCommand(new CancelSeatReservation(evnt.ConferenceId, evnt.AggregateRootId));
         }
     }
 }

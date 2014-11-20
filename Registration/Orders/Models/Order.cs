@@ -53,6 +53,13 @@ namespace Registration.Orders
             }
             ApplyEvent(new OrderSuccessed(_id, _conferenceId));
         }
+        public void MarkAsExpire()
+        {
+            if (_status == OrderStatus.ReservationSuccess)
+            {
+                ApplyEvent(new OrderExpired(_id, _conferenceId));
+            }
+        }
         public void Close()
         {
             if (_status != OrderStatus.ReservationSuccess && _status != OrderStatus.PaymentRejected)
@@ -106,6 +113,10 @@ namespace Registration.Orders
         {
             _status = OrderStatus.Success;
         }
+        private void Handle(OrderExpired evnt)
+        {
+            _status = OrderStatus.Expired;
+        }
         private void Handle(OrderClosed evnt)
         {
             _status = OrderStatus.Closed;
@@ -118,6 +129,7 @@ namespace Registration.Orders
         ReservationFailed,         //位置预定已失败（下单失败）
         PaymentSuccess,            //付款已成功
         PaymentRejected,           //付款已拒绝
+        Expired,                   //订单已过期
         Success,                   //交易已成功
         Closed                     //订单已关闭
     }

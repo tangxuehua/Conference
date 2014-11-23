@@ -54,7 +54,7 @@ namespace ConferenceManagement
                 {
                     throw new Exception(string.Format("Quantity cannot be small than total reservation quantity:{0}", totalReservationQuantity));
                 }
-                ApplyEvent(new SeatTypeQuantityChanged(_id, seatTypeId, quantity));
+                ApplyEvent(new SeatTypeQuantityChanged(_id, seatTypeId, quantity, quantity - totalReservationQuantity));
             }
         }
         public void RemoveSeat(Guid seatTypeId)

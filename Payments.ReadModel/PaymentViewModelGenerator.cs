@@ -1,6 +1,5 @@
 ﻿namespace Payments.ReadModel
 {
-    using System.Configuration;
     using System.Data;
     using System.Data.SqlClient;
     using Conference.Common;
@@ -27,21 +26,21 @@
                     new
                     {
                         Id = evnt.AggregateRootId,
-                        PaymentSourceId = evnt.OrderId,
-                        StateValue = (int)PaymentState.Initiated,
+                        OrderId = evnt.OrderId,
+                        State = (int)PaymentState.Initiated,
                         Description = evnt.Description,
                         Amount = evnt.TotalAmount
-                    }, "ThirdPartyProcessorPayments", transaction);
+                    }, ConfigSettings.PaymentTable, transaction);
                     foreach (var item in evnt.Items)
                     {
                         connection.Insert(
                         new
                         {
                             Id = item.Id,
-                            ThirdPartyProcessorPayment_Id = evnt.AggregateRootId,
+                            PaymentId = evnt.AggregateRootId,
                             Description = item.Description,
                             Amount = item.Amount
-                        }, "ThidPartyProcessorPaymentItems", transaction);
+                        }, ConfigSettings.PaymentItemTable, transaction);
                     }
                     transaction.Commit();
                 }
@@ -56,30 +55,14 @@
         {
             using (var connection = GetConnection())
             {
-                connection.Update(
-                    new
-                    {
-                        StateValue = (int)PaymentState.Completed
-                    },
-                    new
-                    {
-                        Id = evnt.AggregateRootId
-                    }, "ThirdPartyProcessorPayments");
+                connection.Update(new { State = (int)PaymentState.Completed }, new { Id = evnt.AggregateRootId }, ConfigSettings.PaymentTable);
             }
         }
         public void Handle(IHandlingContext context, PaymentRejected evnt)
         {
             using (var connection = GetConnection())
             {
-                connection.Update(
-                    new
-                    {
-                        StateValue = (int)PaymentState.Rejected
-                    },
-                    new
-                    {
-                        Id = evnt.AggregateRootId
-                    }, "ThirdPartyProcessorPayments");
+                connection.Update(new { State = (int)PaymentState.Rejected }, new { Id = evnt.AggregateRootId }, ConfigSettings.PaymentTable);
             }
         }
 

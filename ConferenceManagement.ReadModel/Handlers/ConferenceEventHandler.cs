@@ -97,8 +97,9 @@ namespace ConferenceManagement.ReadModel.Handlers
                     Name = evnt.SeatTypeInfo.Name,
                     Description = evnt.SeatTypeInfo.Description,
                     Quantity = evnt.Quantity,
+                    AvailableQuantity = evnt.Quantity,
                     Price = evnt.SeatTypeInfo.Price,
-                    ConferenceInfo_Id = evnt.AggregateRootId,
+                    ConferenceId = evnt.AggregateRootId,
                 }, ConfigSettings.SeatTypeTable);
             }
         }
@@ -120,7 +121,8 @@ namespace ConferenceManagement.ReadModel.Handlers
             {
                 connection.Update(new
                 {
-                    Quantity = evnt.Quantity
+                    Quantity = evnt.Quantity,
+                    AvailableQuantity = evnt.AvailableQuantity
                 }, new { Id = evnt.SeatTypeId }, ConfigSettings.SeatTypeTable);
             }
         }
@@ -141,6 +143,7 @@ namespace ConferenceManagement.ReadModel.Handlers
                 {
                     foreach (var reservationItem in evnt.ReservationItems)
                     {
+                        //插入预定记录
                         connection.Insert(new
                         {
                             ConferenceId = evnt.AggregateRootId,
@@ -148,6 +151,8 @@ namespace ConferenceManagement.ReadModel.Handlers
                             SeatTypeId = reservationItem.SeatTypeId,
                             Quantity = reservationItem.Quantity
                         }, ConfigSettings.ReservationItemsTable, transaction);
+
+                        //更新位置的可用数量
                         var condition = new { ConferenceId = evnt.AggregateRootId, Id = reservationItem.SeatTypeId };
                         var seatType = connection.QueryList(condition, ConfigSettings.SeatTypeTable, transaction: transaction).Single();
                         connection.Update(
@@ -172,6 +177,10 @@ namespace ConferenceManagement.ReadModel.Handlers
                 var transaction = connection.BeginTransaction();
                 try
                 {
+                    //删除预定记录
+                    connection.Delete(new { ConferenceId = evnt.AggregateRootId, ReservationId = evnt.ReservationId }, ConfigSettings.ReservationItemsTable, transaction);
+
+                    //更新位置的数量
                     var reservationItems = connection.QueryList(
                         new { ConferenceId = evnt.AggregateRootId, ReservationId = evnt.ReservationId },
                         ConfigSettings.ReservationItemsTable, transaction: transaction);
@@ -184,8 +193,6 @@ namespace ConferenceManagement.ReadModel.Handlers
                             condition,
                             ConfigSettings.SeatTypeTable, transaction: transaction);
                     }
-
-                    connection.Delete(new { ConferenceId = evnt.AggregateRootId, ReservationId = evnt.ReservationId }, ConfigSettings.ReservationItemsTable, transaction);
 
                     transaction.Commit();
                 }
@@ -204,6 +211,10 @@ namespace ConferenceManagement.ReadModel.Handlers
                 var transaction = connection.BeginTransaction();
                 try
                 {
+                    //删除预定记录
+                    connection.Delete(new { ConferenceId = evnt.AggregateRootId, ReservationId = evnt.ReservationId }, ConfigSettings.ReservationItemsTable, transaction);
+
+                    //更新位置的可用数量
                     var reservationItems = connection.QueryList(
                         new { ConferenceId = evnt.AggregateRootId, ReservationId = evnt.ReservationId },
                         ConfigSettings.ReservationItemsTable, transaction: transaction);
@@ -216,8 +227,6 @@ namespace ConferenceManagement.ReadModel.Handlers
                             condition,
                             ConfigSettings.SeatTypeTable, transaction: transaction);
                     }
-
-                    connection.Delete(new { ConferenceId = evnt.AggregateRootId, ReservationId = evnt.ReservationId }, ConfigSettings.ReservationItemsTable, transaction);
 
                     transaction.Commit();
                 }

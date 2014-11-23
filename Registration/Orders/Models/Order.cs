@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Conference.Common;
 using ECommon.Utilities;
 using ENode.Domain;
 using Registration.SeatAssigning;
@@ -16,17 +17,17 @@ namespace Registration.Orders
         private Registrant _registrant;
         private string _accessCode;
 
-        public Order(Guid id, Guid conferenceId, IEnumerable<SeatQuantity> seats, Registrant registrant, IPricingService pricingService) : base(id)
+        public Order(Guid id, Guid conferenceId, IEnumerable<SeatInfo> seats, Registrant registrant, IPricingService pricingService) : base(id)
         {
             Ensure.NotEmptyGuid(id, "id");
             Ensure.NotEmptyGuid(conferenceId, "conferenceId");
             Ensure.NotNull(seats, "seats");
             Ensure.NotNull(registrant, "registrant");
             Ensure.NotNull(pricingService, "pricingService");
-            if (!seats.Any()) throw new ArgumentException("Order seats cannot be empty.");
+            if (!seats.Any()) throw new ArgumentException("The seats of order cannot be empty.");
 
             var orderTotal = pricingService.CalculateTotal(conferenceId, seats);
-            ApplyEvent(new OrderPlaced(id, conferenceId, orderTotal, registrant, ObjectId.GenerateNewStringId()));
+            ApplyEvent(new OrderPlaced(id, conferenceId, orderTotal, registrant, DateTime.UtcNow.Add(ConfigSettings.ReservationAutoExpiration), ObjectId.GenerateNewStringId()));
         }
 
         public void ConfirmReservation(bool isReservationSuccess)
@@ -74,14 +75,14 @@ namespace Registration.Orders
             {
                 throw new InvalidOperationException("Cannot create seat assignments for an order that isn't success yet.");
             }
-            return new SeatAssignments(Guid.NewGuid(), _id, _total.Lines.Select(x => new SeatQuantity(x.SeatType, x.Quantity)).ToList());
+            return new SeatAssignments(Guid.NewGuid(), _id, _total.Lines.Select(x => new SeatQuantity(x.SeatInfo.SeatTypeId, x.SeatInfo.Quantity)).ToList());
         }
 
         private void Handle(OrderPlaced evnt)
         {
             _id = evnt.AggregateRootId;
             _conferenceId = evnt.ConferenceId;
-            _total = evnt.Total;
+            _total = evnt.OrderTotal;
             _registrant = evnt.Registrant;
             _accessCode = evnt.AccessCode;
             _status = OrderStatus.Placed;
@@ -94,7 +95,7 @@ namespace Registration.Orders
             }
             else
             {
-                _status = OrderStatus.ReservationSuccess;
+                _status = OrderStatus.ReservationFailed;
             }
         }
         private void Handle(OrderPaymentConfirmed evnt)

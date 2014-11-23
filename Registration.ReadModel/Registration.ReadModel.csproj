@@ -44,21 +44,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PricingService.cs" />
+    <Compile Include="Handlers\OrderViewModelGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReadModel\Conference.cs" />
     <Compile Include="ReadModel\ConferenceAlias.cs" />
     <Compile Include="ReadModel\ConferenceDetails.cs" />
     <Compile Include="ReadModel\DraftOrder.cs" />
     <Compile Include="ReadModel\DraftOrderItem.cs" />
-    <Compile Include="ReadModel\IConferenceDao.cs" />
+    <Compile Include="ReadModel\IConferenceDao.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ReadModel\Implementation\ConferenceDao.cs" />
-    <Compile Include="ReadModel\Implementation\OrderDao.cs" />
+    <Compile Include="ReadModel\Implementation\OrderDao.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ReadModel\Implementation\PricedOrderLineSeatTypeDescription.cs" />
     <Compile Include="ReadModel\IOrderDao.cs" />
     <Compile Include="ReadModel\OrderSeat.cs" />
     <Compile Include="ReadModel\OrderSeats.cs" />
-    <Compile Include="ReadModel\PricedOrder.cs" />
+    <Compile Include="ReadModel\PricedOrder.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ReadModel\SeatType.cs" />
     <Compile Include="ReadModel\SeatTypeName.cs" />
   </ItemGroup>
@@ -76,9 +82,7 @@
       <Name>Registration</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Handlers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

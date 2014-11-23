@@ -78,7 +78,7 @@ namespace Conference.Web.Public.Controllers
 
                         if (order.ReservationExpirationDate.HasValue && order.ReservationExpirationDate < DateTime.UtcNow)
                         {
-                            return RedirectToAction("ShowExpiredOrder", new { conferenceCode = this.ConferenceAlias.Code, orderId = orderId });
+                            return RedirectToAction("ShowExpiredOrder", new { conferenceCode = this.ConferenceAlias.Slug, orderId = orderId });
                         }
 
                         UpdateViewModel(viewModel, order);
@@ -109,7 +109,7 @@ namespace Conference.Web.Public.Controllers
             bool needsExtraValidation = false;
             foreach (var seat in command.Seats)
             {
-                var modelItem = viewModel.Items.FirstOrDefault(x => x.SeatType.Id == seat.SeatType);
+                var modelItem = viewModel.Items.FirstOrDefault(x => x.SeatType.Id == seat.SeatTypeId);
                 if (modelItem != null)
                 {
                     if (seat.Quantity > modelItem.MaxSelectionQuantity)
@@ -213,7 +213,7 @@ namespace Conference.Web.Public.Controllers
 
                     if (order.ReservationExpirationDate.HasValue && order.ReservationExpirationDate < DateTime.UtcNow)
                     {
-                        return RedirectToAction("ShowExpiredOrder", new { conferenceCode = this.ConferenceAlias.Code, orderId = orderId });
+                        return RedirectToAction("ShowExpiredOrder", new { conferenceCode = this.ConferenceAlias.Slug, orderId = orderId });
                     }
 
                     var pricedOrder = this.orderDao.FindPricedOrder(orderId);
@@ -261,15 +261,15 @@ namespace Conference.Web.Public.Controllers
 
             this.commandService.Send(paymentCommand);
 
-            var paymentAcceptedUrl = this.Url.Action("ThankYou", new { conferenceCode = this.ConferenceAlias.Code, order.OrderId });
-            var paymentRejectedUrl = this.Url.Action("SpecifyRegistrantAndPaymentDetails", new { conferenceCode = this.ConferenceAlias.Code, orderId = order.OrderId, orderVersion });
+            var paymentAcceptedUrl = this.Url.Action("ThankYou", new { conferenceCode = this.ConferenceAlias.Slug, order.OrderId });
+            var paymentRejectedUrl = this.Url.Action("SpecifyRegistrantAndPaymentDetails", new { conferenceCode = this.ConferenceAlias.Slug, orderId = order.OrderId, orderVersion });
 
             return RedirectToAction(
                 "ThirdPartyProcessorPayment",
                 "Payment",
                 new
                 {
-                    conferenceCode = this.ConferenceAlias.Code,
+                    conferenceCode = this.ConferenceAlias.Slug,
                     paymentId = paymentCommand.AggregateRootId,
                     paymentAcceptedUrl,
                     paymentRejectedUrl
@@ -303,7 +303,7 @@ namespace Conference.Web.Public.Controllers
 
             //this.commandService.Send(confirmationCommand);
 
-            return RedirectToAction("ThankYou", new { conferenceCode = this.ConferenceAlias.Code, orderId });
+            return RedirectToAction("ThankYou", new { conferenceCode = this.ConferenceAlias.Slug, orderId });
         }
 
         private OrderViewModel CreateViewModel()
@@ -313,7 +313,7 @@ namespace Conference.Web.Public.Controllers
                 new OrderViewModel
                 {
                     ConferenceId = this.ConferenceAlias.Id,
-                    ConferenceCode = this.ConferenceAlias.Code,
+                    ConferenceCode = this.ConferenceAlias.Slug,
                     ConferenceName = this.ConferenceAlias.Name,
                     Items =
                         seatTypes.Select(

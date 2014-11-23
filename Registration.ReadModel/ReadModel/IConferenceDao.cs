@@ -18,8 +18,8 @@ namespace Registration.ReadModel
 
     public interface IConferenceDao
     {
-        ConferenceDetails GetConferenceDetails(string conferenceCode);
-        ConferenceAlias GetConferenceAlias(string conferenceCode);
+        ConferenceDetails GetConferenceDetails(string slug);
+        ConferenceAlias GetConferenceAlias(string slug);
 
         IList<ConferenceAlias> GetPublishedConferences();
         IList<SeatType> GetPublishedSeatTypes(Guid conferenceId);

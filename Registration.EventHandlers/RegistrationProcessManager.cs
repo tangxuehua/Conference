@@ -14,19 +14,19 @@ namespace Registration.ProcessManagers
     [Component]
     public class RegistrationProcessManager :
         IEventHandler<OrderPlaced>,
+        IEventHandler<OrderPaymentConfirmed>,
+        IEventHandler<OrderExpired>,
         IMessageHandler<SeatsReservedMessage>,
         IMessageHandler<SeatInsufficientMessage>,
         IMessageHandler<PaymentCompletedMessage>,
-        IMessageHandler<PaymentRejectedMessage>,
-        IEventHandler<OrderPaymentConfirmed>,
-        IEventHandler<OrderExpired>
+        IMessageHandler<PaymentRejectedMessage>
     {
         public void Handle(IHandlingContext context, OrderPlaced evnt)
         {
             context.AddCommand(new MakeSeatReservation(evnt.ConferenceId)
             {
                 ReservationId = evnt.AggregateRootId,
-                Seats = evnt.Total.Lines.Select(x => new SeatReservationItemInfo { SeatType = x.SeatType, Quantity = x.Quantity }).ToList()
+                Seats = evnt.OrderTotal.Lines.Select(x => new SeatReservationItemInfo { SeatType = x.SeatInfo.SeatTypeId, Quantity = x.SeatInfo.Quantity }).ToList()
             });
         }
         public void Handle(IHandlingContext context, SeatsReservedMessage message)

@@ -16,7 +16,7 @@
         {
             using (var connection = GetConnection())
             {
-                return connection.QueryList<Payment>(new { Id = paymentId }, "ThirdPartyProcessorPayments").SingleOrDefault();
+                return connection.QueryList<Payment>(new { Id = paymentId }, ConfigSettings.PaymentTable).SingleOrDefault();
             }
         }
         private IDbConnection GetConnection()

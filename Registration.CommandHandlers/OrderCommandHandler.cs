@@ -24,9 +24,9 @@ namespace Registration.CommandHandlers
         public void Handle(ICommandContext context, PlaceOrder command)
         {
             context.Add(new Order(
-                command.AggregateRootId, 
-                command.ConferenceId, 
-                command.Seats.Select(t => new SeatQuantity(t.SeatType, t.Quantity)).ToList(),
+                command.AggregateRootId,
+                command.ConferenceId,
+                command.Seats.Select(x => new SeatInfo(x.SeatTypeId, x.SeatTypeName, x.UnitPrice, x.Quantity)),
                 new Registrant(command.Registrant.FirstName, command.Registrant.LastName, command.Registrant.Email),
                 _pricingService));
         }

@@ -8,15 +8,17 @@ namespace Registration.Orders
     public class OrderPlaced : DomainEvent<Guid>
     {
         public Guid ConferenceId { get; private set; }
-        public OrderTotal Total { get; private set; }
+        public OrderTotal OrderTotal { get; private set; }
         public Registrant Registrant { get; private set; }
+        public DateTime ReservationAutoExpiration { get; private set; }
         public string AccessCode { get; private set; }
 
-        public OrderPlaced(Guid orderId, Guid conferenceId, OrderTotal total, Registrant registrant, string accessCode) : base(orderId)
+        public OrderPlaced(Guid orderId, Guid conferenceId, OrderTotal orderTotal, Registrant registrant, DateTime reservationAutoExpiration, string accessCode) : base(orderId)
         {
             ConferenceId = conferenceId;
-            Total = total;
+            OrderTotal = orderTotal;
             Registrant = registrant;
+            ReservationAutoExpiration = reservationAutoExpiration;
             AccessCode = accessCode;
         }
     }

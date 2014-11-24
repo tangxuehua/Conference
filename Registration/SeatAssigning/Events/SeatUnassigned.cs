@@ -8,7 +8,7 @@ namespace Registration.SeatAssigning
     {
         public int Position { get; private set; }
 
-        public SeatUnassigned(Guid sourceId, int position) : base(sourceId)
+        public SeatUnassigned(Guid assignmentsId, int position) : base(assignmentsId)
         {
             Position = position;
         }

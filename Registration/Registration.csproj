@@ -57,14 +57,14 @@
     <Compile Include="Orders\Events\OrderPlaced.cs" />
     <Compile Include="Orders\Models\OrderTotal.cs" />
     <Compile Include="Orders\Models\Registrant.cs" />
-    <Compile Include="Orders\Models\SeatInfo.cs" />
+    <Compile Include="SeatQuantity.cs" />
+    <Compile Include="SeatType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeatAssigning\Events\SeatAssigned.cs" />
     <Compile Include="SeatAssigning\Models\Attendee.cs" />
     <Compile Include="SeatAssigning\Models\SeatAssignment.cs" />
     <Compile Include="SeatAssigning\Models\SeatAssignments.cs" />
     <Compile Include="SeatAssigning\Events\SeatAssignmentsCreated.cs" />
-    <Compile Include="SeatAssigning\Models\SeatQuantity.cs" />
     <Compile Include="SeatAssigning\Events\SeatUnassigned.cs" />
   </ItemGroup>
   <ItemGroup>

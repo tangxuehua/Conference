@@ -42,101 +42,101 @@ namespace Conference.Web.Public.Controllers
             this.orderDao = orderDao;
         }
 
-        [HttpGet]
-        [OutputCache(Duration = 0, NoStore = true)]
-        public Task<ActionResult> StartRegistration(Guid? orderId = null)
-        {
-            var viewModelTask = Task.Factory.StartNew(() => this.CreateViewModel());
-            if (!orderId.HasValue)
-            {
-                return viewModelTask
-                    .ContinueWith<ActionResult>(t =>
-                    {
-                        var viewModel = t.Result;
-                        viewModel.OrderId = Guid.NewGuid();
-                        return View(viewModel);
-                    });
-            }
-            else
-            {
-                return Task.Factory.ContinueWhenAll<ActionResult>(
-                    new Task[] { viewModelTask, this.WaitUntilSeatsAreConfirmed(orderId.Value, 0) }, 
-                    tasks =>
-                    {
-                        var viewModel = ((Task<OrderViewModel>)tasks[0]).Result;
-                        var order = ((Task<DraftOrder>)tasks[1]).Result;
+        //[HttpGet]
+        //[OutputCache(Duration = 0, NoStore = true)]
+        //public Task<ActionResult> StartRegistration(Guid? orderId = null)
+        //{
+        //    var viewModelTask = Task.Factory.StartNew(() => this.CreateViewModel());
+        //    if (!orderId.HasValue)
+        //    {
+        //        return viewModelTask
+        //            .ContinueWith<ActionResult>(t =>
+        //            {
+        //                var viewModel = t.Result;
+        //                viewModel.OrderId = Guid.NewGuid();
+        //                return View(viewModel);
+        //            });
+        //    }
+        //    else
+        //    {
+        //        return Task.Factory.ContinueWhenAll<ActionResult>(
+        //            new Task[] { viewModelTask, this.WaitUntilSeatsAreConfirmed(orderId.Value, 0) }, 
+        //            tasks =>
+        //            {
+        //                var viewModel = ((Task<OrderViewModel>)tasks[0]).Result;
+        //                var order = ((Task<DraftOrder>)tasks[1]).Result;
 
-                        if (order == null)
-                        {
-                            return View("PricedOrderUnknown");
-                        }
+        //                if (order == null)
+        //                {
+        //                    return View("PricedOrderUnknown");
+        //                }
 
-                        if (order.StateValue == DraftOrder.States.Confirmed)
-                        {
-                            return View("ShowCompletedOrder");
-                        }
+        //                if (order.StateValue == DraftOrder.States.Confirmed)
+        //                {
+        //                    return View("ShowCompletedOrder");
+        //                }
 
-                        if (order.ReservationExpirationDate.HasValue && order.ReservationExpirationDate < DateTime.UtcNow)
-                        {
-                            return RedirectToAction("ShowExpiredOrder", new { conferenceCode = this.ConferenceAlias.Slug, orderId = orderId });
-                        }
+        //                if (order.ReservationExpirationDate.HasValue && order.ReservationExpirationDate < DateTime.UtcNow)
+        //                {
+        //                    return RedirectToAction("ShowExpiredOrder", new { conferenceCode = this.ConferenceAlias.Slug, orderId = orderId });
+        //                }
 
-                        UpdateViewModel(viewModel, order);
-                        return View(viewModel);
-                    });
-            }
-        }
+        //                UpdateViewModel(viewModel, order);
+        //                return View(viewModel);
+        //            });
+        //    }
+        //}
 
-        [HttpPost]
-        public ActionResult StartRegistration(PlaceOrder command, int orderVersion)
-        {
-            var existingOrder = orderVersion != 0 ? this.orderDao.FindDraftOrder(command.AggregateRootId) : null;
-            var viewModel = this.CreateViewModel();
-            if (existingOrder != null)
-            {
-                UpdateViewModel(viewModel, existingOrder);
-            }
+        //[HttpPost]
+        //public ActionResult StartRegistration(PlaceOrder command, int orderVersion)
+        //{
+        //    var existingOrder = orderVersion != 0 ? this.orderDao.FindDraftOrder(command.AggregateRootId) : null;
+        //    var viewModel = this.CreateViewModel();
+        //    if (existingOrder != null)
+        //    {
+        //        UpdateViewModel(viewModel, existingOrder);
+        //    }
 
-            viewModel.OrderId = command.AggregateRootId;
+        //    viewModel.OrderId = command.AggregateRootId;
 
-            if (!ModelState.IsValid)
-            {
-                return View(viewModel);
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(viewModel);
+        //    }
 
-            // checks that there are still enough available seats, and the seat type IDs submitted are valid.
-            ModelState.Clear();
-            bool needsExtraValidation = false;
-            foreach (var seat in command.Seats)
-            {
-                var modelItem = viewModel.Items.FirstOrDefault(x => x.SeatType.Id == seat.SeatTypeId);
-                if (modelItem != null)
-                {
-                    if (seat.Quantity > modelItem.MaxSelectionQuantity)
-                    {
-                        modelItem.PartiallyFulfilled = needsExtraValidation = true;
-                        modelItem.OrderItem.ReservedSeats = modelItem.MaxSelectionQuantity;
-                    }
-                }
-                else
-                {
-                    // seat type no longer exists for conference.
-                    needsExtraValidation = true;
-                }
-            }
+        //    // checks that there are still enough available seats, and the seat type IDs submitted are valid.
+        //    ModelState.Clear();
+        //    bool needsExtraValidation = false;
+        //    foreach (var seat in command.Seats)
+        //    {
+        //        var modelItem = viewModel.Items.FirstOrDefault(x => x.SeatType.Id == seat.SeatTypeId);
+        //        if (modelItem != null)
+        //        {
+        //            if (seat.Quantity > modelItem.MaxSelectionQuantity)
+        //            {
+        //                modelItem.PartiallyFulfilled = needsExtraValidation = true;
+        //                modelItem.OrderItem.ReservedSeats = modelItem.MaxSelectionQuantity;
+        //            }
+        //        }
+        //        else
+        //        {
+        //            // seat type no longer exists for conference.
+        //            needsExtraValidation = true;
+        //        }
+        //    }
 
-            if (needsExtraValidation)
-            {
-                return View(viewModel);
-            }
+        //    if (needsExtraValidation)
+        //    {
+        //        return View(viewModel);
+        //    }
 
-            command.ConferenceId = this.ConferenceAlias.Id;
-            this.commandService.Send(command);
+        //    command.ConferenceId = this.ConferenceAlias.Id;
+        //    this.commandService.Send(command);
 
-            return RedirectToAction(
-                "SpecifyRegistrantAndPaymentDetails",
-                new { conferenceCode = this.ConferenceCode, orderId = command.AggregateRootId, orderVersion = orderVersion });
-        }
+        //    return RedirectToAction(
+        //        "SpecifyRegistrantAndPaymentDetails",
+        //        new { conferenceCode = this.ConferenceCode, orderId = command.AggregateRootId, orderVersion = orderVersion });
+        //}
 
         //[HttpGet]
         //[OutputCache(Duration = 0, NoStore = true)]
@@ -185,59 +185,59 @@ namespace Conference.Web.Public.Controllers
         //    return this.StartPayment(orderId, paymentType, orderVersion);
         //}
 
-        [HttpPost]
-        public Task<ActionResult> StartPayment(Guid orderId, string paymentType, int orderVersion)
-        {
-            return this.WaitUntilSeatsAreConfirmed(orderId, orderVersion)
-                .ContinueWith<ActionResult>(t =>
-                {
-                    var order = t.Result;
-                    if (order == null)
-                    {
-                        return View("ReservationUnknown");
-                    }
+        //[HttpPost]
+        //public Task<ActionResult> StartPayment(Guid orderId, string paymentType, int orderVersion)
+        //{
+        //    return this.WaitUntilSeatsAreConfirmed(orderId, orderVersion)
+        //        .ContinueWith<ActionResult>(t =>
+        //        {
+        //            var order = t.Result;
+        //            if (order == null)
+        //            {
+        //                return View("ReservationUnknown");
+        //            }
 
-                    if (order.StateValue == DraftOrder.States.PartiallyReserved)
-                    {
-                        //TODO: have a clear message in the UI saying there was a problem and he actually didn't get all the seats.
-                        // This happened as a result the seats availability being eventually but not fully consistent when
-                        // starting the reservation. It is very uncommon to reach this step, but could happen under heavy
-                        // load, and when competing for the last remaining seats of the conference.
-                        return this.RedirectToAction("StartRegistration", new { conferenceCode = this.ConferenceCode, orderId, orderVersion = order.OrderVersion });
-                    }
+        //            if (order.StateValue == DraftOrder.States.PartiallyReserved)
+        //            {
+        //                //TODO: have a clear message in the UI saying there was a problem and he actually didn't get all the seats.
+        //                // This happened as a result the seats availability being eventually but not fully consistent when
+        //                // starting the reservation. It is very uncommon to reach this step, but could happen under heavy
+        //                // load, and when competing for the last remaining seats of the conference.
+        //                return this.RedirectToAction("StartRegistration", new { conferenceCode = this.ConferenceCode, orderId, orderVersion = order.OrderVersion });
+        //            }
 
-                    if (order.StateValue == DraftOrder.States.Confirmed)
-                    {
-                        return View("ShowCompletedOrder");
-                    }
+        //            if (order.StateValue == DraftOrder.States.Confirmed)
+        //            {
+        //                return View("ShowCompletedOrder");
+        //            }
 
-                    if (order.ReservationExpirationDate.HasValue && order.ReservationExpirationDate < DateTime.UtcNow)
-                    {
-                        return RedirectToAction("ShowExpiredOrder", new { conferenceCode = this.ConferenceAlias.Slug, orderId = orderId });
-                    }
+        //            if (order.ReservationExpirationDate.HasValue && order.ReservationExpirationDate < DateTime.UtcNow)
+        //            {
+        //                return RedirectToAction("ShowExpiredOrder", new { conferenceCode = this.ConferenceAlias.Slug, orderId = orderId });
+        //            }
 
-                    var pricedOrder = this.orderDao.FindPricedOrder(orderId);
-                    if (pricedOrder.IsFreeOfCharge)
-                    {
-                        return CompleteRegistrationWithoutPayment(orderId);
-                    }
+        //            var pricedOrder = this.orderDao.FindPricedOrder(orderId);
+        //            if (pricedOrder.IsFreeOfCharge)
+        //            {
+        //                return CompleteRegistrationWithoutPayment(orderId);
+        //            }
 
-                    switch (paymentType)
-                    {
-                        case ThirdPartyProcessorPayment:
+        //            switch (paymentType)
+        //            {
+        //                case ThirdPartyProcessorPayment:
 
-                            return CompleteRegistrationWithThirdPartyProcessorPayment(pricedOrder, orderVersion);
+        //                    return CompleteRegistrationWithThirdPartyProcessorPayment(pricedOrder, orderVersion);
 
-                        case InvoicePayment:
-                            break;
+        //                case InvoicePayment:
+        //                    break;
 
-                        default:
-                            break;
-                    }
+        //                default:
+        //                    break;
+        //            }
 
-                    throw new InvalidOperationException();
-                });
-        }
+        //            throw new InvalidOperationException();
+        //        });
+        //}
 
         [HttpGet]
         [OutputCache(Duration = 0, NoStore = true)]
@@ -250,7 +250,7 @@ namespace Conference.Web.Public.Controllers
         [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult ThankYou(Guid orderId)
         {
-            var order = this.orderDao.FindDraftOrder(orderId);
+            var order = this.orderDao.FindOrder(orderId);
 
             return View(order);
         }

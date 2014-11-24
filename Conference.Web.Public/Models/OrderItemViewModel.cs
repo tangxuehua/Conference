@@ -19,7 +19,7 @@ namespace Conference.Web.Public.Models
     {
         public SeatType SeatType { get; set; }
 
-        public DraftOrderItem OrderItem { get; set; }
+        public OrderLine OrderLine { get; set; }
 
         public bool PartiallyFulfilled { get; set; }
 

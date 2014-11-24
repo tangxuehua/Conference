@@ -26,7 +26,7 @@ namespace Registration.CommandHandlers
             context.Add(new Order(
                 command.AggregateRootId,
                 command.ConferenceId,
-                command.Seats.Select(x => new SeatInfo(x.SeatTypeId, x.SeatTypeName, x.UnitPrice, x.Quantity)),
+                command.Seats.Select(x => new SeatQuantity(new SeatType(x.SeatTypeId, x.SeatTypeName, x.UnitPrice), x.Quantity)),
                 new Registrant(command.Registrant.FirstName, command.Registrant.LastName, command.Registrant.Email),
                 _pricingService));
         }

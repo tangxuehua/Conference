@@ -1,7 +1,7 @@
-﻿namespace Registration.ReadModel
-{
-    using System;
+﻿using System;
 
+namespace Registration.ReadModel
+{
     public class SeatTypeName
     {
         public Guid Id { get; set; }

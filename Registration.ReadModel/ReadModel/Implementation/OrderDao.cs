@@ -11,52 +11,37 @@ namespace Registration.ReadModel.Implementation
     [Component]
     public class OrderDao : IOrderDao
     {
+        public Order FindOrder(Guid orderId)
+        {
+            using (var connection = GetConnection())
+            {
+                var order = connection.QueryList<Order>(new { OrderId = orderId }, ConfigSettings.OrderTable).FirstOrDefault();
+                if (order != null)
+                {
+                    order.SetLines(connection.QueryList<OrderLine>(new { OrderId = orderId }, ConfigSettings.OrderLineTable).ToList());
+                    return order;
+                }
+                return null;
+            }
+        }
         public Guid? LocateOrder(string email, string accessCode)
         {
             using (var connection = GetConnection())
             {
-                var draftOrder = connection.QueryList<DraftOrder>(new { RegistrantEmail = email, AccessCode = accessCode }, "OrdersViewV3").FirstOrDefault();
-                if (draftOrder != null)
+                var order = connection.QueryList<Order>(new { RegistrantEmail = email, AccessCode = accessCode }, ConfigSettings.OrderTable).FirstOrDefault();
+                if (order != null)
                 {
-                    return draftOrder.OrderId;
+                    return order.OrderId;
                 }
                 return null;
             }
         }
-
-        public DraftOrder FindDraftOrder(Guid orderId)
+        public SeatAssignment[] FindOrderSeatAssignments(Guid orderId)
         {
             using (var connection = GetConnection())
             {
-                var draftOrder = connection.QueryList<DraftOrder>(new { OrderId = orderId }, "OrdersViewV3").FirstOrDefault();
-                if (draftOrder != null)
-                {
-                    draftOrder.SetLines(connection.QueryList<DraftOrderItem>(new { OrderId = orderId }, "OrderItemsViewV3").ToList());
-                    return draftOrder;
-                }
-                return null;
+                return connection.QueryList<SeatAssignment>(new { AssignmentsId = orderId }, ConfigSettings.OrderSeatAssignmentsTable).ToArray();
             }
-        }
-
-        public PricedOrder FindPricedOrder(Guid orderId)
-        {
-            using (var connection = GetConnection())
-            {
-                var pricedOrder = connection.QueryList<PricedOrder>(new { OrderId = orderId }, "PricedOrdersV3").FirstOrDefault();
-                if (pricedOrder != null)
-                {
-                    pricedOrder.SetLines(connection.QueryList<PricedOrderLine>(new { OrderId = orderId }, "PricedOrderLinesV3").ToList());
-                    return pricedOrder;
-                }
-                return null;
-            }
-        }
-
-        public OrderSeats FindOrderSeats(Guid assignmentsId)
-        {
-            //TODO
-            //return FindBlob<OrderSeats>(SeatAssignmentsViewModelGenerator.GetSeatAssignmentsBlobId(assignmentsId));
-            return null;
         }
 
         private IDbConnection GetConnection()

@@ -12,6 +12,7 @@ namespace Conference.Common
         public static string ReservationItemsTable { get; set; }
         public static string OrderTable { get; set; }
         public static string OrderLineTable { get; set; }
+        public static string OrderSeatAssignmentsTable { get; set; }
         public static string PaymentTable { get; set; }
         public static string PaymentItemTable { get; set; }
 
@@ -22,6 +23,7 @@ namespace Conference.Common
             ReservationItemsTable = "ReservationItems";
             OrderTable = "Orders";
             OrderLineTable = "OrderLines";
+            OrderSeatAssignmentsTable = "OrderSeatAssignments";
             PaymentTable = "ThirdPartyProcessorPayments";
             PaymentItemTable = "ThidPartyProcessorPaymentItems";
             ConnectionString = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;

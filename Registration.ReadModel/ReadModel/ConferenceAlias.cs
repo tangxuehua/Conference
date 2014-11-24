@@ -1,7 +1,7 @@
-﻿namespace Registration.ReadModel
-{
-    using System;
+﻿using System;
 
+namespace Registration.ReadModel
+{
     public class ConferenceAlias
     {
         public Guid Id { get; set; }

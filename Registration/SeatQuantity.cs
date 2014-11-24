@@ -1,16 +1,16 @@
 ﻿using System;
 
-namespace Registration.SeatAssigning
+namespace Registration
 {
     [Serializable]
     public class SeatQuantity
     {
-        public Guid SeatType { get; private set; }
+        public SeatType Seat { get; private set; }
         public int Quantity { get; private set; }
 
-        public SeatQuantity(Guid seatType, int quantity)
+        public SeatQuantity(SeatType seat, int quantity)
         {
-            SeatType = seatType;
+            Seat = seat;
             Quantity = quantity;
         }
     }

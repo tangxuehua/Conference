@@ -17,7 +17,7 @@ namespace Registration.Orders
         private Registrant _registrant;
         private string _accessCode;
 
-        public Order(Guid id, Guid conferenceId, IEnumerable<SeatInfo> seats, Registrant registrant, IPricingService pricingService) : base(id)
+        public Order(Guid id, Guid conferenceId, IEnumerable<SeatQuantity> seats, Registrant registrant, IPricingService pricingService) : base(id)
         {
             Ensure.NotEmptyGuid(id, "id");
             Ensure.NotEmptyGuid(conferenceId, "conferenceId");
@@ -75,7 +75,7 @@ namespace Registration.Orders
             {
                 throw new InvalidOperationException("Cannot create seat assignments for an order that isn't success yet.");
             }
-            return new SeatAssignments(Guid.NewGuid(), _id, _total.Lines.Select(x => new SeatQuantity(x.SeatInfo.SeatTypeId, x.SeatInfo.Quantity)).ToList());
+            return new SeatAssignments(_id, _total.Lines);
         }
 
         private void Handle(OrderPlaced evnt)

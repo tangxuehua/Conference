@@ -49,8 +49,6 @@
     <Compile Include="ReadModel\Conference.cs" />
     <Compile Include="ReadModel\ConferenceAlias.cs" />
     <Compile Include="ReadModel\ConferenceDetails.cs" />
-    <Compile Include="ReadModel\DraftOrder.cs" />
-    <Compile Include="ReadModel\DraftOrderItem.cs" />
     <Compile Include="ReadModel\IConferenceDao.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -58,13 +56,9 @@
     <Compile Include="ReadModel\Implementation\OrderDao.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ReadModel\Implementation\PricedOrderLineSeatTypeDescription.cs" />
     <Compile Include="ReadModel\IOrderDao.cs" />
-    <Compile Include="ReadModel\OrderSeat.cs" />
-    <Compile Include="ReadModel\OrderSeats.cs" />
-    <Compile Include="ReadModel\PricedOrder.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="ReadModel\SeatAssignment.cs" />
+    <Compile Include="ReadModel\Order.cs" />
     <Compile Include="ReadModel\SeatType.cs" />
     <Compile Include="ReadModel\SeatTypeName.cs" />
   </ItemGroup>

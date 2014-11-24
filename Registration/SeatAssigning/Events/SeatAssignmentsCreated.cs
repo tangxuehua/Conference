@@ -7,12 +7,10 @@ namespace Registration.SeatAssigning
     [Serializable]
     public class SeatAssignmentsCreated : DomainEvent<Guid>
     {
-        public Guid OrderId { get; private set; }
         public IEnumerable<SeatAssignment> Assignments { get; private set; }
 
-        public SeatAssignmentsCreated(Guid sourceId, Guid orderId, IEnumerable<SeatAssignment> assignments) : base(sourceId)
+        public SeatAssignmentsCreated(Guid assignmentsId, IEnumerable<SeatAssignment> assignments) : base(assignmentsId)
         {
-            OrderId = orderId;
             Assignments = assignments;
         }
     }

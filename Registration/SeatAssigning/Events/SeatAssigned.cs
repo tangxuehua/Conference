@@ -8,13 +8,13 @@ namespace Registration.SeatAssigning
     public class SeatAssigned : DomainEvent<Guid>
     {
         public int Position { get; private set; }
-        public Guid SeatType { get; private set; }
+        public SeatType Seat { get; private set; }
         public Attendee Attendee { get; private set; }
 
-        public SeatAssigned(Guid sourceId, int position, Guid seatType, Attendee attendee) : base(sourceId)
+        public SeatAssigned(Guid assignmentsId, int position, SeatType seat, Attendee attendee) : base(assignmentsId)
         {
             Position = position;
-            SeatType = seatType;
+            Seat = seat;
             Attendee = attendee;
         }
     }

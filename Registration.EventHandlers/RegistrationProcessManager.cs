@@ -26,7 +26,7 @@ namespace Registration.ProcessManagers
             context.AddCommand(new MakeSeatReservation(evnt.ConferenceId)
             {
                 ReservationId = evnt.AggregateRootId,
-                Seats = evnt.OrderTotal.Lines.Select(x => new SeatReservationItemInfo { SeatType = x.SeatInfo.SeatTypeId, Quantity = x.SeatInfo.Quantity }).ToList()
+                Seats = evnt.OrderTotal.Lines.Select(x => new SeatReservationItemInfo { SeatType = x.SeatQuantity.Seat.SeatTypeId, Quantity = x.SeatQuantity.Quantity }).ToList()
             });
         }
         public void Handle(IHandlingContext context, SeatsReservedMessage message)

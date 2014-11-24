@@ -153,7 +153,6 @@
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
-    <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="ENodeExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

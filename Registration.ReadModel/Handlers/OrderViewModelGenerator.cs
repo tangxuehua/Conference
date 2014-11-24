@@ -48,10 +48,10 @@ namespace Registration.Handlers
                             new
                             {
                                 OrderId = evnt.AggregateRootId,
-                                SeatTypeId = line.SeatInfo.SeatTypeId,
-                                SeatTypeName = line.SeatInfo.SeatTypeName,
-                                Quantity = line.SeatInfo.Quantity,
-                                UnitPrice = line.SeatInfo.UnitPrice,
+                                SeatTypeId = line.SeatQuantity.Seat.SeatTypeId,
+                                SeatTypeName = line.SeatQuantity.Seat.SeatTypeName,
+                                Quantity = line.SeatQuantity.Quantity,
+                                UnitPrice = line.SeatQuantity.Seat.UnitPrice,
                                 LineTotal = line.LineTotal
                             }, ConfigSettings.OrderLineTable, transaction);
                     }

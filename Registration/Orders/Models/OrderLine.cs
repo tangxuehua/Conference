@@ -5,12 +5,12 @@ namespace Registration.Orders
     [Serializable]
     public class OrderLine
     {
-        public SeatInfo SeatInfo { get; private set; }
+        public SeatQuantity SeatQuantity { get; private set; }
         public decimal LineTotal { get; private set; }
 
-        public OrderLine(SeatInfo seatInfo, decimal lineTotal)
+        public OrderLine(SeatQuantity seatQuantity, decimal lineTotal)
         {
-            SeatInfo = seatInfo;
+            SeatQuantity = seatQuantity;
             LineTotal = lineTotal;
         }
     }

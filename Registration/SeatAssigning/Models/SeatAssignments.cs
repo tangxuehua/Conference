@@ -9,21 +9,20 @@ namespace Registration.SeatAssigning
     [Serializable]
     public class SeatAssignments : AggregateRoot<Guid>
     {
-        private Guid _orderId;
         private IEnumerable<SeatAssignment> _assignments;
 
-        public SeatAssignments(Guid id, Guid orderId, IEnumerable<SeatQuantity> seats) : base(id)
+        public SeatAssignments(Guid orderId, IEnumerable<OrderLine> orderLines) : base(orderId)
         {
-            var i = 0;
-            var all = new List<SeatAssignment>();
-            foreach (var seatQuantity in seats)
+            var position = 0;
+            var assignments = new List<SeatAssignment>();
+            foreach (var orderLine in orderLines)
             {
-                for (int j = 0; j < seatQuantity.Quantity; j++)
+                for (int j = 0; j < orderLine.SeatQuantity.Quantity; j++)
                 {
-                    all.Add(new SeatAssignment(i++, seatQuantity.SeatType));
+                    assignments.Add(new SeatAssignment(position++, orderLine.SeatQuantity.Seat));
                 }
             }
-            ApplyEvent(new SeatAssignmentsCreated(id, orderId, all));
+            ApplyEvent(new SeatAssignmentsCreated(orderId, assignments));
         }
         public void AssignSeat(int position, Attendee attendee)
         {
@@ -34,7 +33,7 @@ namespace Registration.SeatAssigning
             }
             if (attendee.Email != current.Attendee.Email || attendee.FirstName != current.Attendee.FirstName || attendee.LastName != current.Attendee.LastName)
             {
-                ApplyEvent(new SeatAssigned(_id, current.Position, current.SeatType, attendee));
+                ApplyEvent(new SeatAssigned(_id, current.Position, current.Seat, attendee));
             }
         }
         public void UnassignSeat(int position)
@@ -50,7 +49,6 @@ namespace Registration.SeatAssigning
         private void Handle(SeatAssignmentsCreated evnt)
         {
             _id = evnt.AggregateRootId;
-            _orderId = evnt.OrderId;
             _assignments = evnt.Assignments;
         }
         private void Handle(SeatAssigned evnt)

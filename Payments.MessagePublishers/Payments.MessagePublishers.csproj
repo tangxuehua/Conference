@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6101A2D2-38DB-486A-A491-30E4E02843A3}</ProjectGuid>
+    <ProjectGuid>{34477AE1-228F-40DF-B463-3CFC85841A82}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConferenceManagement.MessagePublishers</RootNamespace>
-    <AssemblyName>ConferenceManagement.MessagePublishers</AssemblyName>
+    <RootNamespace>Payments.MessagePublishers</RootNamespace>
+    <AssemblyName>Payments.MessagePublishers</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -52,21 +52,22 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConferenceMessagePublisher.cs" />
+    <Compile Include="PaymentMessagePublisher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConferenceManagement.EventContracts\ConferenceManagement.Messages.csproj">
-      <Project>{b3658426-259d-4393-aaca-60c84d7fa073}</Project>
-      <Name>ConferenceManagement.Messages</Name>
+    <ProjectReference Include="..\Payments.Messages\Payments.Messages.csproj">
+      <Project>{c39bcb0a-ab88-45eb-9cee-9ef4157b22c6}</Project>
+      <Name>Payments.Messages</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ConferenceManagement\ConferenceManagement.csproj">
-      <Project>{44034f86-8d91-4489-a88a-a78886c772d7}</Project>
-      <Name>ConferenceManagement</Name>
+    <ProjectReference Include="..\Payments\Payments.csproj">
+      <Project>{c6d29641-e27b-4180-985b-e5fb7181f7f8}</Project>
+      <Name>Payments</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -10,10 +10,10 @@ using ECommon.Dapper;
 using ENode.Eventing;
 using ENode.Infrastructure;
 
-namespace ConferenceManagement.ReadModel.Handlers
+namespace ConferenceManagement.ReadModel
 {
     [Component]
-    public class ConferenceEventHandler :
+    public class ConferenceViewModelGenerator :
         IMessageHandler<ConferenceCreated>,
         IMessageHandler<ConferenceUpdated>,
         IMessageHandler<ConferencePublished>,
@@ -28,7 +28,7 @@ namespace ConferenceManagement.ReadModel.Handlers
     {
         private IConnectionFactory _connectionFactory;
 
-        public ConferenceEventHandler(IConnectionFactory connectionFactory)
+        public ConferenceViewModelGenerator(IConnectionFactory connectionFactory)
         {
             _connectionFactory = connectionFactory;
         }

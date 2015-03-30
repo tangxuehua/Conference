@@ -64,11 +64,11 @@
       <Project>{f522345e-1872-42b6-b5c2-9f158b91f3e3}</Project>
       <Name>ConferenceManagement.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ConferenceManagement.EventContracts\ConferenceManagement.Messages.csproj">
+    <ProjectReference Include="..\ConferenceManagement.Messages\ConferenceManagement.Messages.csproj">
       <Project>{b3658426-259d-4393-aaca-60c84d7fa073}</Project>
       <Name>ConferenceManagement.Messages</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Payments.Contracts\Payments.Messages.csproj">
+    <ProjectReference Include="..\Payments.Messages\Payments.Messages.csproj">
       <Project>{c39bcb0a-ab88-45eb-9cee-9ef4157b22c6}</Project>
       <Name>Payments.Messages</Name>
     </ProjectReference>

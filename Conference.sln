@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration", "Registratio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments", "Payments\Payments.csproj", "{C6D29641-E27B-4180-985B-E5FB7181F7F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Messages", "Payments.Contracts\Payments.Messages.csproj", "{C39BCB0A-AB88-45EB-9CEE-9EF4157B22C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Messages", "Payments.Messages\Payments.Messages.csproj", "{C39BCB0A-AB88-45EB-9CEE-9EF4157B22C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Commands", "Registration.Commands\Registration.Commands.csproj", "{EB602D2F-5FC3-4A4F-AAF3-63BB43D02A5D}"
 EndProject
@@ -22,8 +22,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conference.Common", "Conference.Common\Conference.Common.csproj", "{BAF088F8-3FCB-45EF-A228-6424C34C65CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Commands", "Payments.Commands\Payments.Commands.csproj", "{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.MessagePublishers", "Payments.EventHandlers\Payments.MessagePublishers.csproj", "{34477AE1-228F-40DF-B463-3CFC85841A82}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.ReadModel", "Payments.ReadModel\Payments.ReadModel.csproj", "{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4}"
 EndProject
@@ -44,11 +42,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Comman
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.CommandHandlers", "ConferenceManagement.CommandHandlers\ConferenceManagement.CommandHandlers.csproj", "{22EAB61C-5473-4298-A767-BDC88EA09053}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Messages", "ConferenceManagement.EventContracts\ConferenceManagement.Messages.csproj", "{B3658426-259D-4393-AACA-60C84D7FA073}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.MessagePublishers", "ConferenceManagement.EventHandlers\ConferenceManagement.MessagePublishers.csproj", "{6101A2D2-38DB-486A-A491-30E4E02843A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Messages", "ConferenceManagement.Messages\ConferenceManagement.Messages.csproj", "{B3658426-259D-4393-AACA-60C84D7FA073}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.ProcessManagers", "Registration.ProcessManagers\Registration.ProcessManagers.csproj", "{F9CE88C9-D44F-40A5-A30C-BFA90355A819}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.MessagePublishers", "ConferenceManagement.MessagePublishers\ConferenceManagement.MessagePublishers.csproj", "{6101A2D2-38DB-486A-A491-30E4E02843A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.MessagePublishers", "Payments.MessagePublishers\Payments.MessagePublishers.csproj", "{34477AE1-228F-40DF-B463-3CFC85841A82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,12 +105,6 @@ Global
 		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{34477AE1-228F-40DF-B463-3CFC85841A82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34477AE1-228F-40DF-B463-3CFC85841A82}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34477AE1-228F-40DF-B463-3CFC85841A82}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
-		{34477AE1-228F-40DF-B463-3CFC85841A82}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
-		{34477AE1-228F-40DF-B463-3CFC85841A82}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34477AE1-228F-40DF-B463-3CFC85841A82}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
@@ -153,18 +147,24 @@ Global
 		{B3658426-259D-4393-AACA-60C84D7FA073}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{B3658426-259D-4393-AACA-60C84D7FA073}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3658426-259D-4393-AACA-60C84D7FA073}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6101A2D2-38DB-486A-A491-30E4E02843A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6101A2D2-38DB-486A-A491-30E4E02843A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6101A2D2-38DB-486A-A491-30E4E02843A3}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
-		{6101A2D2-38DB-486A-A491-30E4E02843A3}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
-		{6101A2D2-38DB-486A-A491-30E4E02843A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6101A2D2-38DB-486A-A491-30E4E02843A3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
 		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6101A2D2-38DB-486A-A491-30E4E02843A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6101A2D2-38DB-486A-A491-30E4E02843A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6101A2D2-38DB-486A-A491-30E4E02843A3}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{6101A2D2-38DB-486A-A491-30E4E02843A3}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{6101A2D2-38DB-486A-A491-30E4E02843A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6101A2D2-38DB-486A-A491-30E4E02843A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34477AE1-228F-40DF-B463-3CFC85841A82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34477AE1-228F-40DF-B463-3CFC85841A82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34477AE1-228F-40DF-B463-3CFC85841A82}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{34477AE1-228F-40DF-B463-3CFC85841A82}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{34477AE1-228F-40DF-B463-3CFC85841A82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34477AE1-228F-40DF-B463-3CFC85841A82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -178,9 +178,9 @@ Global
 		{C6D29641-E27B-4180-985B-E5FB7181F7F8} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{C39BCB0A-AB88-45EB-9CEE-9EF4157B22C6} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
-		{34477AE1-228F-40DF-B463-3CFC85841A82} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{BC3D3AAC-E5A0-4AE0-AC38-1B247F83B692} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
+		{34477AE1-228F-40DF-B463-3CFC85841A82} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{44034F86-8D91-4489-A88A-A78886C772D7} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
 		{0CED18F4-5318-4B90-8F09-D1E4B2E75B08} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
 		{F522345E-1872-42B6-B5C2-9F158B91F3E3} = {D986C94C-06C0-4E9F-9E20-454673DAE696}

@@ -218,94 +218,130 @@ namespace ConferenceManagement.ReadModel
         }
         public Task<AsyncTaskResult> HandleAsync(SeatsReserved evnt)
         {
-            return TryTransactionAsync((connection, transaction) =>
+            return TryTransactionAsync(async (connection, transaction) =>
             {
-                var tasks = new List<Task>();
-
-                //插入预定记录
-                foreach (var reservationItem in evnt.ReservationItems)
+                var effectedRows = await connection.UpdateAsync(new
                 {
-                    tasks.Add(connection.InsertAsync(new
-                    {
-                        ConferenceId = evnt.AggregateRootId,
-                        ReservationId = evnt.ReservationId,
-                        SeatTypeId = reservationItem.SeatTypeId,
-                        Quantity = reservationItem.Quantity
-                    }, ConfigSettings.ReservationItemsTable, transaction));
-                }
-
-                //更新位置的可用数量
-                foreach (var seatAvailableQuantity in evnt.SeatAvailableQuantities)
+                    Version = evnt.Version
+                }, new
                 {
-                    tasks.Add(connection.UpdateAsync(new
-                    {
-                        AvailableQuantity = seatAvailableQuantity.AvailableQuantity
-                    }, new
-                    {
-                        ConferenceId = evnt.AggregateRootId,
-                        Id = seatAvailableQuantity.SeatTypeId
-                    }, ConfigSettings.SeatTypeTable, transaction));
-                }
+                    Id = evnt.AggregateRootId,
+                    Version = evnt.Version - 1
+                }, ConfigSettings.ConferenceTable, transaction);
 
-                return tasks;
+                if (effectedRows == 1)
+                {
+                    var tasks = new List<Task>();
+
+                    //插入预定记录
+                    foreach (var reservationItem in evnt.ReservationItems)
+                    {
+                        tasks.Add(connection.InsertAsync(new
+                        {
+                            ConferenceId = evnt.AggregateRootId,
+                            ReservationId = evnt.ReservationId,
+                            SeatTypeId = reservationItem.SeatTypeId,
+                            Quantity = reservationItem.Quantity
+                        }, ConfigSettings.ReservationItemsTable, transaction));
+                    }
+
+                    //更新位置的可用数量
+                    foreach (var seatAvailableQuantity in evnt.SeatAvailableQuantities)
+                    {
+                        tasks.Add(connection.UpdateAsync(new
+                        {
+                            AvailableQuantity = seatAvailableQuantity.AvailableQuantity
+                        }, new
+                        {
+                            ConferenceId = evnt.AggregateRootId,
+                            Id = seatAvailableQuantity.SeatTypeId
+                        }, ConfigSettings.SeatTypeTable, transaction));
+                    }
+
+                    await Task.WhenAll(tasks);
+                }
             });
         }
         public Task<AsyncTaskResult> HandleAsync(SeatsReservationCommitted evnt)
         {
-            return TryTransactionAsync((connection, transaction) =>
+            return TryTransactionAsync(async (connection, transaction) =>
             {
-                var tasks = new List<Task>();
-
-                //删除预定记录
-                tasks.Add(connection.DeleteAsync(new
+                var effectedRows = await connection.UpdateAsync(new
                 {
-                    ConferenceId = evnt.AggregateRootId,
-                    ReservationId = evnt.ReservationId
-                }, ConfigSettings.ReservationItemsTable, transaction));
-
-                //更新位置的数量
-                foreach (var seatQuantity in evnt.SeatQuantities)
+                    Version = evnt.Version
+                }, new
                 {
-                    tasks.Add(connection.UpdateAsync(new
-                    {
-                        Quantity = seatQuantity.Quantity
-                    }, new
+                    Id = evnt.AggregateRootId,
+                    Version = evnt.Version - 1
+                }, ConfigSettings.ConferenceTable, transaction);
+
+                if (effectedRows == 1)
+                {
+                    var tasks = new List<Task>();
+
+                    //删除预定记录
+                    tasks.Add(connection.DeleteAsync(new
                     {
                         ConferenceId = evnt.AggregateRootId,
-                        Id = seatQuantity.SeatTypeId
-                    }, ConfigSettings.SeatTypeTable, transaction));
-                }
+                        ReservationId = evnt.ReservationId
+                    }, ConfigSettings.ReservationItemsTable, transaction));
 
-                return tasks;
+                    //更新位置的数量
+                    foreach (var seatQuantity in evnt.SeatQuantities)
+                    {
+                        tasks.Add(connection.UpdateAsync(new
+                        {
+                            Quantity = seatQuantity.Quantity
+                        }, new
+                        {
+                            ConferenceId = evnt.AggregateRootId,
+                            Id = seatQuantity.SeatTypeId
+                        }, ConfigSettings.SeatTypeTable, transaction));
+                    }
+
+                    await Task.WhenAll(tasks);
+                }
             });
         }
         public Task<AsyncTaskResult> HandleAsync(SeatsReservationCancelled evnt)
         {
-            return TryTransactionAsync((connection, transaction) =>
+            return TryTransactionAsync(async (connection, transaction) =>
             {
-                var tasks = new List<Task>();
-
-                //删除预定记录
-                tasks.Add(connection.DeleteAsync(new
+                var effectedRows = await connection.UpdateAsync(new
                 {
-                    ConferenceId = evnt.AggregateRootId,
-                    ReservationId = evnt.ReservationId
-                }, ConfigSettings.ReservationItemsTable, transaction));
-
-                //更新位置的可用数量
-                foreach (var seatAvailableQuantity in evnt.SeatAvailableQuantities)
+                    Version = evnt.Version
+                }, new
                 {
-                    tasks.Add(connection.UpdateAsync(new
-                    {
-                        AvailableQuantity = seatAvailableQuantity.AvailableQuantity
-                    }, new
+                    Id = evnt.AggregateRootId,
+                    Version = evnt.Version - 1
+                }, ConfigSettings.ConferenceTable, transaction);
+
+                if (effectedRows == 1)
+                {
+                    var tasks = new List<Task>();
+
+                    //删除预定记录
+                    tasks.Add(connection.DeleteAsync(new
                     {
                         ConferenceId = evnt.AggregateRootId,
-                        Id = seatAvailableQuantity.SeatTypeId
-                    }, ConfigSettings.SeatTypeTable, transaction));
-                }
+                        ReservationId = evnt.ReservationId
+                    }, ConfigSettings.ReservationItemsTable, transaction));
 
-                return tasks;
+                    //更新位置的可用数量
+                    foreach (var seatAvailableQuantity in evnt.SeatAvailableQuantities)
+                    {
+                        tasks.Add(connection.UpdateAsync(new
+                        {
+                            AvailableQuantity = seatAvailableQuantity.AvailableQuantity
+                        }, new
+                        {
+                            ConferenceId = evnt.AggregateRootId,
+                            Id = seatAvailableQuantity.SeatTypeId
+                        }, ConfigSettings.SeatTypeTable, transaction));
+                    }
+
+                    await Task.WhenAll(tasks);
+                }
             });
         }
 

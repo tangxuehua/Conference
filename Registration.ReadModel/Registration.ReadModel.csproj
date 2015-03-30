@@ -58,23 +58,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Handlers\OrderViewModelGenerator.cs" />
+    <Compile Include="OrderViewModelGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadModel\Conference.cs" />
-    <Compile Include="ReadModel\ConferenceAlias.cs" />
-    <Compile Include="ReadModel\ConferenceDetails.cs" />
-    <Compile Include="ReadModel\IConferenceQueryService.cs">
+    <Compile Include="QueryServices\Conference.cs" />
+    <Compile Include="QueryServices\ConferenceAlias.cs" />
+    <Compile Include="QueryServices\ConferenceDetails.cs" />
+    <Compile Include="QueryServices\IConferenceQueryService.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ReadModel\Implementation\ConferenceQueryService.cs" />
-    <Compile Include="ReadModel\Implementation\OrderQueryService.cs">
+    <Compile Include="QueryServices\Implementation\ConferenceQueryService.cs" />
+    <Compile Include="QueryServices\Implementation\OrderQueryService.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ReadModel\IOrderQueryService.cs" />
-    <Compile Include="ReadModel\SeatAssignment.cs" />
-    <Compile Include="ReadModel\Order.cs" />
-    <Compile Include="ReadModel\SeatType.cs" />
-    <Compile Include="ReadModel\SeatTypeName.cs" />
+    <Compile Include="QueryServices\IOrderQueryService.cs" />
+    <Compile Include="QueryServices\SeatAssignment.cs" />
+    <Compile Include="QueryServices\Order.cs" />
+    <Compile Include="QueryServices\SeatType.cs" />
+    <Compile Include="QueryServices\SeatTypeName.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

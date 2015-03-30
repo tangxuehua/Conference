@@ -6,7 +6,7 @@ using ENode.Commanding;
 namespace Registration.Commands.Orders
 {
     [Serializable]
-    public class PlaceOrder : AggregateCommand<Guid>, ICreatingAggregateCommand
+    public class PlaceOrder : Command<Guid>
     {
         public PlaceOrder() : base(Guid.NewGuid())
         {

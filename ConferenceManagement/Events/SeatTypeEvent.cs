@@ -9,7 +9,8 @@ namespace ConferenceManagement
         public Guid SeatTypeId { get; private set; }
         public SeatTypeInfo SeatTypeInfo { get; private set; }
 
-        public SeatTypeEvent(Guid conferenceId, Guid seatTypeId, SeatTypeInfo seatTypeInfo) : base(conferenceId)
+        public SeatTypeEvent(Conference conference, Guid seatTypeId, SeatTypeInfo seatTypeInfo)
+            : base(conference)
         {
             SeatTypeId = seatTypeId;
             SeatTypeInfo = seatTypeInfo;

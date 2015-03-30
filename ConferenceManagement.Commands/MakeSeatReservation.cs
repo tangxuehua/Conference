@@ -5,7 +5,7 @@ using ENode.Commanding;
 namespace ConferenceManagement.Commands
 {
     [Serializable]
-    public class MakeSeatReservation : AggregateCommand<Guid>
+    public class MakeSeatReservation : Command<Guid>
     {
         public Guid ReservationId { get; set; }
         public IEnumerable<SeatReservationItemInfo> Seats { get; set; }

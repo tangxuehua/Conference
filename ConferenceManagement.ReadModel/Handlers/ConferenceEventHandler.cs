@@ -1,4 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Threading.Tasks;
 using Conference.Common;
 using ECommon.Components;
 using ECommon.Dapper;
@@ -9,17 +14,17 @@ namespace ConferenceManagement.ReadModel.Handlers
 {
     [Component]
     public class ConferenceEventHandler :
-        IEventHandler<ConferenceCreated>,
-        IEventHandler<ConferenceUpdated>,
-        IEventHandler<ConferencePublished>,
-        IEventHandler<ConferenceUnpublished>,
-        IEventHandler<SeatTypeAdded>,
-        IEventHandler<SeatTypeUpdated>,
-        IEventHandler<SeatTypeQuantityChanged>,
-        IEventHandler<SeatTypeRemoved>,
-        IEventHandler<SeatsReserved>,
-        IEventHandler<SeatsReservationCommitted>,
-        IEventHandler<SeatsReservationCancelled>
+        IMessageHandler<ConferenceCreated>,
+        IMessageHandler<ConferenceUpdated>,
+        IMessageHandler<ConferencePublished>,
+        IMessageHandler<ConferenceUnpublished>,
+        IMessageHandler<SeatTypeAdded>,
+        IMessageHandler<SeatTypeUpdated>,
+        IMessageHandler<SeatTypeQuantityChanged>,
+        IMessageHandler<SeatTypeRemoved>,
+        IMessageHandler<SeatsReserved>,
+        IMessageHandler<SeatsReservationCommitted>,
+        IMessageHandler<SeatsReservationCancelled>
     {
         private IConnectionFactory _connectionFactory;
 
@@ -28,12 +33,12 @@ namespace ConferenceManagement.ReadModel.Handlers
             _connectionFactory = connectionFactory;
         }
 
-        public void Handle(IHandlingContext context, ConferenceCreated evnt)
+        public Task<AsyncTaskResult> HandleAsync(ConferenceCreated evnt)
         {
-            using (var connection = _connectionFactory.CreateConnection())
+            return TryInsertRecordAsync(connection =>
             {
                 var info = evnt.Info;
-                connection.Insert(new
+                return connection.InsertAsync(new
                 {
                     Id = evnt.AggregateRootId,
                     AccessCode = info.AccessCode,
@@ -47,16 +52,17 @@ namespace ConferenceManagement.ReadModel.Handlers
                     TwitterSearch = info.TwitterSearch,
                     StartDate = info.StartDate,
                     EndDate = info.EndDate,
-                    IsPublished = 0
+                    IsPublished = 0,
+                    Version = evnt.Version
                 }, ConfigSettings.ConferenceTable);
-            }
+            });
         }
-        public void Handle(IHandlingContext context, ConferenceUpdated evnt)
+        public Task<AsyncTaskResult> HandleAsync(ConferenceUpdated evnt)
         {
-            using (var connection = _connectionFactory.CreateConnection())
+            return TryUpdateRecordAsync(connection =>
             {
                 var info = evnt.Info;
-                connection.Update(new
+                return connection.UpdateAsync(new
                 {
                     AccessCode = info.AccessCode,
                     OwnerName = info.Owner.Name,
@@ -69,98 +75,278 @@ namespace ConferenceManagement.ReadModel.Handlers
                     TwitterSearch = info.TwitterSearch,
                     StartDate = info.StartDate,
                     EndDate = info.EndDate,
-                    IsPublished = 0
-                }, new { Id = evnt.AggregateRootId }, ConfigSettings.ConferenceTable);
-            }
-        }
-        public void Handle(IHandlingContext context, ConferencePublished evnt)
-        {
-            using (var connection = _connectionFactory.CreateConnection())
-            {
-                connection.Update(new { IsPublished = 1 }, new { Id = evnt.AggregateRootId }, ConfigSettings.ConferenceTable);
-            }
-        }
-        public void Handle(IHandlingContext context, ConferenceUnpublished evnt)
-        {
-            using (var connection = _connectionFactory.CreateConnection())
-            {
-                connection.Update(new { IsPublished = 0 }, new { Id = evnt.AggregateRootId }, ConfigSettings.ConferenceTable);
-            }
-        }
-        public void Handle(IHandlingContext context, SeatTypeAdded evnt)
-        {
-            using (var connection = _connectionFactory.CreateConnection())
-            {
-                connection.Insert(new
+                    IsPublished = 0,
+                    Version = evnt.Version
+                }, new
                 {
-                    Id = evnt.SeatTypeId,
-                    Name = evnt.SeatTypeInfo.Name,
-                    Description = evnt.SeatTypeInfo.Description,
-                    Quantity = evnt.Quantity,
-                    AvailableQuantity = evnt.Quantity,
-                    Price = evnt.SeatTypeInfo.Price,
+                    Id = evnt.AggregateRootId,
+                    Version = evnt.Version - 1
+                }, ConfigSettings.ConferenceTable);
+            });
+        }
+        public Task<AsyncTaskResult> HandleAsync(ConferencePublished evnt)
+        {
+            return TryUpdateRecordAsync(connection =>
+            {
+                return connection.UpdateAsync(new
+                {
+                    IsPublished = 1,
+                    Version = evnt.Version
+                }, new
+                {
+                    Id = evnt.AggregateRootId,
+                    Version = evnt.Version - 1
+                }, ConfigSettings.ConferenceTable);
+            });
+        }
+        public Task<AsyncTaskResult> HandleAsync(ConferenceUnpublished evnt)
+        {
+            return TryUpdateRecordAsync(connection =>
+            {
+                return connection.UpdateAsync(new
+                {
+                    IsPublished = 0,
+                    Version = evnt.Version
+                }, new
+                {
+                    Id = evnt.AggregateRootId,
+                    Version = evnt.Version - 1
+                }, ConfigSettings.ConferenceTable);
+            });
+        }
+        public Task<AsyncTaskResult> HandleAsync(SeatTypeAdded evnt)
+        {
+            return TryTransactionAsync(async (connection, transaction) =>
+            {
+                var effectedRows = await connection.UpdateAsync(new
+                {
+                    Version = evnt.Version
+                }, new
+                {
+                    Id = evnt.AggregateRootId,
+                    Version = evnt.Version - 1
+                }, ConfigSettings.ConferenceTable, transaction);
+                if (effectedRows == 1)
+                {
+                    await connection.InsertAsync(new
+                    {
+                        Id = evnt.SeatTypeId,
+                        Name = evnt.SeatTypeInfo.Name,
+                        Description = evnt.SeatTypeInfo.Description,
+                        Quantity = evnt.Quantity,
+                        AvailableQuantity = evnt.Quantity,
+                        Price = evnt.SeatTypeInfo.Price,
+                        ConferenceId = evnt.AggregateRootId,
+                    }, ConfigSettings.SeatTypeTable, transaction);
+                }
+            });
+        }
+        public Task<AsyncTaskResult> HandleAsync(SeatTypeUpdated evnt)
+        {
+            return TryTransactionAsync(async (connection, transaction) =>
+            {
+                var effectedRows = await connection.UpdateAsync(new
+                {
+                    Version = evnt.Version
+                }, new
+                {
+                    Id = evnt.AggregateRootId,
+                    Version = evnt.Version - 1
+                }, ConfigSettings.ConferenceTable, transaction);
+                if (effectedRows == 1)
+                {
+                    await connection.UpdateAsync(new
+                    {
+                        Name = evnt.SeatTypeInfo.Name,
+                        Description = evnt.SeatTypeInfo.Description,
+                        Price = evnt.SeatTypeInfo.Price
+                    }, new
+                    {
+                        ConferenceId = evnt.AggregateRootId,
+                        Id = evnt.SeatTypeId
+                    }, ConfigSettings.SeatTypeTable, transaction);
+                }
+            });
+        }
+        public Task<AsyncTaskResult> HandleAsync(SeatTypeQuantityChanged evnt)
+        {
+            return TryTransactionAsync(async (connection, transaction) =>
+            {
+                var effectedRows = await connection.UpdateAsync(new
+                {
+                    Version = evnt.Version
+                }, new
+                {
+                    Id = evnt.AggregateRootId,
+                    Version = evnt.Version - 1
+                }, ConfigSettings.ConferenceTable, transaction);
+                if (effectedRows == 1)
+                {
+                    await connection.UpdateAsync(new
+                    {
+                        Quantity = evnt.Quantity,
+                        AvailableQuantity = evnt.AvailableQuantity
+                    }, new
+                    {
+                        ConferenceId = evnt.AggregateRootId,
+                        Id = evnt.SeatTypeId
+                    }, ConfigSettings.SeatTypeTable, transaction);
+                }
+            });
+        }
+        public Task<AsyncTaskResult> HandleAsync(SeatTypeRemoved evnt)
+        {
+            return TryTransactionAsync(async (connection, transaction) =>
+            {
+                var effectedRows = await connection.UpdateAsync(new
+                {
+                    Version = evnt.Version
+                }, new
+                {
+                    Id = evnt.AggregateRootId,
+                    Version = evnt.Version - 1
+                }, ConfigSettings.ConferenceTable, transaction);
+                if (effectedRows == 1)
+                {
+                    await connection.DeleteAsync(new
+                    {
+                        ConferenceId = evnt.AggregateRootId,
+                        Id = evnt.SeatTypeId
+                    }, ConfigSettings.SeatTypeTable, transaction);
+                }
+            });
+        }
+        public Task<AsyncTaskResult> HandleAsync(SeatsReserved evnt)
+        {
+            return TryTransactionAsync((connection, transaction) =>
+            {
+                var tasks = new List<Task>();
+
+                //插入预定记录
+                foreach (var reservationItem in evnt.ReservationItems)
+                {
+                    tasks.Add(connection.InsertAsync(new
+                    {
+                        ConferenceId = evnt.AggregateRootId,
+                        ReservationId = evnt.ReservationId,
+                        SeatTypeId = reservationItem.SeatTypeId,
+                        Quantity = reservationItem.Quantity
+                    }, ConfigSettings.ReservationItemsTable, transaction));
+                }
+
+                //更新位置的可用数量
+                foreach (var seatAvailableQuantity in evnt.SeatAvailableQuantities)
+                {
+                    tasks.Add(connection.UpdateAsync(new
+                    {
+                        AvailableQuantity = seatAvailableQuantity.AvailableQuantity
+                    }, new
+                    {
+                        ConferenceId = evnt.AggregateRootId,
+                        Id = seatAvailableQuantity.SeatTypeId
+                    }, ConfigSettings.SeatTypeTable, transaction));
+                }
+
+                return tasks;
+            });
+        }
+        public Task<AsyncTaskResult> HandleAsync(SeatsReservationCommitted evnt)
+        {
+            return TryTransactionAsync((connection, transaction) =>
+            {
+                var tasks = new List<Task>();
+
+                //删除预定记录
+                tasks.Add(connection.DeleteAsync(new
+                {
                     ConferenceId = evnt.AggregateRootId,
-                }, ConfigSettings.SeatTypeTable);
-            }
-        }
-        public void Handle(IHandlingContext context, SeatTypeUpdated evnt)
-        {
-            using (var connection = _connectionFactory.CreateConnection())
-            {
-                connection.Update(new
+                    ReservationId = evnt.ReservationId
+                }, ConfigSettings.ReservationItemsTable, transaction));
+
+                //更新位置的数量
+                foreach (var seatQuantity in evnt.SeatQuantities)
                 {
-                    Name = evnt.SeatTypeInfo.Name,
-                    Description = evnt.SeatTypeInfo.Description,
-                    Price = evnt.SeatTypeInfo.Price,
-                }, new { Id = evnt.SeatTypeId }, ConfigSettings.SeatTypeTable);
-            }
+                    tasks.Add(connection.UpdateAsync(new
+                    {
+                        Quantity = seatQuantity.Quantity
+                    }, new
+                    {
+                        ConferenceId = evnt.AggregateRootId,
+                        Id = seatQuantity.SeatTypeId
+                    }, ConfigSettings.SeatTypeTable, transaction));
+                }
+
+                return tasks;
+            });
         }
-        public void Handle(IHandlingContext context, SeatTypeQuantityChanged evnt)
+        public Task<AsyncTaskResult> HandleAsync(SeatsReservationCancelled evnt)
         {
-            using (var connection = _connectionFactory.CreateConnection())
+            return TryTransactionAsync((connection, transaction) =>
             {
-                connection.Update(new
+                var tasks = new List<Task>();
+
+                //删除预定记录
+                tasks.Add(connection.DeleteAsync(new
                 {
-                    Quantity = evnt.Quantity,
-                    AvailableQuantity = evnt.AvailableQuantity
-                }, new { Id = evnt.SeatTypeId }, ConfigSettings.SeatTypeTable);
+                    ConferenceId = evnt.AggregateRootId,
+                    ReservationId = evnt.ReservationId
+                }, ConfigSettings.ReservationItemsTable, transaction));
+
+                //更新位置的可用数量
+                foreach (var seatAvailableQuantity in evnt.SeatAvailableQuantities)
+                {
+                    tasks.Add(connection.UpdateAsync(new
+                    {
+                        AvailableQuantity = seatAvailableQuantity.AvailableQuantity
+                    }, new
+                    {
+                        ConferenceId = evnt.AggregateRootId,
+                        Id = seatAvailableQuantity.SeatTypeId
+                    }, ConfigSettings.SeatTypeTable, transaction));
+                }
+
+                return tasks;
+            });
+        }
+
+        private async Task<AsyncTaskResult> TryInsertRecordAsync(Func<IDbConnection, Task<long>> action)
+        {
+            try
+            {
+                using (var connection = GetConnection())
+                {
+                    await action(connection);
+                    return AsyncTaskResult.Success;
+                }
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 2627)  //主键冲突，忽略即可；出现这种情况，是因为同一个消息的重复处理
+                {
+                    return AsyncTaskResult.Success;
+                }
+                throw;
             }
         }
-        public void Handle(IHandlingContext context, SeatTypeRemoved evnt)
+        private async Task<AsyncTaskResult> TryUpdateRecordAsync(Func<IDbConnection, Task<int>> action)
         {
-            using (var connection = _connectionFactory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.Delete(new { Id = evnt.SeatTypeId }, ConfigSettings.SeatTypeTable);
+                await action(connection);
+                return AsyncTaskResult.Success;
             }
         }
-        public void Handle(IHandlingContext context, SeatsReserved evnt)
+        private async Task<AsyncTaskResult> TryTransactionAsync(Func<IDbConnection, IDbTransaction, Task> action)
         {
-            using (var connection = _connectionFactory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.Open();
-                var transaction = connection.BeginTransaction();
+                await connection.OpenAsync().ConfigureAwait(false);
+                var transaction = await Task.Run<SqlTransaction>(() => connection.BeginTransaction()).ConfigureAwait(false);
                 try
                 {
-                    foreach (var reservationItem in evnt.ReservationItems)
-                    {
-                        //插入预定记录
-                        connection.Insert(new
-                        {
-                            ConferenceId = evnt.AggregateRootId,
-                            ReservationId = evnt.ReservationId,
-                            SeatTypeId = reservationItem.SeatTypeId,
-                            Quantity = reservationItem.Quantity
-                        }, ConfigSettings.ReservationItemsTable, transaction);
-
-                        //更新位置的可用数量
-                        var condition = new { ConferenceId = evnt.AggregateRootId, Id = reservationItem.SeatTypeId };
-                        var seatType = connection.QueryList(condition, ConfigSettings.SeatTypeTable, transaction: transaction).Single();
-                        connection.Update(
-                            new { AvailableQuantity = seatType.AvailableQuantity - reservationItem.Quantity },
-                            condition,
-                            ConfigSettings.SeatTypeTable, transaction: transaction);
-                    }
-                    transaction.Commit();
+                    await action(connection, transaction).ConfigureAwait(false);
+                    await Task.Run(() => transaction.Commit()).ConfigureAwait(false);
+                    return AsyncTaskResult.Success;
                 }
                 catch
                 {
@@ -169,32 +355,17 @@ namespace ConferenceManagement.ReadModel.Handlers
                 }
             }
         }
-        public void Handle(IHandlingContext context, SeatsReservationCommitted evnt)
+        private async Task<AsyncTaskResult> TryTransactionAsync(Func<IDbConnection, IDbTransaction, IEnumerable<Task>> actions)
         {
-            using (var connection = _connectionFactory.CreateConnection())
+            using (var connection = GetConnection())
             {
-                connection.Open();
-                var transaction = connection.BeginTransaction();
+                await connection.OpenAsync().ConfigureAwait(false);
+                var transaction = await Task.Run<SqlTransaction>(() => connection.BeginTransaction()).ConfigureAwait(false);
                 try
                 {
-                    //删除预定记录
-                    connection.Delete(new { ConferenceId = evnt.AggregateRootId, ReservationId = evnt.ReservationId }, ConfigSettings.ReservationItemsTable, transaction);
-
-                    //更新位置的数量
-                    var reservationItems = connection.QueryList(
-                        new { ConferenceId = evnt.AggregateRootId, ReservationId = evnt.ReservationId },
-                        ConfigSettings.ReservationItemsTable, transaction: transaction);
-                    foreach (var reservationItem in reservationItems)
-                    {
-                        var condition = new { ConferenceId = evnt.AggregateRootId, Id = reservationItem.SeatTypeId };
-                        var seatType = connection.QueryList(condition, ConfigSettings.SeatTypeTable, transaction: transaction).Single();
-                        connection.Update(
-                            new { Quantity = seatType.Quantity - reservationItem.Quantity },
-                            condition,
-                            ConfigSettings.SeatTypeTable, transaction: transaction);
-                    }
-
-                    transaction.Commit();
+                    await Task.WhenAll(actions(connection, transaction)).ConfigureAwait(false);
+                    await Task.Run(() => transaction.Commit()).ConfigureAwait(false);
+                    return AsyncTaskResult.Success;
                 }
                 catch
                 {
@@ -203,39 +374,9 @@ namespace ConferenceManagement.ReadModel.Handlers
                 }
             }
         }
-        public void Handle(IHandlingContext context, SeatsReservationCancelled evnt)
+        private SqlConnection GetConnection()
         {
-            using (var connection = _connectionFactory.CreateConnection())
-            {
-                connection.Open();
-                var transaction = connection.BeginTransaction();
-                try
-                {
-                    //删除预定记录
-                    connection.Delete(new { ConferenceId = evnt.AggregateRootId, ReservationId = evnt.ReservationId }, ConfigSettings.ReservationItemsTable, transaction);
-
-                    //更新位置的可用数量
-                    var reservationItems = connection.QueryList(
-                        new { ConferenceId = evnt.AggregateRootId, ReservationId = evnt.ReservationId },
-                        ConfigSettings.ReservationItemsTable, transaction: transaction);
-                    foreach (var reservationItem in reservationItems)
-                    {
-                        var condition = new { ConferenceId = evnt.AggregateRootId, Id = reservationItem.SeatTypeId };
-                        var seatType = connection.QueryList(condition, ConfigSettings.SeatTypeTable, transaction: transaction).Single();
-                        connection.Update(
-                            new { AvailableQuantity = seatType.AvailableQuantity + reservationItem.Quantity },
-                            condition,
-                            ConfigSettings.SeatTypeTable, transaction: transaction);
-                    }
-
-                    transaction.Commit();
-                }
-                catch
-                {
-                    transaction.Rollback();
-                    throw;
-                }
-            }
+            return _connectionFactory.CreateConnection() as SqlConnection;
         }
     }
 }

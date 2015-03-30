@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F9CE88C9-D44F-40A5-A30C-BFA90355A819}</ProjectGuid>
+    <ProjectGuid>{6101A2D2-38DB-486A-A491-30E4E02843A3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Registration.ProcessManagers</RootNamespace>
-    <AssemblyName>Registration.ProcessManagers</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>ConferenceManagement.MessagePublishers</RootNamespace>
+    <AssemblyName>ConferenceManagement.MessagePublishers</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,43 +32,41 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ECommon">
-      <HintPath>..\packages\ECommon.1.3.8\lib\net40\ECommon.dll</HintPath>
+    <Reference Include="Dapper">
+      <HintPath>..\packages\Dapper.1.38\lib\net45\Dapper.dll</HintPath>
     </Reference>
-    <Reference Include="ENode">
-      <HintPath>..\packages\ENode.2.5.2\lib\net40\ENode.dll</HintPath>
+    <Reference Include="ECommon, Version=1.4.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ECommon.1.4.3\lib\net45\ECommon.dll</HintPath>
     </Reference>
+    <Reference Include="ECommon.Dapper">
+      <HintPath>..\packages\ECommon.Dapper.1.4.2\lib\net45\ECommon.Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="ENode, Version=2.5.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ENode.2.5.6\lib\net45\ENode.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConferenceMessagePublisher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegistrationProcessManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConferenceManagement.Commands\ConferenceManagement.Commands.csproj">
-      <Project>{f522345e-1872-42b6-b5c2-9f158b91f3e3}</Project>
-      <Name>ConferenceManagement.Commands</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ConferenceManagement.EventContracts\ConferenceManagement.Messages.csproj">
       <Project>{b3658426-259d-4393-aaca-60c84d7fa073}</Project>
       <Name>ConferenceManagement.Messages</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Payments.Contracts\Payments.Messages.csproj">
-      <Project>{c39bcb0a-ab88-45eb-9cee-9ef4157b22c6}</Project>
-      <Name>Payments.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Registration.Commands\Registration.Commands.csproj">
-      <Project>{eb602d2f-5fc3-4a4f-aaf3-63bb43d02a5d}</Project>
-      <Name>Registration.Commands</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Registration\Registration.csproj">
-      <Project>{ba3dd497-5943-4e10-b586-12d9447a95a2}</Project>
-      <Name>Registration</Name>
+    <ProjectReference Include="..\ConferenceManagement\ConferenceManagement.csproj">
+      <Project>{44034f86-8d91-4489-a88a-a78886c772d7}</Project>
+      <Name>ConferenceManagement</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

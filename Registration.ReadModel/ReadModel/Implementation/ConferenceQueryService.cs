@@ -10,7 +10,7 @@ using ECommon.Dapper;
 namespace Registration.ReadModel.Implementation
 {
     [Component]
-    public class ConferenceDao : IConferenceDao
+    public class ConferenceQueryService : IConferenceQueryService
     {
         public ConferenceDetails GetConferenceDetails(string slug)
         {

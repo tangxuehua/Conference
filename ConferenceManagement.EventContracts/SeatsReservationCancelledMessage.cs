@@ -1,11 +1,12 @@
 ﻿using System;
-using ENode.Messaging;
+using ENode.Infrastructure;
 
 namespace ConferenceManagement.Messages
 {
     [Serializable]
-    public class SeatsReservationCancelledMessage : VersionedMessage<Guid>
+    public class SeatsReservationCancelledMessage : ApplicationMessage
     {
+        public Guid ConferenceId { get; set; }
         public Guid ReservationId { get; set; }
     }
 }

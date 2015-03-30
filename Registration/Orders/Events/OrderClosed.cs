@@ -6,6 +6,6 @@ namespace Registration.Orders
     [Serializable]
     public class OrderClosed : OrderEvent
     {
-        public OrderClosed(Guid orderId, Guid conferenceId) : base(orderId, conferenceId) { }
+        public OrderClosed(Order order, Guid conferenceId) : base(order, conferenceId) { }
     }
 }

@@ -8,7 +8,7 @@ namespace Registration.Orders
     {
         public Guid ConferenceId { get; set; }
 
-        public OrderEvent(Guid orderId, Guid conferenceId) : base(orderId)
+        public OrderEvent(Order order, Guid conferenceId) : base(order)
         {
             ConferenceId = conferenceId;
         }

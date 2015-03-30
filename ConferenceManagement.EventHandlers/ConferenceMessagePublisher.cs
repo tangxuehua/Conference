@@ -1,63 +1,54 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using ConferenceManagement.Messages;
 using ECommon.Components;
-using ENode.Eventing;
-using ENode.Exceptions;
 using ENode.Infrastructure;
-using ENode.Messaging;
 
 namespace ConferenceManagement.MessagePublishers
 {
     [Component]
     public class ConferenceMessagePublisher :
-        IEventHandler<SeatsReserved>,
-        IEventHandler<SeatsReservationCommitted>,
-        IEventHandler<SeatsReservationCancelled>,
-        IExceptionHandler<SeatInsufficientException>
+        IMessageHandler<SeatsReserved>,
+        IMessageHandler<SeatsReservationCommitted>,
+        IMessageHandler<SeatsReservationCancelled>,
+        IMessageHandler<SeatInsufficientException>
     {
-        private readonly IPublisher<IMessage> _messagePublisher;
+        private readonly IMessagePublisher<IApplicationMessage> _messagePublisher;
 
-        public ConferenceMessagePublisher(IPublisher<IMessage> messagePublisher)
+        public ConferenceMessagePublisher(IMessagePublisher<IApplicationMessage> messagePublisher)
         {
             _messagePublisher = messagePublisher;
         }
 
-        public void Handle(IHandlingContext context, SeatsReserved evnt)
+        public Task<AsyncTaskResult> HandleAsync(SeatsReserved evnt)
         {
-            _messagePublisher.Publish(new SeatsReservedMessage
+            return _messagePublisher.PublishAsync(new SeatsReservedMessage
             {
-                SourceId = evnt.AggregateRootId,
-                Version = evnt.Version,
-                Timestamp = evnt.Timestamp,
+                ConferenceId = evnt.AggregateRootId,
                 ReservationId = evnt.ReservationId,
                 ReservationItems = evnt.ReservationItems.Select(x => new SeatReservationItem { SeatTypeId = x.SeatTypeId, Quantity = x.Quantity }).ToList()
             });
         }
-        public void Handle(IHandlingContext context, SeatsReservationCommitted evnt)
+        public Task<AsyncTaskResult> HandleAsync(SeatsReservationCommitted evnt)
         {
-            _messagePublisher.Publish(new SeatsReservationCommittedMessage
+            return _messagePublisher.PublishAsync(new SeatsReservationCommittedMessage
             {
-                SourceId = evnt.AggregateRootId,
-                Version = evnt.Version,
-                Timestamp = evnt.Timestamp,
+                ConferenceId = evnt.AggregateRootId,
                 ReservationId = evnt.ReservationId
             });
         }
-        public void Handle(IHandlingContext context, SeatsReservationCancelled evnt)
+        public Task<AsyncTaskResult> HandleAsync(SeatsReservationCancelled evnt)
         {
-            _messagePublisher.Publish(new SeatsReservationCancelledMessage
+            return _messagePublisher.PublishAsync(new SeatsReservationCancelledMessage
             {
-                SourceId = evnt.AggregateRootId,
-                Version = evnt.Version,
-                Timestamp = evnt.Timestamp,
+                ConferenceId = evnt.AggregateRootId,
                 ReservationId = evnt.ReservationId
             });
         }
-        public void Handle(IHandlingContext context, SeatInsufficientException exception)
+        public Task<AsyncTaskResult> HandleAsync(SeatInsufficientException exception)
         {
-            _messagePublisher.Publish(new SeatInsufficientMessage
+            return _messagePublisher.PublishAsync(new SeatInsufficientMessage
             {
-                Id = exception.UniqueId,
                 ConferenceId = exception.ConferenceId,
                 ReservationId = exception.ReservationId
             });

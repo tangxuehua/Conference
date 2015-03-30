@@ -5,7 +5,7 @@ using ENode.Commanding;
 namespace Payments.Commands
 {
     [Serializable]
-    public class CreatePayment : AggregateCommand<Guid>, ICreatingAggregateCommand
+    public class CreatePayment : Command<Guid>
     {
         public Guid OrderId { get; set; }
         public Guid ConferenceId { get; set; }

@@ -9,10 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Registration.ReadModel</RootNamespace>
     <AssemblyName>Registration.ReadModel</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,14 +32,26 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ECommon">
-      <HintPath>..\packages\ECommon.1.3.8\lib\net40\ECommon.dll</HintPath>
+    <Reference Include="Dapper, Version=1.38.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Dapper.1.38\lib\net45\Dapper.dll</HintPath>
     </Reference>
-    <Reference Include="ENode">
-      <HintPath>..\packages\ENode.2.5.2\lib\net40\ENode.dll</HintPath>
+    <Reference Include="ECommon, Version=1.4.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ECommon.1.4.3\lib\net45\ECommon.dll</HintPath>
     </Reference>
+    <Reference Include="ECommon.Dapper, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ECommon.Dapper.1.4.2\lib\net45\ECommon.Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="ENode, Version=2.5.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\ENode.2.5.6\lib\net45\ENode.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
@@ -49,14 +63,14 @@
     <Compile Include="ReadModel\Conference.cs" />
     <Compile Include="ReadModel\ConferenceAlias.cs" />
     <Compile Include="ReadModel\ConferenceDetails.cs" />
-    <Compile Include="ReadModel\IConferenceDao.cs">
+    <Compile Include="ReadModel\IConferenceQueryService.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ReadModel\Implementation\ConferenceDao.cs" />
-    <Compile Include="ReadModel\Implementation\OrderDao.cs">
+    <Compile Include="ReadModel\Implementation\ConferenceQueryService.cs" />
+    <Compile Include="ReadModel\Implementation\OrderQueryService.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ReadModel\IOrderDao.cs" />
+    <Compile Include="ReadModel\IOrderQueryService.cs" />
     <Compile Include="ReadModel\SeatAssignment.cs" />
     <Compile Include="ReadModel\Order.cs" />
     <Compile Include="ReadModel\SeatType.cs" />

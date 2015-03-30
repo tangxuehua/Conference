@@ -8,7 +8,8 @@ namespace ConferenceManagement
     {
         public ConferenceInfo Info { get; private set; }
 
-        public ConferenceEvent(Guid id, ConferenceInfo info) : base(id)
+        public ConferenceEvent(Conference conference, ConferenceInfo info)
+            : base(conference)
         {
             Info = info;
         }

@@ -1,10 +1,10 @@
 ﻿using System;
-using ENode.Messaging;
+using ENode.Infrastructure;
 
 namespace ConferenceManagement.Messages
 {
     [Serializable]
-    public class SeatInsufficientMessage : Message
+    public class SeatInsufficientMessage : ApplicationMessage
     {
         public Guid ConferenceId { get; set; }
         public Guid ReservationId { get; set; }

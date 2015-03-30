@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using ECommon.Components;
 using ENode.Commanding;
-using Payments;
 using Payments.Commands;
 
 namespace Payments.CommandHandlers

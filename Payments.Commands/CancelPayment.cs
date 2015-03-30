@@ -4,7 +4,7 @@ using ENode.Commanding;
 namespace Payments.Commands
 {
     [Serializable]
-    public class CancelPayment : AggregateCommand<Guid>
+    public class CancelPayment : Command<Guid>
     {
     }
 }

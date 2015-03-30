@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using ENode.Messaging;
+using ENode.Infrastructure;
 
 namespace ConferenceManagement.Messages
 {
     [Serializable]
-    public class SeatsReservedMessage : VersionedMessage<Guid>
+    public class SeatsReservedMessage : ApplicationMessage
     {
+        public Guid ConferenceId { get; set; }
         public Guid ReservationId { get; set; }
         public IEnumerable<SeatReservationItem> ReservationItems { get; set; }
     }

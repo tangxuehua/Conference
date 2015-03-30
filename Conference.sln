@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Commands", "Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.CommandHandlers", "Registration.CommandHandlers\Registration.CommandHandlers.csproj", "{F704DBE6-0CD4-40D3-B496-1AA65A6FE83E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.ProcessManagers", "Registration.EventHandlers\Registration.ProcessManagers.csproj", "{F9CE88C9-D44F-40A5-A30C-BFA90355A819}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.ReadModel", "Registration.ReadModel\Registration.ReadModel.csproj", "{223579DD-4650-4F51-A3AE-E7F8AF00972C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conference.Common", "Conference.Common\Conference.Common.csproj", "{BAF088F8-3FCB-45EF-A228-6424C34C65CA}"
@@ -26,8 +24,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Commands", "Payments.Commands\Payments.Commands.csproj", "{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.MessagePublishers", "Payments.EventHandlers\Payments.MessagePublishers.csproj", "{34477AE1-228F-40DF-B463-3CFC85841A82}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conference.Web.Public", "Conference.Web.Public\Conference.Web.Public.csproj", "{32E3E4D7-D887-4BE1-A84F-130BF80533D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.ReadModel", "Payments.ReadModel\Payments.ReadModel.csproj", "{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4}"
 EndProject
@@ -50,7 +46,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Comman
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Messages", "ConferenceManagement.EventContracts\ConferenceManagement.Messages.csproj", "{B3658426-259D-4393-AACA-60C84D7FA073}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.MessageHandlers", "ConferenceManagement.EventHandlers\ConferenceManagement.MessageHandlers.csproj", "{6101A2D2-38DB-486A-A491-30E4E02843A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.MessagePublishers", "ConferenceManagement.EventHandlers\ConferenceManagement.MessagePublishers.csproj", "{6101A2D2-38DB-486A-A491-30E4E02843A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.ProcessManagers", "Registration.ProcessManagers\Registration.ProcessManagers.csproj", "{F9CE88C9-D44F-40A5-A30C-BFA90355A819}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,12 +87,6 @@ Global
 		{F704DBE6-0CD4-40D3-B496-1AA65A6FE83E}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{F704DBE6-0CD4-40D3-B496-1AA65A6FE83E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F704DBE6-0CD4-40D3-B496-1AA65A6FE83E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
-		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
-		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.Release|Any CPU.Build.0 = Release|Any CPU
 		{223579DD-4650-4F51-A3AE-E7F8AF00972C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{223579DD-4650-4F51-A3AE-E7F8AF00972C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{223579DD-4650-4F51-A3AE-E7F8AF00972C}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
@@ -119,12 +111,6 @@ Global
 		{34477AE1-228F-40DF-B463-3CFC85841A82}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{34477AE1-228F-40DF-B463-3CFC85841A82}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34477AE1-228F-40DF-B463-3CFC85841A82}.Release|Any CPU.Build.0 = Release|Any CPU
-		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
-		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
-		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
@@ -173,6 +159,12 @@ Global
 		{6101A2D2-38DB-486A-A491-30E4E02843A3}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{6101A2D2-38DB-486A-A491-30E4E02843A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6101A2D2-38DB-486A-A491-30E4E02843A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9CE88C9-D44F-40A5-A30C-BFA90355A819}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -181,8 +173,8 @@ Global
 		{BA3DD497-5943-4E10-B586-12D9447A95A2} = {E3E79116-A677-47B9-A5E3-35049785ADC5}
 		{EB602D2F-5FC3-4A4F-AAF3-63BB43D02A5D} = {E3E79116-A677-47B9-A5E3-35049785ADC5}
 		{F704DBE6-0CD4-40D3-B496-1AA65A6FE83E} = {E3E79116-A677-47B9-A5E3-35049785ADC5}
-		{F9CE88C9-D44F-40A5-A30C-BFA90355A819} = {E3E79116-A677-47B9-A5E3-35049785ADC5}
 		{223579DD-4650-4F51-A3AE-E7F8AF00972C} = {E3E79116-A677-47B9-A5E3-35049785ADC5}
+		{F9CE88C9-D44F-40A5-A30C-BFA90355A819} = {E3E79116-A677-47B9-A5E3-35049785ADC5}
 		{C6D29641-E27B-4180-985B-E5FB7181F7F8} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{C39BCB0A-AB88-45EB-9CEE-9EF4157B22C6} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}

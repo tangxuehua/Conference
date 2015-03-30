@@ -13,7 +13,8 @@ namespace Registration.Orders
         public DateTime ReservationAutoExpiration { get; private set; }
         public string AccessCode { get; private set; }
 
-        public OrderPlaced(Guid orderId, Guid conferenceId, OrderTotal orderTotal, Registrant registrant, DateTime reservationAutoExpiration, string accessCode) : base(orderId)
+        public OrderPlaced(Order order, Guid conferenceId, OrderTotal orderTotal, Registrant registrant, DateTime reservationAutoExpiration, string accessCode)
+            : base(order)
         {
             ConferenceId = conferenceId;
             OrderTotal = orderTotal;

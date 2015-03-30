@@ -5,7 +5,7 @@ using ENode.Commanding;
 namespace Registration.Commands.Orders
 {
     [Serializable]
-    public class ConfirmReservation : AggregateCommand<Guid>
+    public class ConfirmReservation : Command<Guid>
     {
         public bool IsReservationSuccess { get; set; }
 

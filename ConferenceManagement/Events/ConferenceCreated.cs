@@ -5,7 +5,8 @@ namespace ConferenceManagement
     [Serializable]
     public class ConferenceCreated : ConferenceEvent
     {
-        public ConferenceCreated(Guid id, ConferenceInfo info) : base(id, info)
+        public ConferenceCreated(Conference conference, ConferenceInfo info)
+            : base(conference, info)
         {
         }
     }

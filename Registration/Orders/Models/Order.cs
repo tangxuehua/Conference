@@ -27,7 +27,7 @@ namespace Registration.Orders
             if (!seats.Any()) throw new ArgumentException("The seats of order cannot be empty.");
 
             var orderTotal = pricingService.CalculateTotal(conferenceId, seats);
-            ApplyEvent(new OrderPlaced(id, conferenceId, orderTotal, registrant, DateTime.UtcNow.Add(ConfigSettings.ReservationAutoExpiration), ObjectId.GenerateNewStringId()));
+            ApplyEvent(new OrderPlaced(this, conferenceId, orderTotal, registrant, DateTime.UtcNow.Add(ConfigSettings.ReservationAutoExpiration), ObjectId.GenerateNewStringId()));
         }
 
         public void ConfirmReservation(bool isReservationSuccess)
@@ -36,7 +36,14 @@ namespace Registration.Orders
             {
                 throw new InvalidOperationException("Invalid order status:" + _status);
             }
-            ApplyEvent(new OrderReservationConfirmed(_id, _conferenceId, isReservationSuccess));
+            if (isReservationSuccess)
+            {
+                ApplyEvent(new OrderReservationConfirmed(this, _conferenceId, OrderStatus.ReservationSuccess));
+            }
+            else
+            {
+                ApplyEvent(new OrderReservationConfirmed(this, _conferenceId, OrderStatus.ReservationFailed));
+            }
         }
         public void ConfirmPayment(bool isPaymentSuccess)
         {
@@ -44,7 +51,14 @@ namespace Registration.Orders
             {
                 throw new InvalidOperationException("Invalid order status:" + _status);
             }
-            ApplyEvent(new OrderPaymentConfirmed(_id, _conferenceId, isPaymentSuccess));
+            if (isPaymentSuccess)
+            {
+                ApplyEvent(new OrderPaymentConfirmed(this, _conferenceId, OrderStatus.PaymentSuccess));
+            }
+            else
+            {
+                ApplyEvent(new OrderPaymentConfirmed(this, _conferenceId, OrderStatus.PaymentRejected));
+            }
         }
         public void MarkAsSuccess()
         {
@@ -52,13 +66,13 @@ namespace Registration.Orders
             {
                 throw new InvalidOperationException("Invalid order status:" + _status);
             }
-            ApplyEvent(new OrderSuccessed(_id, _conferenceId));
+            ApplyEvent(new OrderSuccessed(this, _conferenceId));
         }
         public void MarkAsExpire()
         {
             if (_status == OrderStatus.ReservationSuccess)
             {
-                ApplyEvent(new OrderExpired(_id, _conferenceId));
+                ApplyEvent(new OrderExpired(this, _conferenceId));
             }
         }
         public void Close()
@@ -67,7 +81,7 @@ namespace Registration.Orders
             {
                 throw new InvalidOperationException("Invalid order status:" + _status);
             }
-            ApplyEvent(new OrderClosed(_id, _conferenceId));
+            ApplyEvent(new OrderClosed(this, _conferenceId));
         }
         public SeatAssignments CreateSeatAssignments()
         {
@@ -89,26 +103,11 @@ namespace Registration.Orders
         }
         private void Handle(OrderReservationConfirmed evnt)
         {
-            if (evnt.IsReservationSuccess)
-            {
-                _status = OrderStatus.ReservationSuccess;
-            }
-            else
-            {
-                _status = OrderStatus.ReservationFailed;
-            }
+            _status = evnt.OrderStatus;
         }
         private void Handle(OrderPaymentConfirmed evnt)
         {
-            if (evnt.IsPaymentSuccess)
-            {
-                _status = OrderStatus.PaymentSuccess;
-            }
-            else
-            {
-                _status = OrderStatus.PaymentRejected;
-            }
-
+            _status = evnt.OrderStatus;
         }
         private void Handle(OrderSuccessed evnt)
         {

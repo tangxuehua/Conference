@@ -1,11 +1,12 @@
 ﻿using System;
-using ENode.Messaging;
+using ENode.Infrastructure;
 
 namespace Payments.Messages
 {
     [Serializable]
-    public abstract class PaymentMessage : VersionedMessage<Guid>
+    public abstract class PaymentMessage : ApplicationMessage
     {
+        public Guid PaymentId { get; set; }
         public Guid OrderId { get; set; }
         public Guid ConferenceId { get; set; }
     }

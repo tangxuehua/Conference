@@ -10,7 +10,8 @@ namespace ConferenceManagement
         public int Quantity { get; private set; }
         public int AvailableQuantity { get; private set; }
 
-        public SeatTypeQuantityChanged(Guid conferenceId, Guid seatTypeId, int quantity, int availableQuantity)  : base(conferenceId)
+        public SeatTypeQuantityChanged(Conference conference, Guid seatTypeId, int quantity, int availableQuantity)
+            : base(conference)
         {
             SeatTypeId = seatTypeId;
             Quantity = quantity;

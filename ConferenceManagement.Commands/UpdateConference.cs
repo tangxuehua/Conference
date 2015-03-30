@@ -4,7 +4,7 @@ using ENode.Commanding;
 namespace ConferenceManagement.Commands
 {
     [Serializable]
-    public class UpdateConference : AggregateCommand<Guid>
+    public class UpdateConference : Command<Guid>
     {
         public string AccessCode { get; set; }
         public string OwnerName { get; set; }

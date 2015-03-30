@@ -4,7 +4,7 @@ using ENode.Commanding;
 namespace ConferenceManagement.Commands
 {
     [Serializable]
-    public class CancelSeatReservation : AggregateCommand<Guid>
+    public class CancelSeatReservation : Command<Guid>
     {
         public Guid ReservationId { get; set; }
 

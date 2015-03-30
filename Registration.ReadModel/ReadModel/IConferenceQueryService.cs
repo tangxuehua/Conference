@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Registration.ReadModel
 {
-    public interface IConferenceDao
+    public interface IConferenceQueryService
     {
         ConferenceDetails GetConferenceDetails(string slug);
         ConferenceAlias GetConferenceAlias(string slug);

@@ -8,8 +8,8 @@ namespace ConferenceManagement
     {
         public int Quantity { get; private set; }
 
-        public SeatTypeAdded(Guid conferenceId, Guid seatTypeId, SeatTypeInfo seatTypeInfo, int quantity)
-            : base(conferenceId, seatTypeId, seatTypeInfo)
+        public SeatTypeAdded(Conference conference, Guid seatTypeId, SeatTypeInfo seatTypeInfo, int quantity)
+            : base(conference, seatTypeId, seatTypeInfo)
         {
             Quantity = quantity;
         }

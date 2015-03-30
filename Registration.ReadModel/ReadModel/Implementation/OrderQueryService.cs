@@ -9,7 +9,7 @@ using ECommon.Dapper;
 namespace Registration.ReadModel.Implementation
 {
     [Component]
-    public class OrderDao : IOrderDao
+    public class OrderQueryService : IOrderQueryService
     {
         public Order FindOrder(Guid orderId)
         {

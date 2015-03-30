@@ -4,7 +4,7 @@ using ENode.Commanding;
 namespace Registration.Commands.SeatAssignments
 {
     [Serializable]
-    public class AssignSeat : AggregateCommand<Guid>
+    public class AssignSeat : Command<Guid>
     {
         public int Position { get; set; }
         public PersonalInfo PersonalInfo { get; set; }

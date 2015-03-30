@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using ENode.Exceptions;
+using ENode.Infrastructure;
 
 namespace ConferenceManagement
 {
     [Serializable]
-    public class SeatInsufficientException : PublishableException, IPublishableException
+    public class SeatInsufficientException : PublishableException
     {
         public Guid ConferenceId { get; private set; }
         public Guid ReservationId { get; private set; }
@@ -16,12 +16,12 @@ namespace ConferenceManagement
             ReservationId = reservationId;
         }
 
-        public void RestoreFrom(IDictionary<string, string> serializableInfo)
+        public override void RestoreFrom(IDictionary<string, string> serializableInfo)
         {
             serializableInfo.Add("ConferenceId", ConferenceId.ToString());
             serializableInfo.Add("ReservationId", ReservationId.ToString());
         }
-        public void SerializeTo(IDictionary<string, string> serializableInfo)
+        public override void SerializeTo(IDictionary<string, string> serializableInfo)
         {
             ConferenceId = Guid.Parse(serializableInfo["ConferenceId"]);
             ReservationId = Guid.Parse(serializableInfo["ReservationId"]);

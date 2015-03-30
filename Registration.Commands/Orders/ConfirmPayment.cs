@@ -4,7 +4,7 @@ using ENode.Commanding;
 namespace Registration.Commands.Orders
 {
     [Serializable]
-    public class ConfirmPayment : AggregateCommand<Guid>
+    public class ConfirmPayment : Command<Guid>
     {
         public bool IsPaymentSuccess { get; set; }
 

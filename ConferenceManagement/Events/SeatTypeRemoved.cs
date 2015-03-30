@@ -8,7 +8,8 @@ namespace ConferenceManagement
     {
         public Guid SeatTypeId { get; private set; }
 
-        public SeatTypeRemoved(Guid conferenceId, Guid seatTypeId) : base(conferenceId)
+        public SeatTypeRemoved(Conference conference, Guid seatTypeId)
+            : base(conference)
         {
             SeatTypeId = seatTypeId;
         }

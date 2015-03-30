@@ -4,7 +4,7 @@ using ENode.Commanding;
 namespace ConferenceManagement.Commands
 {
     [Serializable]
-    public class PublishConference : AggregateCommand<Guid>
+    public class PublishConference : Command<Guid>
     {
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using ENode.Eventing;
 
 namespace ConferenceManagement
@@ -7,7 +8,11 @@ namespace ConferenceManagement
     public class SeatsReservationCommitted : DomainEvent<Guid>
     {
         public Guid ReservationId { get; set; }
+        public IEnumerable<SeatQuantity> SeatQuantities { get; set; }
 
-        public SeatsReservationCommitted(Guid conferenceId, Guid reservationId) : base(conferenceId) { }
+        public SeatsReservationCommitted(Conference conference, Guid reservationId, IEnumerable<SeatQuantity> seatQuantities) : base(conference)
+        {
+            SeatQuantities = seatQuantities;
+        }
     }
 }

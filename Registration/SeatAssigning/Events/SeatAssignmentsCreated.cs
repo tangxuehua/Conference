@@ -9,9 +9,10 @@ namespace Registration.SeatAssigning
     {
         public IEnumerable<SeatAssignment> Assignments { get; private set; }
 
-        public SeatAssignmentsCreated(Guid assignmentsId, IEnumerable<SeatAssignment> assignments) : base(assignmentsId)
+        public SeatAssignmentsCreated(SeatAssignments seatAssignments, IEnumerable<SeatAssignment> details)
+            : base(seatAssignments)
         {
-            Assignments = assignments;
+            Assignments = details;
         }
     }
 }

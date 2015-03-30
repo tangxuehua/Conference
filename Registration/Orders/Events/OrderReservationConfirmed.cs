@@ -6,11 +6,12 @@ namespace Registration.Orders
     [Serializable]
     public class OrderReservationConfirmed : OrderEvent
     {
-        public bool IsReservationSuccess { get; private set; }
+        public OrderStatus OrderStatus { get; private set; }
 
-        public OrderReservationConfirmed(Guid orderId, Guid conferenceId, bool isReservationSuccess) : base(orderId, conferenceId)
+        public OrderReservationConfirmed(Order order, Guid conferenceId, OrderStatus orderStatus)
+            : base(order, conferenceId)
         {
-            IsReservationSuccess = isReservationSuccess;
+            OrderStatus = orderStatus;
         }
     }
 }

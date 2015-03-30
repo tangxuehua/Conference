@@ -1,41 +1,36 @@
-﻿using ECommon.Components;
-using ENode.Eventing;
+﻿using System.Threading.Tasks;
+using ECommon.Components;
 using ENode.Infrastructure;
-using ENode.Messaging;
 using Payments.Messages;
 
 namespace Payments.EventHandlers
 {
     [Component]
     public class PaymentMessagePublisher :
-        IEventHandler<PaymentCompleted>,
-        IEventHandler<PaymentRejected>
+        IMessageHandler<PaymentCompleted>,
+        IMessageHandler<PaymentRejected>
     {
-        private readonly IPublisher<IMessage> _messagePublisher;
+        private readonly IMessagePublisher<IApplicationMessage> _messagePublisher;
 
-        public PaymentMessagePublisher(IPublisher<IMessage> messagePublisher)
+        public PaymentMessagePublisher(IMessagePublisher<IApplicationMessage> messagePublisher)
         {
             _messagePublisher = messagePublisher;
         }
 
-        public void Handle(IHandlingContext context, PaymentCompleted evnt)
+        public Task<AsyncTaskResult> HandleAsync(PaymentCompleted evnt)
         {
-            _messagePublisher.Publish(new PaymentCompletedMessage
+            return _messagePublisher.PublishAsync(new PaymentCompletedMessage
             {
-                SourceId = evnt.AggregateRootId,
-                Version = evnt.Version,
-                Timestamp = evnt.Timestamp,
+                PaymentId = evnt.AggregateRootId,
                 ConferenceId = evnt.ConferenceId,
                 OrderId = evnt.OrderId
             });
         }
-        public void Handle(IHandlingContext context, PaymentRejected evnt)
+        public Task<AsyncTaskResult> HandleAsync(PaymentRejected evnt)
         {
-            _messagePublisher.Publish(new PaymentRejectedMessage
+            return _messagePublisher.PublishAsync(new PaymentRejectedMessage
             {
-                SourceId = evnt.AggregateRootId,
-                Version = evnt.Version,
-                Timestamp = evnt.Timestamp,
+                PaymentId = evnt.AggregateRootId,
                 ConferenceId = evnt.ConferenceId,
                 OrderId = evnt.OrderId
             });

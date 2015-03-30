@@ -4,7 +4,7 @@ using ENode.Commanding;
 namespace ConferenceManagement.Commands
 {
     [Serializable]
-    public class UpdateSeatType : AggregateCommand<Guid>
+    public class UpdateSeatType : Command<Guid>
     {
         public Guid SeatTypeId { get; set; }
         public string Name { get; set; }

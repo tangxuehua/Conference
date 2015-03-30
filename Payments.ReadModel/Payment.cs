@@ -1,7 +1,7 @@
-﻿namespace Payments.ReadModel
-{
-    using System;
+﻿using System;
 
+namespace Payments.ReadModel
+{
     public class Payment
     {
         public Guid Id { get; private set; }

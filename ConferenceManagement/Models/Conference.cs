@@ -15,20 +15,28 @@ namespace ConferenceManagement
 
         public Conference(Guid id, ConferenceInfo info) : base(id)
         {
-            ApplyEvent(new ConferenceCreated(id, info));
+            ApplyEvent(new ConferenceCreated(this, info));
         }
 
         public void Update(ConferenceInfo info)
         {
-            ApplyEvent(new ConferenceUpdated(_id, info));
+            ApplyEvent(new ConferenceUpdated(this, info));
         }
         public void Publish()
         {
-            ApplyEvent(new ConferencePublished(_id));
+            if (_isPublished)
+            {
+                throw new Exception("Conference already published.");
+            }
+            ApplyEvent(new ConferencePublished(this));
         }
         public void Unpublish()
         {
-            ApplyEvent(new ConferenceUnpublished(_id));
+            if (!_isPublished)
+            {
+                throw new Exception("Conference already unpublished.");
+            }
+            ApplyEvent(new ConferenceUnpublished(this));
         }
         public void AddSeat(SeatTypeInfo seatTypeInfo, int quantity)
         {
@@ -36,7 +44,7 @@ namespace ConferenceManagement
             {
                 throw new Exception("Published conference cannot add seat type.");
             }
-            ApplyEvent(new SeatTypeAdded(_id, Guid.NewGuid(), seatTypeInfo, quantity));
+            ApplyEvent(new SeatTypeAdded(this, Guid.NewGuid(), seatTypeInfo, quantity));
         }
         public void UpdateSeat(Guid seatTypeId, SeatTypeInfo seatTypeInfo, int quantity)
         {
@@ -45,7 +53,7 @@ namespace ConferenceManagement
             {
                 throw new Exception("Seat type not exist.");
             }
-            ApplyEvent(new SeatTypeUpdated(_id, seatTypeId, seatTypeInfo));
+            ApplyEvent(new SeatTypeUpdated(this, seatTypeId, seatTypeInfo));
 
             if (seatType.Quantity != quantity)
             {
@@ -54,7 +62,7 @@ namespace ConferenceManagement
                 {
                     throw new Exception(string.Format("Quantity cannot be small than total reservation quantity:{0}", totalReservationQuantity));
                 }
-                ApplyEvent(new SeatTypeQuantityChanged(_id, seatTypeId, quantity, quantity - totalReservationQuantity));
+                ApplyEvent(new SeatTypeQuantityChanged(this, seatTypeId, quantity, quantity - totalReservationQuantity));
             }
         }
         public void RemoveSeat(Guid seatTypeId)
@@ -67,7 +75,7 @@ namespace ConferenceManagement
             {
                 throw new Exception("The seat type has reservation, cannot be remove.");
             }
-            ApplyEvent(new SeatTypeRemoved(_id, seatTypeId));
+            ApplyEvent(new SeatTypeRemoved(this, seatTypeId));
         }
         public void MakeReservation(Guid reservationId, IEnumerable<ReservationItem> reservationItems)
         {
@@ -84,6 +92,7 @@ namespace ConferenceManagement
                 throw new Exception(string.Format("Reservation items can't be null or empty, reservationId:{0}", reservationId));
             }
 
+            var seatAvailableQuantities = new List<SeatAvailableQuantity>();
             foreach (var reservationItem in reservationItems)
             {
                 if (reservationItem.Quantity <= 0)
@@ -100,21 +109,37 @@ namespace ConferenceManagement
                 {
                     throw new SeatInsufficientException(_id, reservationId);
                 }
+                seatAvailableQuantities.Add(new SeatAvailableQuantity(seatType.Id, availableQuantity));
             }
-            ApplyEvent(new SeatsReserved(_id, reservationId, reservationItems));
+            ApplyEvent(new SeatsReserved(this, reservationId, reservationItems, seatAvailableQuantities));
         }
         public void CommitReservation(Guid reservationId)
         {
-            if (_reservations.ContainsKey(reservationId))
+            IEnumerable<ReservationItem> reservationItems;
+            if (_reservations.TryGetValue(reservationId, out reservationItems))
             {
-                ApplyEvent(new SeatsReservationCommitted(_id, reservationId));
+                var seatQuantities = new List<SeatQuantity>();
+                foreach (var reservationItem in reservationItems)
+                {
+                    var seatType = _seatTypes.Single(x => x.Id == reservationItem.SeatTypeId);
+                    seatQuantities.Add(new SeatQuantity(seatType.Id, seatType.Quantity - reservationItem.Quantity));
+                }
+                ApplyEvent(new SeatsReservationCommitted(this, reservationId, seatQuantities));
             }
         }
         public void CancelReservation(Guid reservationId)
         {
-            if (_reservations.ContainsKey(reservationId))
+            IEnumerable<ReservationItem> reservationItems;
+            if (_reservations.TryGetValue(reservationId, out reservationItems))
             {
-                ApplyEvent(new SeatsReservationCancelled(_id, reservationId));
+                var seatAvailableQuantities = new List<SeatAvailableQuantity>();
+                foreach (var reservationItem in reservationItems)
+                {
+                    var seatType = _seatTypes.Single(x => x.Id == reservationItem.SeatTypeId);
+                    var availableQuantity = GetTotalReservationQuantity(seatType.Id);
+                    seatAvailableQuantities.Add(new SeatAvailableQuantity(seatType.Id, availableQuantity + reservationItem.Quantity));
+                }
+                ApplyEvent(new SeatsReservationCancelled(this, reservationId, seatAvailableQuantities));
             }
         }
 
@@ -180,11 +205,11 @@ namespace ConferenceManagement
         }
         private void Handle(SeatsReservationCommitted evnt)
         {
-            foreach (var reservationItem in _reservations[evnt.ReservationId])
-            {
-                _seatTypes.Single(x => x.Id == reservationItem.SeatTypeId).Quantity -= reservationItem.Quantity;
-            }
             _reservations.Remove(evnt.ReservationId);
+            foreach (var seatQuantity in evnt.SeatQuantities)
+            {
+                _seatTypes.Single(x => x.Id == seatQuantity.SeatTypeId).Quantity = seatQuantity.Quantity;
+            }
         }
         private void Handle(SeatsReservationCancelled evnt)
         {

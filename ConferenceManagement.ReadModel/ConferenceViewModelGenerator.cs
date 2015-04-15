@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Conference.Common;
 using ECommon.Components;
 using ECommon.Dapper;
+using ECommon.IO;
 using ENode.Eventing;
 using ENode.Infrastructure;
 

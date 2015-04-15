@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using ConferenceManagement.Commands;
 using ConferenceManagement.Messages;
 using ECommon.Components;
+using ECommon.IO;
 using ENode.Commanding;
 using ENode.Infrastructure;
 using Payments.Messages;

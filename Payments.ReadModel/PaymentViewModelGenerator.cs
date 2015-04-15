@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Conference.Common;
 using ECommon.Components;
 using ECommon.Dapper;
+using ECommon.IO;
 using ENode.Infrastructure;
 
 namespace Payments.ReadModel

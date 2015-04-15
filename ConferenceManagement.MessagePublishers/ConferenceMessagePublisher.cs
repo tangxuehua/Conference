@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ConferenceManagement.Messages;
 using ECommon.Components;
+using ECommon.IO;
 using ENode.Infrastructure;
 
 namespace ConferenceManagement.MessagePublishers

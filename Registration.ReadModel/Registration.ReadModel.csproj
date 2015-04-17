@@ -85,9 +85,9 @@
       <Project>{baf088f8-3fcb-45ef-a228-6424c34c65ca}</Project>
       <Name>Conference.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Registration\Registration.csproj">
+    <ProjectReference Include="..\Registration\Registration.Domain.csproj">
       <Project>{ba3dd497-5943-4e10-b586-12d9447a95a2}</Project>
-      <Name>Registration</Name>
+      <Name>Registration.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

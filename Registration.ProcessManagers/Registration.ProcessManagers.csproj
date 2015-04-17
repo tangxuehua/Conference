@@ -76,9 +76,9 @@
       <Project>{eb602d2f-5fc3-4a4f-aaf3-63bb43d02a5d}</Project>
       <Name>Registration.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Registration\Registration.csproj">
+    <ProjectReference Include="..\Registration\Registration.Domain.csproj">
       <Project>{ba3dd497-5943-4e10-b586-12d9447a95a2}</Project>
-      <Name>Registration</Name>
+      <Name>Registration.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

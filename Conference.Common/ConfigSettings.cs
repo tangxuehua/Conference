@@ -6,7 +6,6 @@ namespace Conference.Common
     public class ConfigSettings
     {
         public static TimeSpan ReservationAutoExpiration = TimeSpan.FromMinutes(15);
-        public static string ConnectionString { get; set; }
         public static string ConferenceTable { get; set; }
         public static string SeatTypeTable { get; set; }
         public static string ReservationItemsTable { get; set; }
@@ -26,7 +25,6 @@ namespace Conference.Common
             OrderSeatAssignmentsTable = "OrderSeatAssignments";
             PaymentTable = "ThirdPartyProcessorPayments";
             PaymentItemTable = "ThidPartyProcessorPaymentItems";
-            ConnectionString = ConfigurationManager.ConnectionStrings["connectionString"].ConnectionString;
         }
     }
 }

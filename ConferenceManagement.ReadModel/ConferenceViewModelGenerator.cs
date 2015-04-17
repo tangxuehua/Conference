@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Threading.Tasks;
 using Conference.Common;
 using ECommon.Components;
 using ECommon.Dapper;
 using ECommon.IO;
-using ENode.Eventing;
 using ENode.Infrastructure;
 
 namespace ConferenceManagement.ReadModel
@@ -27,11 +26,11 @@ namespace ConferenceManagement.ReadModel
         IMessageHandler<SeatsReservationCommitted>,
         IMessageHandler<SeatsReservationCancelled>
     {
-        private IConnectionFactory _connectionFactory;
+        private readonly string _connectionString;
 
-        public ConferenceViewModelGenerator(IConnectionFactory connectionFactory)
+        public ConferenceViewModelGenerator()
         {
-            _connectionFactory = connectionFactory;
+            _connectionString = ConfigurationManager.ConnectionStrings["conference"].ConnectionString;
         }
 
         public Task<AsyncTaskResult> HandleAsync(ConferenceCreated evnt)
@@ -413,7 +412,7 @@ namespace ConferenceManagement.ReadModel
         }
         private SqlConnection GetConnection()
         {
-            return _connectionFactory.CreateConnection() as SqlConnection;
+            return new SqlConnection(_connectionString);
         }
     }
 }

@@ -64,9 +64,9 @@
       <Project>{b3658426-259d-4393-aaca-60c84d7fa073}</Project>
       <Name>ConferenceManagement.Messages</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ConferenceManagement\ConferenceManagement.csproj">
+    <ProjectReference Include="..\ConferenceManagement\ConferenceManagement.Domain.csproj">
       <Project>{44034f86-8d91-4489-a88a-a78886c772d7}</Project>
-      <Name>ConferenceManagement</Name>
+      <Name>ConferenceManagement.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

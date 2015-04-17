@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Registration", "Registratio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payments", "Payments", "{3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration", "Registration\Registration.csproj", "{BA3DD497-5943-4E10-B586-12D9447A95A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Domain", "Registration\Registration.Domain.csproj", "{BA3DD497-5943-4E10-B586-12D9447A95A2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments", "Payments\Payments.csproj", "{C6D29641-E27B-4180-985B-E5FB7181F7F8}"
 EndProject
@@ -34,7 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{B26C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConferenceManagement", "ConferenceManagement", "{D986C94C-06C0-4E9F-9E20-454673DAE696}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement", "ConferenceManagement\ConferenceManagement.csproj", "{44034F86-8D91-4489-A88A-A78886C772D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Domain", "ConferenceManagement\ConferenceManagement.Domain.csproj", "{44034F86-8D91-4489-A88A-A78886C772D7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.ReadModel", "ConferenceManagement.ReadModel\ConferenceManagement.ReadModel.csproj", "{0CED18F4-5318-4B90-8F09-D1E4B2E75B08}"
 EndProject
@@ -51,6 +51,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.MessagePublishers", "Payments.MessagePublishers\Payments.MessagePublishers.csproj", "{34477AE1-228F-40DF-B463-3CFC85841A82}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Web", "ConferenceManagement.Web\ConferenceManagement.Web.csproj", "{55C34F60-8B4D-428E-9340-2A6C4800E7B5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosts", "Hosts", "{351A4F87-5B69-4037-964D-85404F12B18A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosts", "Hosts", "{2EFC0517-BA42-4115-B962-1D0B162906F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.ProcessorHost", "Registration.ProcessorHost\Registration.ProcessorHost.csproj", "{DD03A579-1FDB-443A-8DE0-432CD51F0573}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.ProcessorHost", "ConferenceManagement.ProcessorHost\ConferenceManagement.ProcessorHost.csproj", "{4E7E2173-B8EA-41DF-9611-00C6D208C603}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conference.MessageBroker", "Conference.MessageBroker\Conference.MessageBroker.csproj", "{C1DE1080-796D-494A-82D6-5A2AF068AC57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -173,6 +183,24 @@ Global
 		{55C34F60-8B4D-428E-9340-2A6C4800E7B5}.DebugLocal|Any CPU.Build.0 = DebugLocal|Any CPU
 		{55C34F60-8B4D-428E-9340-2A6C4800E7B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55C34F60-8B4D-428E-9340-2A6C4800E7B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD03A579-1FDB-443A-8DE0-432CD51F0573}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD03A579-1FDB-443A-8DE0-432CD51F0573}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD03A579-1FDB-443A-8DE0-432CD51F0573}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD03A579-1FDB-443A-8DE0-432CD51F0573}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{DD03A579-1FDB-443A-8DE0-432CD51F0573}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD03A579-1FDB-443A-8DE0-432CD51F0573}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E7E2173-B8EA-41DF-9611-00C6D208C603}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E7E2173-B8EA-41DF-9611-00C6D208C603}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E7E2173-B8EA-41DF-9611-00C6D208C603}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E7E2173-B8EA-41DF-9611-00C6D208C603}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{4E7E2173-B8EA-41DF-9611-00C6D208C603}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E7E2173-B8EA-41DF-9611-00C6D208C603}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1DE1080-796D-494A-82D6-5A2AF068AC57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1DE1080-796D-494A-82D6-5A2AF068AC57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1DE1080-796D-494A-82D6-5A2AF068AC57}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1DE1080-796D-494A-82D6-5A2AF068AC57}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{C1DE1080-796D-494A-82D6-5A2AF068AC57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1DE1080-796D-494A-82D6-5A2AF068AC57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -183,6 +211,7 @@ Global
 		{F704DBE6-0CD4-40D3-B496-1AA65A6FE83E} = {E3E79116-A677-47B9-A5E3-35049785ADC5}
 		{223579DD-4650-4F51-A3AE-E7F8AF00972C} = {E3E79116-A677-47B9-A5E3-35049785ADC5}
 		{F9CE88C9-D44F-40A5-A30C-BFA90355A819} = {E3E79116-A677-47B9-A5E3-35049785ADC5}
+		{2EFC0517-BA42-4115-B962-1D0B162906F2} = {E3E79116-A677-47B9-A5E3-35049785ADC5}
 		{C6D29641-E27B-4180-985B-E5FB7181F7F8} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{C39BCB0A-AB88-45EB-9CEE-9EF4157B22C6} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
@@ -195,7 +224,10 @@ Global
 		{22EAB61C-5473-4298-A767-BDC88EA09053} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
 		{B3658426-259D-4393-AACA-60C84D7FA073} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
 		{6101A2D2-38DB-486A-A491-30E4E02843A3} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
-		{55C34F60-8B4D-428E-9340-2A6C4800E7B5} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
+		{351A4F87-5B69-4037-964D-85404F12B18A} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
+		{55C34F60-8B4D-428E-9340-2A6C4800E7B5} = {351A4F87-5B69-4037-964D-85404F12B18A}
+		{4E7E2173-B8EA-41DF-9611-00C6D208C603} = {351A4F87-5B69-4037-964D-85404F12B18A}
+		{DD03A579-1FDB-443A-8DE0-432CD51F0573} = {2EFC0517-BA42-4115-B962-1D0B162906F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\DesignTime;packages\TransientFaultHandling.Core.5.0.1118.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35

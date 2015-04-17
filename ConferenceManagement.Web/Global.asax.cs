@@ -1,78 +1,107 @@
-﻿namespace Conference.Web.Admin
-{
-    using System.Data.Entity;
-    using System.Web;
-    using System.Web.Mvc;
-    using System.Web.Routing;
-    using Conference.Common;
+﻿using System.Reflection;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
+using Autofac;
+using Autofac.Integration.Mvc;
+using Conference.Common;
+using ConferenceManagement.Web.Extensions;
+using ECommon.Autofac;
+using ECommon.Components;
+using ECommon.Configurations;
+using ECommon.JsonNet;
+using ECommon.Log4Net;
+using ECommon.Logging;
+using ENode.Configurations;
 
+namespace ConferenceManagement.Web
+{
     public class MvcApplication : HttpApplication
     {
-        //public static void RegisterGlobalFilters(GlobalFilterCollection filters)
-        //{
-        //    filters.Add(new HandleErrorAttribute());
-        //}
-
-        public static void RegisterRoutes(RouteCollection routes)
-        {
-            //routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            //routes.MapRoute(
-            //    name: "Conference.Locate",
-            //    url: "locate",
-            //    defaults: new { controller = "Conference", action = "Locate" }
-            //);
-
-            //routes.MapRoute(
-            //    name: "Conference.Create",
-            //    url: "create",
-            //    defaults: new { controller = "Conference", action = "Create" }
-            //);
-
-            //routes.MapRoute(
-            //    name: "Conference",
-            //    url: "{slug}/{accessCode}/{action}",
-            //    defaults: new { controller = "Conference", action = "Index" }
-            //);
-
-            //routes.MapRoute(
-            //    name: "Home",
-            //    url: "",
-            //    defaults: new { controller = "Home", action = "Index" }
-            //);
-
-        }
+        private ILogger _logger;
+        private Configuration _ecommonConfiguration;
+        private ENodeConfiguration _enodeConfiguration;
 
         protected void Application_Start()
         {
-//            DatabaseSetup.Initialize();
+             AreaRegistration.RegisterAllAreas();
+             GlobalFilters.Filters.Add(new HandleErrorAttribute());
+             RegisterRoutes(RouteTable.Routes);
+             InitializeECommon();
+             InitializeENode();
+        }
 
-//            AreaRegistration.RegisterAllAreas();
+        private void InitializeECommon()
+        {
+            _ecommonConfiguration = Configuration
+                .Create()
+                .UseAutofac()
+                .RegisterCommonComponents()
+                .UseLog4Net()
+                .UseJsonNet()
+                .RegisterUnhandledExceptionHandler();
 
-//            RegisterGlobalFilters(GlobalFilters.Filters);
-//            RegisterRoutes(RouteTable.Routes);
+            _logger = ObjectContainer.Resolve<ILoggerFactory>().Create(GetType().FullName);
+            _logger.Info("ECommon initialized.");
+        }
+        private void InitializeENode()
+        {
+            ConfigSettings.Initialize();
 
-//            var serializer = new JsonTextSerializer();
-////#if LOCAL
-//            EventBus = new EventBus(new MessageSender(Database.DefaultConnectionFactory, "SqlBus", "SqlBus.Events"), serializer);
-////#else
-//            var settings = InfrastructureSettings.Read(HttpContext.Current.Server.MapPath(@"~\bin\Settings.xml")).ServiceBus;
+            var assemblies = new[]
+            {
+                Assembly.Load("ConferenceManagement.ReadModel"),
+                Assembly.Load("ConferenceManagement.Web")
+            };
 
-//            if (!MaintenanceMode.IsInMaintainanceMode)
-//            {
-//            new ServiceBusConfig(settings).Initialize();
-//            }
+            _enodeConfiguration = _ecommonConfiguration
+                .CreateENode()
+                .RegisterENodeComponents()
+                .RegisterBusinessComponents(assemblies)
+                .RegisterAllTypeCodes()
+                .UseEQueue()
+                .InitializeBusinessAssemblies(assemblies)
+                .StartEQueue();
 
-//            EventBus = new EventBus(new TopicSender(settings, "conference/events"), new StandardMetadataProvider(), serializer);
-//#endif
+            RegisterControllers();
+            _logger.Info("ENode initialized.");
+        }
+        private void RegisterControllers()
+        {
+            var webAssembly = Assembly.GetExecutingAssembly();
+            var container = (ObjectContainer.Current as AutofacObjectContainer).Container;
+            var builder = new ContainerBuilder();
+            builder.RegisterControllers(webAssembly);
+            builder.Update(container);
+            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+        }
+        private void RegisterRoutes(RouteCollection routes)
+        {
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-//#if AZURESDK
-//            if (Microsoft.WindowsAzure.ServiceRuntime.RoleEnvironment.IsAvailable)
-//            {
-//                System.Diagnostics.Trace.Listeners.Add(new Microsoft.WindowsAzure.Diagnostics.DiagnosticMonitorTraceListener());
-//                System.Diagnostics.Trace.AutoFlush = true;
-//            }
-//#endif
+            routes.MapRoute(
+                name: "Conference.Locate",
+                url: "locate",
+                defaults: new { controller = "Conference", action = "Locate" }
+            );
+
+            routes.MapRoute(
+                name: "Conference.Create",
+                url: "create",
+                defaults: new { controller = "Conference", action = "Create" }
+            );
+
+            routes.MapRoute(
+                name: "Conference",
+                url: "{slug}/{accessCode}/{action}",
+                defaults: new { controller = "Conference", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: "Home",
+                url: "",
+                defaults: new { controller = "Home", action = "Index" }
+            );
         }
     }
 }

@@ -8,6 +8,7 @@ namespace ConferenceManagement
         public string Name { get; private set; }
         public string Email { get; private set; }
 
+        public ConferenceOwner() { }
         public ConferenceOwner(string name, string email)
         {
             Name = name;

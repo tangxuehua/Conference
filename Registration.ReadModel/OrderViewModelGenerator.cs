@@ -164,7 +164,7 @@ namespace Registration.Handlers
         }
         private SqlConnection GetConnection()
         {
-            return new SqlConnection(ConfigSettings.ConnectionString);
+            return new SqlConnection(ConfigSettings.ConferenceConnectionString);
         }
     }
 }

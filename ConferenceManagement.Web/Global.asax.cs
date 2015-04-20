@@ -25,7 +25,7 @@ namespace ConferenceManagement.Web
         protected void Application_Start()
         {
              AreaRegistration.RegisterAllAreas();
-             GlobalFilters.Filters.Add(new HandleErrorAttribute());
+             GlobalFilters.Filters.Add(new HandleExceptionAttribute());
              RegisterRoutes(RouteTable.Routes);
              InitializeECommon();
              InitializeENode();

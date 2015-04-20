@@ -2,12 +2,14 @@
 using System.Configuration;
 using System.Reflection;
 using Conference.Common;
+using ConferenceManagement.Domain.Models;
 using ECommon.Autofac;
 using ECommon.Components;
 using ECommon.JsonNet;
 using ECommon.Log4Net;
 using ECommon.Logging;
 using ENode.Configurations;
+using ENode.Infrastructure;
 using ECommonConfiguration = ECommon.Configurations.Configuration;
 
 namespace ConferenceManagement.ProcessorHost
@@ -79,12 +81,12 @@ namespace ConferenceManagement.ProcessorHost
                 Assembly.Load("ConferenceManagement.CommandHandlers"),
                 Assembly.Load("ConferenceManagement.MessagePublishers"),
                 Assembly.Load("ConferenceManagement.ReadModel"),
+                Assembly.Load("ConferenceManagement.Repositories.Dapper"),
                 Assembly.Load("ConferenceManagement.ProcessorHost")
             };
-            var connectionString = ConfigurationManager.ConnectionStrings["enode"].ConnectionString;
             var setting = new ConfigurationSetting
             {
-                SqlServerDefaultConnectionString = connectionString
+                SqlServerDefaultConnectionString = ConfigSettings.ConferenceENodeConnectionString
             };
 
             _enodeConfiguration = _ecommonConfiguration
@@ -92,12 +94,14 @@ namespace ConferenceManagement.ProcessorHost
                 .RegisterENodeComponents()
                 .RegisterBusinessComponents(assemblies)
                 .RegisterAllTypeCodes()
+                .UseSqlServerLockService()
                 .UseSqlServerCommandStore()
                 .UseSqlServerEventStore()
                 .UseSqlServerSequenceMessagePublishedVersionStore()
                 .UseSqlServerMessageHandleRecordStore()
                 .UseEQueue()
                 .InitializeBusinessAssemblies(assemblies);
+            ObjectContainer.Resolve<ILockService>().AddLockKey(typeof(ConferenceSlugIndex).Name);
             _logger.Info("ENode initialized.");
         }
     }

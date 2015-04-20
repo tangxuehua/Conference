@@ -76,18 +76,17 @@ namespace Conference.MessageBroker
         {
             ConfigSettings.Initialize();
 
-            var connectionString = ConfigurationManager.ConnectionStrings["equeue"].ConnectionString;
             var queueStoreSetting = new SqlServerQueueStoreSetting
             {
-                ConnectionString = connectionString
+                ConnectionString = ConfigSettings.ConferenceEQueueConnectionString
             };
             var messageStoreSetting = new SqlServerMessageStoreSetting
             {
-                ConnectionString = connectionString
+                ConnectionString = ConfigSettings.ConferenceEQueueConnectionString
             };
             var offsetManagerSetting = new SqlServerOffsetManagerSetting
             {
-                ConnectionString = connectionString
+                ConnectionString = ConfigSettings.ConferenceEQueueConnectionString
             };
 
             _configuration

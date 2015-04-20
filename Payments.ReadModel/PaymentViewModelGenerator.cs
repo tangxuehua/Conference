@@ -104,7 +104,7 @@ namespace Payments.ReadModel
         }
         private SqlConnection GetConnection()
         {
-            return new SqlConnection(ConfigSettings.ConnectionString);
+            return new SqlConnection(ConfigSettings.ConferenceConnectionString);
         }
     }
 }

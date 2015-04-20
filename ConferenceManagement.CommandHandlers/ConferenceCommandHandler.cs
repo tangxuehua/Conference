@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Linq;
 using ConferenceManagement.Commands;
+using ConferenceManagement.Domain.Models;
+using ConferenceManagement.Domain.Services;
 using ECommon.Components;
 using ENode.Commanding;
+using ENode.Infrastructure;
 
 namespace ConferenceManagement.CommandHandlers
 {
@@ -19,19 +22,33 @@ namespace ConferenceManagement.CommandHandlers
         ICommandHandler<CommitSeatReservation>,
         ICommandHandler<CancelSeatReservation>
     {
+        private readonly ILockService _lockService;
+        private readonly RegisterConferenceSlugService _registerConferenceSlugService;
+
+        public ConferenceCommandHandler(ILockService lockService, RegisterConferenceSlugService registerConferenceSlugService)
+        {
+            _lockService = lockService;
+            _registerConferenceSlugService = registerConferenceSlugService;
+        }
+
         public void Handle(ICommandContext context, CreateConference command)
         {
-            context.Add(new Conference(Guid.NewGuid(), new ConferenceInfo(
-                command.AccessCode,
-                new ConferenceOwner(command.OwnerName, command.OwnerEmail),
-                command.Slug,
-                command.Name,
-                command.Description,
-                command.Location,
-                command.Tagline,
-                command.TwitterSearch,
-                command.StartDate,
-                command.EndDate)));
+            _lockService.ExecuteInLock(typeof(ConferenceSlugIndex).Name, () =>
+            {
+                var conference = new Conference(command.AggregateRootId, new ConferenceInfo(
+                    command.AccessCode,
+                    new ConferenceOwner(command.OwnerName, command.OwnerEmail),
+                    command.Slug,
+                    command.Name,
+                    command.Description,
+                    command.Location,
+                    command.Tagline,
+                    command.TwitterSearch,
+                    command.StartDate,
+                    command.EndDate));
+                _registerConferenceSlugService.RegisterSlug(command.Id, conference.Id, command.Slug);
+                context.Add(conference);
+            });
         }
         public void Handle(ICommandContext context, UpdateConference command)
         {

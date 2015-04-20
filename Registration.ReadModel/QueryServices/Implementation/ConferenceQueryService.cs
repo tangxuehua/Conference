@@ -65,7 +65,7 @@ namespace Registration.ReadModel.Implementation
 
         private IDbConnection GetConnection()
         {
-            return new SqlConnection(ConfigSettings.ConnectionString);
+            return new SqlConnection(ConfigSettings.ConferenceConnectionString);
         }
     }
 }

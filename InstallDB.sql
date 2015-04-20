@@ -22,6 +22,7 @@ CREATE TABLE [dbo].[Conferences](
     [StartDate] [datetime] NOT NULL,
     [EndDate] [datetime] NOT NULL,
     [IsPublished] [bit] NOT NULL,
+	[Version] [bigint] NOT NULL,
  CONSTRAINT [PK_ConferenceManagement.Conferences] PRIMARY KEY CLUSTERED 
 (
     [Id] ASC
@@ -29,13 +30,16 @@ CREATE TABLE [dbo].[Conferences](
 ) ON [PRIMARY]
 
 GO
-DECLARE @conferenceId UNIQUEIDENTIFIER;
-SET @conferenceId = NEWID();
-INSERT INTO [dbo].[ConferencesView] VALUES (@conferenceId, 'XABCDV', 'DDD Conference', 'Communicate DDD, CQRS, Event Sourcing related topics.', 'Bei Jing, China', null, null, '2014-12-12', 1);
-INSERT INTO [dbo].[ConferenceSeatTypesView] VALUES 
-(NEWID(), @conferenceId, 'Seat Type1', 'The 1 level seat.', 500, 100, 100, 1),
-(NEWID(), @conferenceId, 'Seat Type2', 'The 2 level seat.', 300, 200, 200, 1),
-(NEWID(), @conferenceId, 'Seat Type3', 'The 3 level seat.', 100, 400, 400, 1);
+
+CREATE TABLE [dbo].[ConferenceSlugs](
+    [IndexId] [nvarchar](32) NOT NULL,
+    [ConferenceId] [uniqueidentifier] NOT NULL,
+    [Slug] [nvarchar](max) NOT NULL
+ CONSTRAINT [PK_ConferenceManagement.ConferenceSlugs] PRIMARY KEY CLUSTERED 
+(
+    [IndexId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
 GO
 
 USE [Conference]
@@ -364,233 +368,4 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
-GO
-
-USE [Conference]
-GO
-
-/****** Object:  Table [dbo].[Command]    Script Date: 11/10/2014 09:07:17 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
-CREATE TABLE [dbo].[Command](
-    [Sequence] [bigint] IDENTITY(1,1) NOT NULL,
-    [CommandId] [nvarchar](128) NOT NULL,
-    [CommandTypeCode] [int] NOT NULL,
-    [AggregateRootTypeCode] [int] NOT NULL,
-    [AggregateRootId] [nvarchar](36) NULL,
-    [SourceEventId] [nvarchar](36) NULL,
-    [SourceExceptionId] [nvarchar](36) NULL,
-    [Timestamp] [datetime] NOT NULL,
-    [Payload] [varbinary](max) NOT NULL,
-    [Events] [varbinary](max) NULL,
-    [Items] [varbinary](max) NULL,
- CONSTRAINT [PK_Command] PRIMARY KEY CLUSTERED 
-(
-    [CommandId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-SET ANSI_PADDING OFF
-GO
-
-USE [Conference]
-GO
-
-/****** Object:  Table [dbo].[EventHandleInfo]    Script Date: 11/10/2014 09:07:17 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[EventHandleInfo](
-    [EventId] [nvarchar](36) NOT NULL,
-    [EventHandlerTypeCode] [int] NOT NULL,
-    [EventTypeCode] [int] NOT NULL,
-    [AggregateRootId] [nvarchar](36) NULL,
-    [AggregateRootVersion] [int] NULL,
- CONSTRAINT [PK_EventHandleInfo] PRIMARY KEY CLUSTERED 
-(
-    [EventId] ASC,
-    [EventHandlerTypeCode] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-USE [Conference]
-GO
-
-/****** Object:  Table [dbo].[EventPublishInfo]    Script Date: 11/10/2014 09:07:17 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[EventPublishInfo](
-    [EventProcessorName] [nvarchar](64) NOT NULL,
-    [AggregateRootId] [nvarchar](36) NOT NULL,
-    [PublishedVersion] [int] NOT NULL,
- CONSTRAINT [PK_EventPublishInfo] PRIMARY KEY CLUSTERED 
-(
-    [EventProcessorName] ASC,
-    [AggregateRootId] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-USE [Conference]
-GO
-
-/****** Object:  Table [dbo].[EventStream]    Script Date: 11/10/2014 09:07:17 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
-CREATE TABLE [dbo].[EventStream](
-    [Sequence] [bigint] IDENTITY(1,1) NOT NULL,
-    [AggregateRootTypeCode] [int] NOT NULL,
-    [AggregateRootId] [nvarchar](36) NOT NULL,
-    [Version] [int] NOT NULL,
-    [CommandId] [nvarchar](128) NOT NULL,
-    [Timestamp] [datetime] NOT NULL,
-    [Events] [varbinary](max) NOT NULL,
-    [Items] [varbinary](max) NULL,
- CONSTRAINT [PK_EventStream] PRIMARY KEY CLUSTERED 
-(
-    [AggregateRootId] ASC,
-    [Version] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-SET ANSI_PADDING OFF
-GO
-
-USE [Conference]
-GO
-
-/****** Object:  Table [dbo].[Lock]    Script Date: 11/10/2014 09:07:17 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[Lock](
-    [LockKey] [nvarchar](64) NOT NULL,
- CONSTRAINT [PK_Lock] PRIMARY KEY CLUSTERED 
-(
-    [LockKey] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-USE [Conference]
-GO
-
-/****** Object:  Table [dbo].[Message]    Script Date: 11/10/2014 09:07:17 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
-CREATE TABLE [dbo].[Message](
-    [MessageOffset] [bigint] NOT NULL,
-    [Topic] [varchar](128) NOT NULL,
-    [QueueId] [int] NOT NULL,
-    [QueueOffset] [bigint] NOT NULL,
-    [Code] [int] NOT NULL,
-    [Body] [varbinary](max) NOT NULL,
-    [StoredTime] [datetime] NOT NULL,
- CONSTRAINT [PK_Message] PRIMARY KEY CLUSTERED 
-(
-    [MessageOffset] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-SET ANSI_PADDING OFF
-GO
-
-USE [Conference]
-GO
-
-/****** Object:  Table [dbo].[QueueOffset]    Script Date: 11/10/2014 09:07:17 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-CREATE TABLE [dbo].[QueueOffset](
-    [Version] [bigint] NOT NULL,
-    [ConsumerGroup] [nvarchar](128) NOT NULL,
-    [Topic] [nvarchar](128) NOT NULL,
-    [QueueId] [int] NOT NULL,
-    [QueueOffset] [bigint] NOT NULL,
-    [Timestamp] [datetime] NOT NULL,
- CONSTRAINT [PK_QueueOffset] PRIMARY KEY CLUSTERED 
-(
-    [ConsumerGroup] ASC,
-    [Topic] ASC,
-    [QueueId] ASC,
-    [Version] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-USE [Conference]
-GO
-
-/****** Object:  Table [dbo].[Snapshot]    Script Date: 11/10/2014 09:07:17 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
-CREATE TABLE [dbo].[Snapshot](
-    [AggregateRootId] [nvarchar](36) NOT NULL,
-    [Version] [int] NOT NULL,
-    [AggregateRootTypeCode] [int] NOT NULL,
-    [Payload] [varbinary](max) NOT NULL,
-    [Timestamp] [datetime] NOT NULL,
- CONSTRAINT [PK_Snapshot] PRIMARY KEY CLUSTERED 
-(
-    [AggregateRootId] ASC,
-    [Version] ASC
-)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
-) ON [PRIMARY]
-
-GO
-
-SET ANSI_PADDING OFF
 GO

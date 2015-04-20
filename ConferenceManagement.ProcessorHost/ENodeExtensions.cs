@@ -78,13 +78,14 @@ namespace ConferenceManagement.ProcessorHost
             _applicationMessagePublisher = new ApplicationMessagePublisher();
             _domainEventPublisher = new DomainEventPublisher();
             _exceptionPublisher = new PublishableExceptionPublisher();
-            _commandConsumer = new CommandConsumer().Subscribe(Topics.ConferenceCommandTopic);
-            _eventConsumer = new DomainEventConsumer().Subscribe(Topics.ConferenceDomainEventTopic);
-            _exceptionConsumer = new PublishableExceptionConsumer().Subscribe(Topics.ConferenceExceptionTopic);
 
             configuration.SetDefault<IMessagePublisher<IApplicationMessage>, ApplicationMessagePublisher>(_applicationMessagePublisher);
             configuration.SetDefault<IMessagePublisher<DomainEventStreamMessage>, DomainEventPublisher>(_domainEventPublisher);
             configuration.SetDefault<IMessagePublisher<IPublishableException>, PublishableExceptionPublisher>(_exceptionPublisher);
+
+            _commandConsumer = new CommandConsumer().Subscribe(Topics.ConferenceCommandTopic);
+            _eventConsumer = new DomainEventConsumer().Subscribe(Topics.ConferenceDomainEventTopic);
+            _exceptionConsumer = new PublishableExceptionConsumer().Subscribe(Topics.ConferenceExceptionTopic);
 
             return enodeConfiguration;
         }

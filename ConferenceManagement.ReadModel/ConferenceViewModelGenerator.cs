@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
@@ -26,13 +25,6 @@ namespace ConferenceManagement.ReadModel
         IMessageHandler<SeatsReservationCommitted>,
         IMessageHandler<SeatsReservationCancelled>
     {
-        private readonly string _connectionString;
-
-        public ConferenceViewModelGenerator()
-        {
-            _connectionString = ConfigurationManager.ConnectionStrings["conference"].ConnectionString;
-        }
-
         public Task<AsyncTaskResult> HandleAsync(ConferenceCreated evnt)
         {
             return TryInsertRecordAsync(connection =>
@@ -412,7 +404,7 @@ namespace ConferenceManagement.ReadModel
         }
         private SqlConnection GetConnection()
         {
-            return new SqlConnection(_connectionString);
+            return new SqlConnection(ConfigSettings.ConferenceConnectionString);
         }
     }
 }

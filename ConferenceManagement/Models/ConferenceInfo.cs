@@ -16,6 +16,7 @@ namespace ConferenceManagement
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
 
+        public ConferenceInfo() { }
         public ConferenceInfo(string accessCode, ConferenceOwner owner, string slug, string name, string description, string location, string tagline, string twitterSearch, DateTime startDate, DateTime endDate)
         {
             AccessCode = accessCode;

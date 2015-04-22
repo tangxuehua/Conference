@@ -9,10 +9,12 @@ namespace ConferenceManagement.Web.Extensions
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class HandleExceptionAttribute : HandleErrorAttribute
     {
+        private static ILogger _logger;
+
         public override void OnException(ExceptionContext filterContext)
         {
+            TryLogException(filterContext.Exception);
             var errorMessage = GetErrorMessage(filterContext);
-            ObjectContainer.Resolve<ILoggerFactory>().Create(GetType().Name).Error(errorMessage, filterContext.Exception);
 
             if (filterContext.HttpContext.Request.IsAjaxRequest())
             {
@@ -38,6 +40,20 @@ namespace ConferenceManagement.Web.Extensions
             }
         }
 
+        private static void TryLogException(Exception ex)
+        {
+            if (_logger == null)
+            {
+                try
+                {
+                    _logger = ObjectContainer.Resolve<ILoggerFactory>().Create(typeof(HandleExceptionAttribute).FullName);
+                }
+                catch { }
+            }
+            if (_logger == null) return;
+
+            _logger.Error(ex);
+        }
         private static string GetErrorMessage(ExceptionContext filterContext)
         {
             if (filterContext.Exception != null)

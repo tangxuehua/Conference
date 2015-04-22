@@ -6,20 +6,23 @@ using Conference.Common;
 using ConferenceManagement.Commands;
 using ConferenceManagement.ReadModel;
 using ECommon.IO;
+using ECommon.Logging;
 using ENode.Commanding;
 
 namespace Conference.Web.Admin.Controllers
 {
-    public class ConferenceController : Controller
+    public class ConferenceController : AsyncController
     {
         private ICommandService _commandService;
         private ConferenceQueryService _conferenceQueryService;
         private ConferenceInfo _conference;
+        private ILogger _logger;
 
-        public ConferenceController(ICommandService commandService, ConferenceQueryService conferenceQueryService)
+        public ConferenceController(ICommandService commandService, ConferenceQueryService conferenceQueryService, ILoggerFactory loggerFactory)
         {
             _commandService = commandService;
             _conferenceQueryService = conferenceQueryService;
+            _logger = loggerFactory.Create(GetType().FullName);
         }
 
         //static ConferenceController()
@@ -130,10 +133,16 @@ namespace Conference.Web.Admin.Controllers
             command.Slug = conference.Slug;
 
             var result = await _commandService.ExecuteAsync(command, CommandReturnType.EventHandled);
+            if (result.Status != AsyncTaskStatus.Success)
+            {
+                _logger.ErrorFormat("Create conference failed, errorMsg: {0}", result.ErrorMessage);
+                ModelState.AddModelError("Slug", "创建会议失败！");
+                return View(conference);
+            }
             var commandResult = result.Data;
-
             if (commandResult.Status == CommandStatus.Failed)
             {
+                _logger.ErrorFormat("Create conference failed, errorMsg: {0}", commandResult.ErrorMessage);
                 ModelState.AddModelError("Slug", commandResult.ErrorMessage);
                 return View(conference);
             }

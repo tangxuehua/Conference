@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Conference.Common;
 using ConferenceManagement.Commands;
 using ConferenceManagement.ReadModel;
+using ConferenceManagement.Web.Extensions;
 using ECommon.IO;
 using ECommon.Logging;
 using ENode.Commanding;
 
 namespace Conference.Web.Admin.Controllers
 {
-    public class ConferenceController : AsyncController
+    public class ConferenceController : Controller
     {
         private ICommandService _commandService;
         private ConferenceQueryService _conferenceQueryService;
@@ -98,22 +100,21 @@ namespace Conference.Web.Admin.Controllers
             return RedirectToAction("Index", new { slug = conference.Slug, accessCode });
         }
 
-        //public ActionResult Index()
-        //{
-        //    if (this.Conference == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(this.Conference);
-        //}
+        public ActionResult Index()
+        {
+            if (this._conference == null)
+            {
+                return HttpNotFound();
+            }
+            return View(this._conference);
+        }
 
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
             return View();
         }
 
         [HttpPost]
-        [AsyncTimeout(5000)]
         public async Task<ActionResult> Create([Bind(Exclude = "Id,AccessCode,Seats,WasEverPublished")] ConferenceInfo conference)
         {
             if (!ModelState.IsValid) return View(conference);
@@ -132,7 +133,7 @@ namespace Conference.Web.Admin.Controllers
             command.OwnerEmail = conference.OwnerEmail;
             command.Slug = conference.Slug;
 
-            var result = await _commandService.ExecuteAsync(command, CommandReturnType.EventHandled);
+            var result = await _commandService.ExecuteAsync(command, CommandReturnType.EventHandled).TimeoutAfter(5000);
             if (result.Status != AsyncTaskStatus.Success)
             {
                 _logger.ErrorFormat("Create conference failed, errorMsg: {0}", result.ErrorMessage);

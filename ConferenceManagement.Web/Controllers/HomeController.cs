@@ -8,5 +8,17 @@ namespace Conference.Web.Admin.Controllers
         {
             return View();
         }
+        public ActionResult UnAuthorized()
+        {
+            return View();
+        }
+        public ActionResult Forbidden()
+        {
+            return View();
+        }
+        public ActionResult NotFound()
+        {
+            return View();
+        }
     }
 }

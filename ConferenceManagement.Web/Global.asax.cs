@@ -102,6 +102,24 @@ namespace ConferenceManagement.Web
                 url: "",
                 defaults: new { controller = "Home", action = "Index" }
             );
+
+            routes.MapRoute(
+                name: "UnAuthorized",
+                url: "unauthorized",
+                defaults: new { controller = "Home", action = "UnAuthorized" }
+            );
+
+            routes.MapRoute(
+                name: "Forbidden",
+                url: "forbidden",
+                defaults: new { controller = "Home", action = "Forbidden" }
+            );
+
+            routes.MapRoute(
+                name: "NotFound",
+                url: "notfound",
+                defaults: new { controller = "Home", action = "NotFound" }
+            );
         }
     }
 }

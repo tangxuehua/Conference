@@ -19,6 +19,8 @@ namespace Registration.ProcessManagers
         IMessageHandler<OrderExpired>,
         IMessageHandler<SeatsReservedMessage>,
         IMessageHandler<SeatInsufficientMessage>,
+        IMessageHandler<SeatsReservationCommittedMessage>,
+        IMessageHandler<SeatsReservationCancelledMessage>,
         IMessageHandler<PaymentCompletedMessage>,
         IMessageHandler<PaymentRejectedMessage>
     {

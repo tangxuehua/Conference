@@ -1,15 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ServiceProcess;
+using Registration.MessageProcessor;
 
 namespace Registration.ProcessorHost
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
+            if (!Environment.UserInteractive)
+            {
+                ServiceBase.Run(new Service1());
+            }
+            else
+            {
+                Bootstrap.Initialize();
+                Bootstrap.Start();
+                Console.WriteLine("Press Enter to exit...");
+                Console.ReadLine();
+            }
         }
     }
 }

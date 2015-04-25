@@ -2,7 +2,7 @@
 
 namespace Conference.Common
 {
-    public static class HandleGenerator
+    public static class StringGenerator
     {
         private static readonly Random rnd = new Random(DateTime.UtcNow.Millisecond);
         private static readonly char[] allowableChars = "ABCDEFGHJKMNPQRSTUVWXYZ123456789".ToCharArray();

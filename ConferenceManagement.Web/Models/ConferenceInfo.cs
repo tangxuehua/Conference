@@ -49,7 +49,7 @@ namespace ConferenceManagement.Web.Models
         {
             this.Id = GuidUtil.NewSequentialId();
             this.Seats = new ObservableCollection<SeatType>();
-            this.AccessCode = HandleGenerator.Generate(6);
+            this.AccessCode = StringGenerator.Generate(6);
         }
 
         public Guid Id { get; set; }

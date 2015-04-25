@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using ECommon.Components;
 using ECommon.Logging;
 
-namespace ConferenceManagement.Web.Extensions
+namespace Registration.Web.Extensions
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class HandleExceptionAttribute : HandleErrorAttribute

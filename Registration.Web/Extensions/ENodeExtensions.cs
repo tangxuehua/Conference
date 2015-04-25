@@ -1,8 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
-using ConferenceManagement.Commands;
+﻿using System.Net;
 using ECommon.Components;
 using ECommon.Utilities;
 using ENode.Commanding;
@@ -12,8 +8,10 @@ using ENode.EQueue.Commanding;
 using ENode.Infrastructure;
 using ENode.Infrastructure.Impl;
 using EQueue.Configurations;
+using Registration.Commands.Orders;
+using Registration.Commands.SeatAssignments;
 
-namespace ConferenceManagement.Web.Extensions
+namespace Registration.Web.Extensions
 {
     public static class ENodeExtensions
     {
@@ -24,16 +22,14 @@ namespace ConferenceManagement.Web.Extensions
             var provider = ObjectContainer.Resolve<ITypeCodeProvider>() as DefaultTypeCodeProvider;
 
             //commands
-            provider.RegisterType<CreateConference>(200);
-            provider.RegisterType<UpdateConference>(201);
-            provider.RegisterType<AddSeatType>(202);
-            provider.RegisterType<UpdateSeatType>(203);
-            provider.RegisterType<RemoveSeatType>(204);
-            provider.RegisterType<PublishConference>(205);
-            provider.RegisterType<UnpublishConference>(206);
-            provider.RegisterType<MakeSeatReservation>(207);
-            provider.RegisterType<CommitSeatReservation>(208);
-            provider.RegisterType<CancelSeatReservation>(209);
+            provider.RegisterType<PlaceOrder>(220);
+            provider.RegisterType<ConfirmReservation>(221);
+            provider.RegisterType<ConfirmPayment>(222);
+            provider.RegisterType<CloseOrder>(223);
+            provider.RegisterType<MarkAsSuccess>(224);
+            provider.RegisterType<CreateSeatAssignments>(225);
+            provider.RegisterType<AssignSeat>(226);
+            provider.RegisterType<UnassignSeat>(227);
 
             return enodeConfiguration;
         }

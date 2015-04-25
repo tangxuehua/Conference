@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigSettings.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="GuidUtil.cs" />
     <Compile Include="StringGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

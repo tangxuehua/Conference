@@ -64,6 +64,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conference.MessageBroker", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Repositories.Dapper", "ConferenceManagement.Repositories.Dapper\ConferenceManagement.Repositories.Dapper.csproj", "{DF81DDA1-EADF-4632-94FF-209DA2690D45}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Web", "Registration.Web\Registration.Web.csproj", "{32E3E4D7-D887-4BE1-A84F-130BF80533D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -209,6 +211,12 @@ Global
 		{DF81DDA1-EADF-4632-94FF-209DA2690D45}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{DF81DDA1-EADF-4632-94FF-209DA2690D45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF81DDA1-EADF-4632-94FF-209DA2690D45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -237,6 +245,7 @@ Global
 		{55C34F60-8B4D-428E-9340-2A6C4800E7B5} = {351A4F87-5B69-4037-964D-85404F12B18A}
 		{4E7E2173-B8EA-41DF-9611-00C6D208C603} = {351A4F87-5B69-4037-964D-85404F12B18A}
 		{DD03A579-1FDB-443A-8DE0-432CD51F0573} = {2EFC0517-BA42-4115-B962-1D0B162906F2}
+		{32E3E4D7-D887-4BE1-A84F-130BF80533D0} = {2EFC0517-BA42-4115-B962-1D0B162906F2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\DesignTime;packages\TransientFaultHandling.Core.5.0.1118.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35

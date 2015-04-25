@@ -89,11 +89,29 @@ namespace Registration.Web
                 string.Empty,
                 new { controller = "Default", action = "Index" });
 
+            routes.MapRoute(
+                "UnAuthorized",
+                "unauthorized",
+                new { controller = "Default", action = "UnAuthorized" }
+            );
+
+            routes.MapRoute(
+                "Forbidden",
+                "forbidden",
+                new { controller = "Default", action = "Forbidden" }
+            );
+
+            routes.MapRoute(
+                "NotFound",
+                "notfound",
+                new { controller = "Default", action = "NotFound" }
+            );
+
             // Registration routes
 
             routes.MapRoute(
                 "ViewConference",
-                "{conferenceCode}/",
+                "{slug}/",
                 new { controller = "Conference", action = "Display" });
 
             routes.MapRoute(

@@ -257,7 +257,6 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -277,7 +276,6 @@
     <Content Include="Views\Registration\ShowCompletedOrder.cshtml" />
     <Content Include="App_Code\ConferenceHelpers.cshtml" />
     <Content Include="Areas\ThirdPartyProcessor\Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\MaintenanceMode.cshtml" />
     <Content Include="Views\Registration\PricedOrderUnknown.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -320,6 +318,21 @@
     <Content Include="log4net.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Error.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Forbidden.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\NotFound.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\TimeoutError.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\UnAuthorized.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

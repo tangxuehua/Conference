@@ -181,6 +181,7 @@
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Extensions\ENodeExtensions.cs" />
     <Compile Include="Extensions\AsyncTaskResultExtensions.cs" />
     <Compile Include="Extensions\HandleExceptionAttribute.cs" />
@@ -245,7 +246,12 @@
     <Content Include="Content\Conference\sessions.png" />
     <Content Include="Content\Conference\sponsors.png" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\jquery-1.7.2.min.js" />
+    <Content Include="Scripts\jquery-ui-1.8.9.custom.min.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\main.js" />
+    <None Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

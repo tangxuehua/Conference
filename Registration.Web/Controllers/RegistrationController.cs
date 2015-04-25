@@ -1,17 +1,4 @@
-﻿// ==============================================================================================================
-// Microsoft patterns & practices
-// CQRS Journey project
-// ==============================================================================================================
-// ©2012 Microsoft. All rights reserved. Certain content used with permission from contributors
-// http://go.microsoft.com/fwlink/p/?LinkID=258575
-// Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance 
-// with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software distributed under the License is 
-// distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-// See the License for the specific language governing permissions and limitations under the License.
-// ==============================================================================================================
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -34,13 +21,13 @@ namespace Conference.Web.Public.Controllers
         private static readonly TimeSpan PricedOrderPollInterval = TimeSpan.FromMilliseconds(750);
 
         private readonly ICommandService commandService;
-        private readonly IOrderDao orderDao;
+        //private readonly IOrderDao orderDao;
 
-        public RegistrationController(ICommandService commandService, IOrderDao orderDao, IConferenceDao conferenceDao) : base(conferenceDao)
-        {
-            this.commandService = commandService;
-            this.orderDao = orderDao;
-        }
+        //public RegistrationController(ICommandService commandService, IOrderDao orderDao, IConferenceDao conferenceDao) : base(conferenceDao)
+        //{
+        //    this.commandService = commandService;
+        //    this.orderDao = orderDao;
+        //}
 
         //[HttpGet]
         //[OutputCache(Duration = 0, NoStore = true)]
@@ -239,133 +226,133 @@ namespace Conference.Web.Public.Controllers
         //        });
         //}
 
-        [HttpGet]
-        [OutputCache(Duration = 0, NoStore = true)]
-        public ActionResult ShowExpiredOrder(Guid orderId)
-        {
-            return View();
-        }
+        //[HttpGet]
+        //[OutputCache(Duration = 0, NoStore = true)]
+        //public ActionResult ShowExpiredOrder(Guid orderId)
+        //{
+        //    return View();
+        //}
 
-        [HttpGet]
-        [OutputCache(Duration = 0, NoStore = true)]
-        public ActionResult ThankYou(Guid orderId)
-        {
-            var order = this.orderDao.FindOrder(orderId);
+        //[HttpGet]
+        //[OutputCache(Duration = 0, NoStore = true)]
+        //public ActionResult ThankYou(Guid orderId)
+        //{
+        //    var order = this.orderDao.FindOrder(orderId);
 
-            return View(order);
-        }
+        //    return View(order);
+        //}
 
-        private ActionResult CompleteRegistrationWithThirdPartyProcessorPayment(PricedOrder order, int orderVersion)
-        {
-            var paymentCommand = CreatePaymentCommand(order);
+        //private ActionResult CompleteRegistrationWithThirdPartyProcessorPayment(PricedOrder order, int orderVersion)
+        //{
+        //    var paymentCommand = CreatePaymentCommand(order);
 
-            this.commandService.Send(paymentCommand);
+        //    this.commandService.Send(paymentCommand);
 
-            var paymentAcceptedUrl = this.Url.Action("ThankYou", new { conferenceCode = this.ConferenceAlias.Slug, order.OrderId });
-            var paymentRejectedUrl = this.Url.Action("SpecifyRegistrantAndPaymentDetails", new { conferenceCode = this.ConferenceAlias.Slug, orderId = order.OrderId, orderVersion });
+        //    var paymentAcceptedUrl = this.Url.Action("ThankYou", new { conferenceCode = this.ConferenceAlias.Slug, order.OrderId });
+        //    var paymentRejectedUrl = this.Url.Action("SpecifyRegistrantAndPaymentDetails", new { conferenceCode = this.ConferenceAlias.Slug, orderId = order.OrderId, orderVersion });
 
-            return RedirectToAction(
-                "ThirdPartyProcessorPayment",
-                "Payment",
-                new
-                {
-                    conferenceCode = this.ConferenceAlias.Slug,
-                    paymentId = paymentCommand.AggregateRootId,
-                    paymentAcceptedUrl,
-                    paymentRejectedUrl
-                });
-        }
+        //    return RedirectToAction(
+        //        "ThirdPartyProcessorPayment",
+        //        "Payment",
+        //        new
+        //        {
+        //            conferenceCode = this.ConferenceAlias.Slug,
+        //            paymentId = paymentCommand.AggregateRootId,
+        //            paymentAcceptedUrl,
+        //            paymentRejectedUrl
+        //        });
+        //}
 
-        private CreatePayment CreatePaymentCommand(PricedOrder order)
-        {
-            // TODO: should add the line items?
+        //private CreatePayment CreatePaymentCommand(PricedOrder order)
+        //{
+        //    // TODO: should add the line items?
 
-            var description = "Registration for " + this.ConferenceAlias.Name;
-            var totalAmount = order.Total;
+        //    var description = "Registration for " + this.ConferenceAlias.Name;
+        //    var totalAmount = order.Total;
 
-            var paymentCommand =
-                new CreatePayment
-                {
-                    AggregateRootId = Guid.NewGuid(),
-                    ConferenceId = this.ConferenceAlias.Id,
-                    OrderId = order.OrderId,
-                    Description = description,
-                    TotalAmount = totalAmount,
-                    Lines = order.GetLines().Select(x => new PaymentLine { Description = x.Description, Amount = x.LineTotal })
-                };
+        //    var paymentCommand =
+        //        new CreatePayment
+        //        {
+        //            AggregateRootId = Guid.NewGuid(),
+        //            ConferenceId = this.ConferenceAlias.Id,
+        //            OrderId = order.OrderId,
+        //            Description = description,
+        //            TotalAmount = totalAmount,
+        //            Lines = order.GetLines().Select(x => new PaymentLine { Description = x.Description, Amount = x.LineTotal })
+        //        };
 
-            return paymentCommand;
-        }
+        //    return paymentCommand;
+        //}
 
-        private ActionResult CompleteRegistrationWithoutPayment(Guid orderId)
-        {
-            //var confirmationCommand = new ConfirmPayment(orderId);
+        //private ActionResult CompleteRegistrationWithoutPayment(Guid orderId)
+        //{
+        //    //var confirmationCommand = new ConfirmPayment(orderId);
 
-            //this.commandService.Send(confirmationCommand);
+        //    //this.commandService.Send(confirmationCommand);
 
-            return RedirectToAction("ThankYou", new { conferenceCode = this.ConferenceAlias.Slug, orderId });
-        }
+        //    return RedirectToAction("ThankYou", new { conferenceCode = this.ConferenceAlias.Slug, orderId });
+        //}
 
-        private OrderViewModel CreateViewModel()
-        {
-            var seatTypes = this.ConferenceDao.GetPublishedSeatTypes(this.ConferenceAlias.Id);
-            var viewModel =
-                new OrderViewModel
-                {
-                    ConferenceId = this.ConferenceAlias.Id,
-                    ConferenceCode = this.ConferenceAlias.Slug,
-                    ConferenceName = this.ConferenceAlias.Name,
-                    Items =
-                        seatTypes.Select(
-                            s =>
-                                new OrderItemViewModel
-                                {
-                                    SeatType = s,
-                                    OrderItem = new DraftOrderItem(s.Id, 0),
-                                    AvailableQuantityForOrder = Math.Max(s.AvailableQuantity, 0),
-                                    MaxSelectionQuantity = Math.Max(Math.Min(s.AvailableQuantity, 20), 0)
-                                }).ToList(),
-                };
+        //private OrderViewModel CreateViewModel()
+        //{
+        //    var seatTypes = this.ConferenceDao.GetPublishedSeatTypes(this.ConferenceAlias.Id);
+        //    var viewModel =
+        //        new OrderViewModel
+        //        {
+        //            ConferenceId = this.ConferenceAlias.Id,
+        //            ConferenceCode = this.ConferenceAlias.Slug,
+        //            ConferenceName = this.ConferenceAlias.Name,
+        //            Items =
+        //                seatTypes.Select(
+        //                    s =>
+        //                        new OrderItemViewModel
+        //                        {
+        //                            SeatType = s,
+        //                            OrderItem = new DraftOrderItem(s.Id, 0),
+        //                            AvailableQuantityForOrder = Math.Max(s.AvailableQuantity, 0),
+        //                            MaxSelectionQuantity = Math.Max(Math.Min(s.AvailableQuantity, 20), 0)
+        //                        }).ToList(),
+        //        };
 
-            return viewModel;
-        }
+        //    return viewModel;
+        //}
 
-        private static void UpdateViewModel(OrderViewModel viewModel, DraftOrder order)
-        {
-            viewModel.OrderId = order.OrderId;
-            viewModel.OrderVersion = order.OrderVersion;
-            viewModel.ReservationExpirationDate = order.ReservationExpirationDate.ToEpochMilliseconds();
+        //private static void UpdateViewModel(OrderViewModel viewModel, DraftOrder order)
+        //{
+        //    viewModel.OrderId = order.OrderId;
+        //    viewModel.OrderVersion = order.OrderVersion;
+        //    viewModel.ReservationExpirationDate = order.ReservationExpirationDate.ToEpochMilliseconds();
 
-            // TODO check DTO matches view model
+        //    // TODO check DTO matches view model
 
-            foreach (var line in order.GetLines())
-            {
-                var seat = viewModel.Items.First(s => s.SeatType.Id == line.SeatType);
-                seat.OrderItem = line;
-                seat.AvailableQuantityForOrder = seat.AvailableQuantityForOrder + line.ReservedSeats;
-                seat.MaxSelectionQuantity = Math.Min(seat.AvailableQuantityForOrder, 20);
-                seat.PartiallyFulfilled = line.RequestedSeats > line.ReservedSeats;
-            }
-        }
+        //    foreach (var line in order.GetLines())
+        //    {
+        //        var seat = viewModel.Items.First(s => s.SeatType.Id == line.SeatType);
+        //        seat.OrderItem = line;
+        //        seat.AvailableQuantityForOrder = seat.AvailableQuantityForOrder + line.ReservedSeats;
+        //        seat.MaxSelectionQuantity = Math.Min(seat.AvailableQuantityForOrder, 20);
+        //        seat.PartiallyFulfilled = line.RequestedSeats > line.ReservedSeats;
+        //    }
+        //}
 
-        private Task<DraftOrder> WaitUntilSeatsAreConfirmed(Guid orderId, int lastOrderVersion)
-        {
-            return
-                TimerTaskFactory.StartNew<DraftOrder>(
-                    () => this.orderDao.FindDraftOrder(orderId),
-                    order => order != null && order.StateValue != DraftOrder.States.PendingReservation && order.OrderVersion > lastOrderVersion + 1,
-                    DraftOrderPollInterval,
-                    DraftOrderWaitTimeout);
-        }
+        //private Task<DraftOrder> WaitUntilSeatsAreConfirmed(Guid orderId, int lastOrderVersion)
+        //{
+        //    return
+        //        TimerTaskFactory.StartNew<DraftOrder>(
+        //            () => this.orderDao.FindDraftOrder(orderId),
+        //            order => order != null && order.StateValue != DraftOrder.States.PendingReservation && order.OrderVersion > lastOrderVersion + 1,
+        //            DraftOrderPollInterval,
+        //            DraftOrderWaitTimeout);
+        //}
 
-        private Task<PricedOrder> WaitUntilOrderIsPriced(Guid orderId, int lastOrderVersion)
-        {
-            return
-                TimerTaskFactory.StartNew<PricedOrder>(
-                    () => this.orderDao.FindPricedOrder(orderId),
-                    order => order != null && order.OrderVersion > lastOrderVersion + 1,
-                    PricedOrderPollInterval,
-                    PricedOrderWaitTimeout);
-        }
+        //private Task<PricedOrder> WaitUntilOrderIsPriced(Guid orderId, int lastOrderVersion)
+        //{
+        //    return
+        //        TimerTaskFactory.StartNew<PricedOrder>(
+        //            () => this.orderDao.FindPricedOrder(orderId),
+        //            order => order != null && order.OrderVersion > lastOrderVersion + 1,
+        //            PricedOrderPollInterval,
+        //            PricedOrderWaitTimeout);
+        //}
     }
 }

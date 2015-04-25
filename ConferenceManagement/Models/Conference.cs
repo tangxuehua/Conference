@@ -18,7 +18,7 @@ namespace ConferenceManagement
             ApplyEvent(new ConferenceCreated(this, info));
         }
 
-        public void Update(ConferenceInfo info)
+        public void Update(ConferenceEditableInfo info)
         {
             ApplyEvent(new ConferenceUpdated(this, info));
         }
@@ -173,7 +173,18 @@ namespace ConferenceManagement
         }
         private void Handle(ConferenceUpdated evnt)
         {
-            _info = evnt.Info;
+            var editableInfo = evnt.Info;
+            _info = new ConferenceInfo(
+                _info.AccessCode,
+                _info.Owner,
+                _info.Slug,
+                editableInfo.Name,
+                editableInfo.Description,
+                editableInfo.Location,
+                editableInfo.Tagline,
+                editableInfo.TwitterSearch,
+                editableInfo.StartDate,
+                editableInfo.EndDate);
         }
         private void Handle(ConferencePublished evnt)
         {

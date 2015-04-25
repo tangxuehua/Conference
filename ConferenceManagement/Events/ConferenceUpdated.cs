@@ -1,13 +1,18 @@
 ﻿using System;
+using ENode.Eventing;
 
 namespace ConferenceManagement
 {
     [Serializable]
-    public class ConferenceUpdated : ConferenceEvent
+    public class ConferenceUpdated : DomainEvent<Guid>
     {
-        public ConferenceUpdated(Conference conference, ConferenceInfo info)
-            : base(conference, info)
+        public ConferenceEditableInfo Info { get; private set; }
+
+        public ConferenceUpdated() { }
+        public ConferenceUpdated(Conference conference, ConferenceEditableInfo info)
+            : base(conference)
         {
+            Info = info;
         }
     }
 }

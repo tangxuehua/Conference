@@ -5,15 +5,8 @@ using Conference.Common;
 
 namespace ConferenceManagement.ReadModel
 {
-    public class ConferenceInfo
+    public class ConferenceDTO
     {
-        public ConferenceInfo()
-        {
-            this.Id = GuidUtil.NewSequentialId();
-            this.Seats = new ObservableCollection<SeatType>();
-            this.AccessCode = HandleGenerator.Generate(6);
-        }
-
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -28,6 +21,5 @@ namespace ConferenceManagement.ReadModel
         public string OwnerEmail { get; set; }
         public string Slug { get; set; }
         public bool WasEverPublished { get; set; }
-        public virtual ICollection<SeatType> Seats { get; set; }
     }
 }

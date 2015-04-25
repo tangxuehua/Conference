@@ -9,6 +9,7 @@ namespace Payments
         public Guid OrderId { get; private set; }
         public Guid ConferenceId { get; private set; }
 
+        public PaymentCompleted() { }
         public PaymentCompleted(Payment payment, Guid orderId, Guid conferenceId)
             : base(payment)
         {

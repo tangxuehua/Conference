@@ -11,6 +11,7 @@ namespace Registration.SeatAssigning
         public SeatType Seat { get; private set; }
         public Attendee Attendee { get; private set; }
 
+        public SeatAssigned() { }
         public SeatAssigned(SeatAssignments seatAssignments, int position, SeatType seat, Attendee attendee)
             : base(seatAssignments)
         {

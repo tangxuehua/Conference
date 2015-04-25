@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -11,18 +12,32 @@ namespace ConferenceManagement.ReadModel
     [Component]
     public class ConferenceQueryService
     {
-        public ConferenceInfo FindConference(string slug)
+        public ConferenceDTO FindConference(string slug)
         {
             using (var connection = GetConnection())
             {
-                return connection.QueryList<ConferenceInfo>(new { Slug = slug }, ConfigSettings.ConferenceTable).SingleOrDefault();
+                return connection.QueryList<ConferenceDTO>(new { Slug = slug }, ConfigSettings.ConferenceTable).SingleOrDefault();
             }
         }
-        public ConferenceInfo FindConference(string email, string accessCode)
+        public ConferenceDTO FindConference(string email, string accessCode)
         {
             using (var connection = GetConnection())
             {
-                return connection.QueryList<ConferenceInfo>(new { OwnerEmail = email, AccessCode = accessCode }, ConfigSettings.ConferenceTable).SingleOrDefault();
+                return connection.QueryList<ConferenceDTO>(new { OwnerEmail = email, AccessCode = accessCode }, ConfigSettings.ConferenceTable).SingleOrDefault();
+            }
+        }
+        public IEnumerable<SeatTypeDTO> FindSeatTypes(Guid conferenceId)
+        {
+            using (var connection = GetConnection())
+            {
+                return connection.QueryList<SeatTypeDTO>(new { ConferenceId = conferenceId }, ConfigSettings.SeatTypeTable).ToList();
+            }
+        }
+        public SeatTypeDTO FindSeatType(Guid seatTypeId)
+        {
+            using (var connection = GetConnection())
+            {
+                return connection.QueryList<SeatTypeDTO>(new { Id = seatTypeId }, ConfigSettings.SeatTypeTable).SingleOrDefault();
             }
         }
 

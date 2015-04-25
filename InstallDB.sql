@@ -105,13 +105,14 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[SeatTypes](
+CREATE TABLE [dbo].[ConferenceSeatTypes](
     [Id] [uniqueidentifier] NOT NULL,
+    [ConferenceId] [uniqueidentifier] NOT NULL,
     [Name] [nvarchar](70) NOT NULL,
     [Description] [nvarchar](250) NOT NULL,
-    [Quantity] [int] NOT NULL,
     [Price] [decimal](18, 2) NOT NULL,
-    [ConferenceInfo_Id] [uniqueidentifier] NOT NULL,
+    [Quantity] [int] NOT NULL,
+    [AvailableQuantity] [int] NOT NULL,
  CONSTRAINT [PK_ConferenceManagement.SeatTypes] PRIMARY KEY CLUSTERED 
 (
     [Id] ASC

@@ -52,10 +52,7 @@ namespace ConferenceManagement.CommandHandlers
         }
         public void Handle(ICommandContext context, UpdateConference command)
         {
-            context.Get<Conference>(command.AggregateRootId).Update(new ConferenceInfo(
-                command.AccessCode,
-                new ConferenceOwner(command.OwnerName, command.OwnerEmail),
-                command.Slug,
+            context.Get<Conference>(command.AggregateRootId).Update(new ConferenceEditableInfo(
                 command.Name,
                 command.Description,
                 command.Location,

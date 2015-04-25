@@ -13,6 +13,7 @@ namespace Payments
         public decimal TotalAmount { get; private set; }
         public IEnumerable<PaymentItem> Items { get; private set; }
 
+        public PaymentInitiated() { }
         public PaymentInitiated(Payment payment, Guid orderId, Guid conferenceId, string description, decimal totalAmount, IEnumerable<PaymentItem> items)
             : base(payment)
         {

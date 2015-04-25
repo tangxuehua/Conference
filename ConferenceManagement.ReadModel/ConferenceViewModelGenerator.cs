@@ -56,10 +56,6 @@ namespace ConferenceManagement.ReadModel
                 var info = evnt.Info;
                 return connection.UpdateAsync(new
                 {
-                    AccessCode = info.AccessCode,
-                    OwnerName = info.Owner.Name,
-                    OwnerEmail = info.Owner.Email,
-                    Slug = info.Slug,
                     Name = info.Name,
                     Description = info.Description,
                     Location = info.Location,

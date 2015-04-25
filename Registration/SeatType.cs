@@ -9,6 +9,7 @@ namespace Registration
         public string SeatTypeName { get; private set; }
         public decimal UnitPrice { get; private set; }
 
+        public SeatType() { }
         public SeatType(Guid seatTypeId, string seatTypeName, decimal unitPrice)
         {
             SeatTypeId = seatTypeId;

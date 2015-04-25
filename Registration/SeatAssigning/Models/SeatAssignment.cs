@@ -9,6 +9,7 @@ namespace Registration.SeatAssigning
         public SeatType Seat { get; private set; }
         public Attendee Attendee { get; set; }
 
+        public SeatAssignment() { }
         public SeatAssignment(int position, SeatType seat)
         {
             Position = position;

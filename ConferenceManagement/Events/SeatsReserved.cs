@@ -11,6 +11,7 @@ namespace ConferenceManagement
         public IEnumerable<ReservationItem> ReservationItems { get; private set; }
         public IEnumerable<SeatAvailableQuantity> SeatAvailableQuantities { get; private set; }
 
+        public SeatsReserved() { }
         public SeatsReserved(Conference conference, Guid reservationId, IEnumerable<ReservationItem> reservationItems, IEnumerable<SeatAvailableQuantity> seatAvailableQuantities)
             : base(conference)
         {

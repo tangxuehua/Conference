@@ -36,7 +36,7 @@ namespace Conference.Common
             }
             ConferenceTable = "Conferences";
             ConferenceSlugIndexTable = "ConferenceSlugs";
-            SeatTypeTable = "ConferenceSeatTypesView";
+            SeatTypeTable = "ConferenceSeatTypes";
             ReservationItemsTable = "ReservationItems";
             OrderTable = "Orders";
             OrderLineTable = "OrderLines";
@@ -44,7 +44,5 @@ namespace Conference.Common
             PaymentTable = "ThirdPartyProcessorPayments";
             PaymentItemTable = "ThidPartyProcessorPaymentItems";
         }
-
-
     }
 }

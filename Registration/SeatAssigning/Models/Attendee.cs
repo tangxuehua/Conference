@@ -10,6 +10,7 @@ namespace Registration.SeatAssigning
         public string LastName { get; private set; }
         public string Email { get; private set; }
 
+        public Attendee() { }
         public Attendee(string firstName, string lastName, string email)
         {
             Ensure.NotNull(firstName, "firstName");

@@ -10,6 +10,7 @@ namespace Registration.Orders
         public string LastName { get; private set; }
         public string Email { get; private set; }
 
+        public Registrant() { }
         public Registrant(string firstName, string lastName, string email)
         {
             Ensure.NotNull(firstName, "firstName");

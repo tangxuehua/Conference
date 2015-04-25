@@ -10,6 +10,7 @@ namespace ConferenceManagement
         public Guid ReservationId { get; set; }
         public IEnumerable<SeatAvailableQuantity> SeatAvailableQuantities { get; set; }
 
+        public SeatsReservationCancelled() { }
         public SeatsReservationCancelled(Conference conference, Guid reservationId, IEnumerable<SeatAvailableQuantity> seatAvailableQuantities)
             : base(conference)
         {

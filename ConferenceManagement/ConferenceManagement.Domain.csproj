@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\ConferenceEditableInfo.cs" />
     <Compile Include="Models\ConferenceOwner.cs" />
     <Compile Include="Models\ConferenceInfo.cs" />
     <Compile Include="Models\Conference.cs" />

@@ -1,4 +1,5 @@
-﻿@model Conference.Web.Public.Models.RegistrationViewModel
+﻿@model Registration.Web.Models.RegistrationViewModel
+@using Registration.Web.Utils
 
 @{
     ViewBag.Title = "Register to " + ViewBag.Conference.Name;
@@ -20,84 +21,12 @@
                 @using (Html.BeginForm())
                 {
                     @Html.Partial("_RegistrationDetailsEditor", Model.RegistrantDetails)
-                    if (!Model.Order.IsFreeOfCharge)
-                    { 
-                    <div class="content-main__header">Billing information</div>
-                    <div class="content">
-                        <div class="form">
-						    <fieldset class="form__rb form__rb_m">
-							    <div class="form__rb__title">Payment method:<span>*</span></div>
-                                <label class="form__rb__item _a js-radiobutton" name="js-creditcard">
-                                    @Html.RadioButton("paymentType", "thirdParty", true) Credit card
-                                </label>
-                                <label class="form__rb__item js-radiobutton" name="js-invoiceme">
-                                    @Html.RadioButton("paymentType", "invoice", new { disabled = "disabled" }) Invoice me
-                                </label>
-						    </fieldset>
-					    </div>
-					    <div class="form js-radiobutton-box js-creditcard-box">
-@*                    	    <fieldset class="form__fieldset">
-							    <label class="form__label">First Name:<span>*</span></label>
-							    <select>
-								    <option>United States</option>
-								    <option>Russian Federation</option>
-								    <option>Other Countries</option>
-							    </select>
-						    </fieldset>
-						    <fieldset class="form__fieldset">
-							    <label class="form__label">City:<span>*</span></label>
-							    <div class="form__field">
-								    <input />
-							    </div>
-						    </fieldset>
-						    <fieldset class="form__fieldset">
-							    <label class="form__label">Address 1:<span>*</span></label>
-							    <div class="form__field">
-								    <input />
-							    </div>
-						    </fieldset>
-						    <fieldset class="form__fieldset">
-							    <label class="form__label">State:<span>*</span></label>
-							    <div class="form__field">
-								    <input />
-							    </div>
-						    </fieldset>
-						    <fieldset class="form__fieldset">
-							    <label class="form__label">Address 2:</label>
-							    <div class="form__field">
-								    <input />
-							    </div>
-						    </fieldset>	<fieldset class="form__fieldset">
-							    <label class="form__label">Zip code:<span>*</span></label>
-							    <div class="form__field">
-								    <input />
-							    </div>
-						    </fieldset>*@
-						    <div class="g-clear"></div>
-                        </div>
-					    <div class="form js-radiobutton-box js-invoiceme-box" style="display: none;">
-@*						    <fieldset class="form__fieldset">
-							    <label class="form__label">Fax number:</label>
-							    <div class="form__field">
-								    <input />
-							    </div>
-						    </fieldset>	<fieldset class="form__fieldset">
-							    <label class="form__label">Contact person:<span>*</span></label>
-							    <div class="form__field">
-								    <input />
-							    </div>
-						    </fieldset>*@
-						    <div class="g-clear"></div>
-                        </div>
-                    </div>
-                    }
                     <div class="nav content-main__nav">
                         <a class="nav__left" href="@Url.Action("StartRegistration", "Registration", new { orderId = this.Model.Order.OrderId })">Back</a>
                         <button id="Next" class="nav__right" type="submit">Proceed
-                    @if (!Model.Order.IsFreeOfCharge)
+                    @if (!Model.Order.IsFreeOfCharge())
                     { 
                             <span class="nav__right-small js-creditcard-proceed">Proceed to Third Party</span>
-                            <span class="nav__right-small js-invoiceme-proceed" style="display: none;">Proceed to Pay by Invoice</span>
                     }
                         </button>
                     </div>
@@ -106,7 +35,7 @@
         </div>
         <div class="content-main__aside">
             <div class="content-main__header"></div>
-            @ConferenceHelpers.ExpirationBox(Model.Order.ReservationExpirationDate.ToEpochMilliseconds(), Url.Action("ShowExpiredOrder", "Registration", new { conferenceCode = this.ViewBag.Conference.Code, orderId = this.Model.RegistrantDetails.OrderId }))
+            @ConferenceHelpers.ExpirationBox(Model.Order.ReservationExpirationDate.ToEpochMilliseconds(), Url.Action("ShowExpiredOrder", "Registration", new { conferenceCode = this.ViewBag.Conference.Slug, orderId = this.Model.RegistrantDetails.OrderId }))
         </div>
         <div class="g-clear"></div>
     </div>

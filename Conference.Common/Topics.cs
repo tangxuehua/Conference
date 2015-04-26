@@ -9,5 +9,8 @@
 
         public const string RegistrationCommandTopic = "RegistrationCommandTopic";
         public const string RegistrationDomainEventTopic = "RegistrationDomainEventTopic";
+
+        public const string PaymentCommandTopic = "PaymentCommandTopic";
+        public const string PaymentApplicationMessageTopic = "PaymentApplicationMessageTopic";
     }
 }

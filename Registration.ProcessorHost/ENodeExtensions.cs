@@ -1,12 +1,16 @@
 ﻿using Conference.Common;
+using ConferenceManagement.Commands;
 using ConferenceManagement.Messages;
 using ECommon.Components;
+using ENode.Commanding;
 using ENode.Configurations;
 using ENode.EQueue;
 using ENode.Eventing;
 using ENode.Infrastructure;
 using ENode.Infrastructure.Impl;
+using EQueue.Clients.Consumers;
 using EQueue.Configurations;
+using EQueue.Protocols;
 using Payments.Messages;
 using Registration.Commands.Orders;
 using Registration.Commands.SeatAssignments;
@@ -19,6 +23,7 @@ namespace Registration.ProcessorHost
 {
     public static class ENodeExtensions
     {
+        private static CommandService _commandService;
         private static CommandConsumer _commandConsumer;
         private static ApplicationMessageConsumer _applicationMessageConsumer;
         private static DomainEventPublisher _domainEventPublisher;
@@ -33,6 +38,10 @@ namespace Registration.ProcessorHost
             provider.RegisterType<SeatAssignments>(121);
 
             //commands
+            provider.RegisterType<MakeSeatReservation>(207);
+            provider.RegisterType<CommitSeatReservation>(208);
+            provider.RegisterType<CancelSeatReservation>(209);
+
             provider.RegisterType<PlaceOrder>(220);
             provider.RegisterType<ConfirmReservation>(221);
             provider.RegisterType<ConfirmPayment>(222);
@@ -43,12 +52,13 @@ namespace Registration.ProcessorHost
             provider.RegisterType<UnassignSeat>(227);
 
             //application messages
-            provider.RegisterType<SeatsReservedMessage>(320);
-            provider.RegisterType<SeatInsufficientMessage>(321);
-            provider.RegisterType<SeatsReservationCommittedMessage>(322);
-            provider.RegisterType<SeatsReservationCancelledMessage>(323);
-            provider.RegisterType<PaymentCompletedMessage>(324);
-            provider.RegisterType<PaymentRejectedMessage>(325);
+            provider.RegisterType<SeatsReservedMessage>(300);
+            provider.RegisterType<SeatInsufficientMessage>(301);
+            provider.RegisterType<SeatsReservationCommittedMessage>(302);
+            provider.RegisterType<SeatsReservationCancelledMessage>(303);
+
+            provider.RegisterType<PaymentCompletedMessage>(320);
+            provider.RegisterType<PaymentRejectedMessage>(321);
 
             //domain events
             provider.RegisterType<OrderPlaced>(420);
@@ -77,9 +87,28 @@ namespace Registration.ProcessorHost
 
             configuration.SetDefault<IMessagePublisher<DomainEventStreamMessage>, DomainEventPublisher>(_domainEventPublisher);
 
-            _commandConsumer = new CommandConsumer().Subscribe(Topics.ConferenceCommandTopic);
-            _eventConsumer = new DomainEventConsumer().Subscribe(Topics.ConferenceDomainEventTopic);
-            _applicationMessageConsumer = new ApplicationMessageConsumer().Subscribe(Topics.ConferenceApplicationMessageTopic);
+            _commandService = new CommandService();
+
+            configuration.SetDefault<ICommandService, CommandService>(_commandService);
+
+            _commandConsumer = new CommandConsumer(
+                "RegistrationCommandConsumer",
+                "RegistrationCommandConsumerGroup",
+                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+            .Subscribe(Topics.RegistrationCommandTopic);
+
+            _eventConsumer = new DomainEventConsumer(
+                "RegistrationEventConsumer",
+                "RegistrationEventConsumerGroup",
+                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+            .Subscribe(Topics.RegistrationDomainEventTopic);
+
+            _applicationMessageConsumer = new ApplicationMessageConsumer(
+                "RegistrationMessageConsumer",
+                "RegistrationMessageConsumerGroup",
+                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+            .Subscribe(Topics.ConferenceApplicationMessageTopic)
+            .Subscribe(Topics.PaymentApplicationMessageTopic);
 
             return enodeConfiguration;
         }
@@ -89,11 +118,13 @@ namespace Registration.ProcessorHost
             _eventConsumer.Start();
             _commandConsumer.Start();
             _domainEventPublisher.Start();
+            _commandService.Start();
 
             return enodeConfiguration;
         }
         public static ENodeConfiguration ShutdownEQueue(this ENodeConfiguration enodeConfiguration)
         {
+            _commandService.Shutdown();
             _domainEventPublisher.Shutdown();
             _commandConsumer.Shutdown();
             _eventConsumer.Shutdown();

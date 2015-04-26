@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Registration.ReadModel;
 
 namespace Conference.Web.Public.Controllers
@@ -13,9 +12,9 @@ namespace Conference.Web.Public.Controllers
             _conferenceQueryService = conferenceQueryService;
         }
 
-        public ActionResult Display(string slug)
+        public ActionResult Display(string conferenceCode)
         {
-            return View(_conferenceQueryService.GetConferenceDetails(slug));
+            return View(_conferenceQueryService.GetConferenceDetails(conferenceCode));
         }
     }
 }

@@ -9,7 +9,9 @@ using ENode.EQueue;
 using ENode.Eventing;
 using ENode.Infrastructure;
 using ENode.Infrastructure.Impl;
+using EQueue.Clients.Consumers;
 using EQueue.Configurations;
+using EQueue.Protocols;
 
 namespace ConferenceManagement.ProcessorHost
 {
@@ -83,9 +85,23 @@ namespace ConferenceManagement.ProcessorHost
             configuration.SetDefault<IMessagePublisher<DomainEventStreamMessage>, DomainEventPublisher>(_domainEventPublisher);
             configuration.SetDefault<IMessagePublisher<IPublishableException>, PublishableExceptionPublisher>(_exceptionPublisher);
 
-            _commandConsumer = new CommandConsumer().Subscribe(Topics.ConferenceCommandTopic);
-            _eventConsumer = new DomainEventConsumer().Subscribe(Topics.ConferenceDomainEventTopic);
-            _exceptionConsumer = new PublishableExceptionConsumer().Subscribe(Topics.ConferenceExceptionTopic);
+            _commandConsumer = new CommandConsumer(
+                "ConferenceCommandConsumer",
+                "ConferenceCommandConsumerGroup",
+                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+            .Subscribe(Topics.ConferenceCommandTopic);
+
+            _eventConsumer = new DomainEventConsumer(
+                "ConferenceEventConsumer",
+                "ConferenceEventConsumerGroup",
+                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+            .Subscribe(Topics.ConferenceDomainEventTopic);
+
+            _exceptionConsumer = new PublishableExceptionConsumer(
+                "ConferenceExceptionConsumer",
+                "ConferenceExceptionConsumerGroup",
+                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+            .Subscribe(Topics.ConferenceExceptionTopic);
 
             return enodeConfiguration;
         }

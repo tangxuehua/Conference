@@ -15,6 +15,7 @@ namespace Registration.Handlers
     [Component]
     public class OrderViewModelGenerator :
         IMessageHandler<OrderPlaced>,
+        IMessageHandler<OrderRegistrantAssigned>,
         IMessageHandler<OrderReservationConfirmed>,
         IMessageHandler<OrderPaymentConfirmed>,
         IMessageHandler<OrderExpired>,
@@ -34,11 +35,8 @@ namespace Registration.Handlers
                     ConferenceId = evnt.ConferenceId,
                     Status = (int)OrderStatus.Placed,
                     AccessCode = evnt.AccessCode,
-                    RegistrantEmail = evnt.Registrant.Email,
-                    RegistrantFirstName = evnt.Registrant.FirstName,
-                    RegistrantLastName = evnt.Registrant.LastName,
-                    ReservationAutoExpiration = evnt.ReservationAutoExpiration,
-                    Total = evnt.OrderTotal.Total,
+                    ReservationExpirationDate = evnt.ReservationExpirationDate,
+                    TotalAmount = evnt.OrderTotal.Total,
                     Version = evnt.Version
                 }, ConfigSettings.OrderTable, transaction));
 
@@ -57,6 +55,23 @@ namespace Registration.Handlers
                 }
 
                 return tasks;
+            });
+        }
+        public Task<AsyncTaskResult> HandleAsync(OrderRegistrantAssigned evnt)
+        {
+            return TryUpdateRecordAsync(connection =>
+            {
+                return connection.UpdateAsync(new
+                {
+                    RegistrantFirstName = evnt.Registrant.FirstName,
+                    RegistrantLastName = evnt.Registrant.LastName,
+                    RegistrantEmail = evnt.Registrant.Email,
+                    Version = evnt.Version
+                }, new
+                {
+                    OrderId = evnt.AggregateRootId,
+                    Version = evnt.Version - 1
+                }, ConfigSettings.OrderTable);
             });
         }
         public Task<AsyncTaskResult> HandleAsync(OrderReservationConfirmed evnt)

@@ -14,7 +14,6 @@ namespace Registration.Commands.Orders
         }
 
         public Guid ConferenceId { get; set; }
-        public PersonalInfo Registrant { get; set; }
         public IList<SeatInfo> Seats { get; set; }
     }
 }

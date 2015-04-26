@@ -9,6 +9,7 @@ namespace Registration.CommandHandlers
     [Component]
     public class OrderCommandHandler :
         ICommandHandler<PlaceOrder>,
+        ICommandHandler<AssignRegistrantDetails>,
         ICommandHandler<ConfirmReservation>,
         ICommandHandler<ConfirmPayment>,
         ICommandHandler<MarkAsSuccess>,
@@ -26,9 +27,12 @@ namespace Registration.CommandHandlers
             context.Add(new Order(
                 command.AggregateRootId,
                 command.ConferenceId,
-                command.Seats.Select(x => new SeatQuantity(new SeatType(x.SeatTypeId, x.SeatTypeName, x.UnitPrice), x.Quantity)),
-                new Registrant(command.Registrant.FirstName, command.Registrant.LastName, command.Registrant.Email),
+                command.Seats.Select(x => new SeatQuantity(new SeatType(x.SeatType, x.SeatName, x.UnitPrice), x.Quantity)),
                 _pricingService));
+        }
+        public void Handle(ICommandContext context, AssignRegistrantDetails command)
+        {
+            context.Get<Order>(command.AggregateRootId).AssignRegistrant(command.FirstName, command.LastName, command.Email);
         }
         public void Handle(ICommandContext context, ConfirmReservation command)
         {

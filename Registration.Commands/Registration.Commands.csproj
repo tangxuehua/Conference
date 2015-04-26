@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Orders\CloseOrder.cs" />
     <Compile Include="Orders\MarkAsSuccess.cs" />
+    <Compile Include="Orders\AssignRegistrantDetails.cs" />
     <Compile Include="SeatAssignments\CreateSeatAssignments.cs" />
     <Compile Include="SeatAssignments\AssignSeat.cs" />
     <Compile Include="Orders\ConfirmPayment.cs" />

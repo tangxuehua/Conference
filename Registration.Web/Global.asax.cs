@@ -111,7 +111,7 @@ namespace Registration.Web
 
             routes.MapRoute(
                 "ViewConference",
-                "{slug}/",
+                "{conferenceCode}/",
                 new { controller = "Conference", action = "Display" });
 
             routes.MapRoute(

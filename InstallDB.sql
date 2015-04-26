@@ -53,17 +53,45 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [dbo].[Orders](
-    [Id] [uniqueidentifier] NOT NULL,
+    [OrderId] [uniqueidentifier] NOT NULL,
     [ConferenceId] [uniqueidentifier] NOT NULL,
-    [AssignmentsId] [uniqueidentifier] NULL,
+    [Status] [int] NOT NULL,
     [AccessCode] [nvarchar](max) NULL,
-    [RegistrantName] [nvarchar](max) NULL,
+    [RegistrantFirstName] [nvarchar](max) NULL,
+    [RegistrantLastName] [nvarchar](max) NULL,
     [RegistrantEmail] [nvarchar](max) NULL,
     [TotalAmount] [decimal](18, 2) NOT NULL,
-    [StatusValue] [int] NOT NULL,
+    [ReservationExpirationDate] [datetime] NULL,
+    [Version] [bigint] NOT NULL,
  CONSTRAINT [PK_ConferenceManagement.Orders] PRIMARY KEY CLUSTERED 
 (
-    [Id] ASC
+    [OrderId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+USE [Conference]
+GO
+
+/****** Object:  Table [dbo].[OrderItemsViewV3]    Script Date: 11/10/2014 09:07:17 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[OrderLines](
+    [OrderId] [uniqueidentifier] NOT NULL,
+    [SeatTypeId] [uniqueidentifier] NOT NULL,
+    [SeatTypeName] [nvarchar](max) NULL,
+    [UnitPrice] [decimal](18, 2) NOT NULL,
+    [Quantity] [int] NOT NULL,
+    [LineTotal] [decimal](18, 2) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+    [OrderId] ASC,
+    [SeatTypeId] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 

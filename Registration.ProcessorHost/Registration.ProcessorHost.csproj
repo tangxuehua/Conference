@@ -98,6 +98,7 @@
     <Compile Include="Service1.Designer.cs">
       <DependentUpon>Service1.cs</DependentUpon>
     </Compile>
+    <Compile Include="TopicProviders\CommandTopicProvider.cs" />
     <Compile Include="TopicProviders\DomainEventTopicProvider.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -117,9 +118,17 @@
       <Project>{baf088f8-3fcb-45ef-a228-6424c34c65ca}</Project>
       <Name>Conference.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ConferenceManagement.Commands\ConferenceManagement.Commands.csproj">
+      <Project>{f522345e-1872-42b6-b5c2-9f158b91f3e3}</Project>
+      <Name>ConferenceManagement.Commands</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ConferenceManagement.Messages\ConferenceManagement.Messages.csproj">
       <Project>{b3658426-259d-4393-aaca-60c84d7fa073}</Project>
       <Name>ConferenceManagement.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Payments.Commands\Payments.Commands.csproj">
+      <Project>{914b7e07-3bd2-4eb6-b1c8-e37ff94d662b}</Project>
+      <Name>Payments.Commands</Name>
     </ProjectReference>
     <ProjectReference Include="..\Payments.Messages\Payments.Messages.csproj">
       <Project>{c39bcb0a-ab88-45eb-9cee-9ef4157b22c6}</Project>

@@ -61,6 +61,7 @@
     <Compile Include="Orders\Events\OrderClosed.cs" />
     <Compile Include="Orders\Events\OrderPaymentConfirmed.cs" />
     <Compile Include="Orders\Events\OrderExpired.cs" />
+    <Compile Include="Orders\Events\OrderRegistrantAssigned.cs" />
     <Compile Include="Orders\Events\OrderSuccessed.cs" />
     <Compile Include="Orders\IPricingService.cs" />
     <Compile Include="Orders\Models\Order.cs" />

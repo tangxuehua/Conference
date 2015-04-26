@@ -1,4 +1,4 @@
-﻿@model Conference.Web.Public.Models.OrderViewModel
+﻿@model Registration.Web.Models.OrderViewModel
 @{
     ViewBag.Title = "Register to " + ViewBag.Conference.Name;
 }
@@ -13,63 +13,31 @@
                  {
                      <div class="content-main__header">Register</div>
                      <div class="content">
-                         @*TODO: fix styling for validation*@
                          @Html.ValidationSummary()
-
-                         @Html.Hidden("OrderId")
-                         @Html.Hidden("OrderVersion")
-                         <p>Please make your selection. <br />
-                             @*You can enter promotional code below if you have one.*@
-                         </p>
+                         <p>Please make your selection. <br /></p>
                          <h3>Event tickets</h3>
                          <table class="content__table_first-cell-wide">
                              <tr>
                                  <th style="width: 75%">Registration type</th>
                                  <th scope="col" style="text-align: right">Price</th>
-                                 <th scope="col">Available</th>
                                  <th scope="col">Quantity</th>
                              </tr>
                              @for (var i = 0; i < this.Model.Items.Count; i++)
                              {
-                                 <tr class="lineItem@(this.Model.Items[i].PartiallyFulfilled ? " content__table__error" : "")">
+                                 <tr class="lineItem">
                                      <td>
                                          @Html.DisplayFor(model => model.Items[i].SeatType.Name)
                                          <p class="content__note">@Html.DisplayFor(model => model.Items[i].SeatType.Description)</p>
                                      </td>
                                      <td style="text-align: right">$<span class="unitPrice">@Html.DisplayFor(model => model.Items[i].SeatType.Price)</span>
                                      </td>
-                                     <td style="text-align: right">@Html.DisplayFor(model => model.Items[i].AvailableQuantityForOrder)
-                                     </td>
                                      <td>
                                          @Html.Hidden("Seats[" + i + "].SeatType", this.Model.Items[i].SeatType.Id)
-                                         @if ((this.Model.Items[i].MaxSelectionQuantity) > 0)
-                                         { 
-                                            @Html.DropDownList("Seats[" + i + "].Quantity", new SelectList(Enumerable.Range(0, this.Model.Items[i].MaxSelectionQuantity + 1), this.Model.Items[i].OrderItem.ReservedSeats), new { @class = "itemQuantity" })
-                                         }
-                                         else
-                                         {
-                                            <input type="hidden" name="Seats[@i].Quantity" value="0" />
-                                            <text>Sold out</text>
-                                         }
+                                         @Html.DropDownList("Seats[" + i + "].Quantity", new SelectList(Enumerable.Range(0, this.Model.Items[i].MaxSelectionQuantity + 1)), new { @class = "itemQuantity" })
                                      </td>
                                  </tr>
-                                 if (this.Model.Items[i].PartiallyFulfilled)
-                                 {
-                                    <tr>
-                                        <td class="content__table__error-info" colspan="5">
-                                            <label class="form__chb__ite">
-                                                Could not reserve all the requested seats. The seat quantity is set to the available seats.</label>
-                                        </td>
-                                    </tr>
-                                 }
                              }
                              <tr>
-                                 @*<td>
-                                    <a class="content__link_pseudo j-promocode-field" href="#">Enter promotional code</a>
-								    <div class="form-promo">
-									    <input class="form-promo__txt"><input class="form-promo__but" value="Submit" type="Submit">
-								    </div>
-                                 </td>*@
                                  <td colspan="3" class="content__table-cell_right content__cell_total">Estimated Total:</td>
                                  <td class="content__cell_total content__table-cell_left">$<span id="total">0</span></td>
                              </tr>
@@ -84,7 +52,7 @@
         </div>
         <div class="content-main__aside">
             <div class="content-main__header"></div>
-            @ConferenceHelpers.ExpirationBox(Model.ReservationExpirationDate, Url.Action("ShowExpiredOrder", "Registration", new { conferenceCode = this.ViewBag.Conference.Code, orderId = this.Model.OrderId }))
+            @ConferenceHelpers.ExpirationBox(Model.ReservationExpirationDate, Url.Action("ShowExpiredOrder", "Registration", new { conferenceCode = this.ViewBag.Conference.Slug, orderId = this.Model.OrderId }))
         </div>
         <div class="g-clear"></div>
     </div>

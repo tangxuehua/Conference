@@ -17,19 +17,22 @@ namespace Registration.Orders
         private Registrant _registrant;
         private string _accessCode;
 
-        public Order(Guid id, Guid conferenceId, IEnumerable<SeatQuantity> seats, Registrant registrant, IPricingService pricingService) : base(id)
+        public Order(Guid id, Guid conferenceId, IEnumerable<SeatQuantity> seats, IPricingService pricingService) : base(id)
         {
             Ensure.NotEmptyGuid(id, "id");
             Ensure.NotEmptyGuid(conferenceId, "conferenceId");
             Ensure.NotNull(seats, "seats");
-            Ensure.NotNull(registrant, "registrant");
             Ensure.NotNull(pricingService, "pricingService");
             if (!seats.Any()) throw new ArgumentException("The seats of order cannot be empty.");
 
             var orderTotal = pricingService.CalculateTotal(conferenceId, seats);
-            ApplyEvent(new OrderPlaced(this, conferenceId, orderTotal, registrant, DateTime.UtcNow.Add(ConfigSettings.ReservationAutoExpiration), ObjectId.GenerateNewStringId()));
+            ApplyEvent(new OrderPlaced(this, conferenceId, orderTotal, DateTime.UtcNow.Add(ConfigSettings.ReservationAutoExpiration), ObjectId.GenerateNewStringId()));
         }
 
+        public void AssignRegistrant(string firstName, string lastName, string email)
+        {
+            ApplyEvent(new OrderRegistrantAssigned(this, _conferenceId, new Registrant(firstName, lastName, email)));
+        }
         public void ConfirmReservation(bool isReservationSuccess)
         {
             if (_status != OrderStatus.Placed)
@@ -97,9 +100,12 @@ namespace Registration.Orders
             _id = evnt.AggregateRootId;
             _conferenceId = evnt.ConferenceId;
             _total = evnt.OrderTotal;
-            _registrant = evnt.Registrant;
             _accessCode = evnt.AccessCode;
             _status = OrderStatus.Placed;
+        }
+        private void Handle(OrderRegistrantAssigned evnt)
+        {
+            _registrant = evnt.Registrant;
         }
         private void Handle(OrderReservationConfirmed evnt)
         {
@@ -125,12 +131,12 @@ namespace Registration.Orders
     public enum OrderStatus
     {
         Placed = 1,                //订单已生成
-        ReservationSuccess,        //位置预定已成功（下单已成功）
-        ReservationFailed,         //位置预定已失败（下单失败）
-        PaymentSuccess,            //付款已成功
-        PaymentRejected,           //付款已拒绝
-        Expired,                   //订单已过期
-        Success,                   //交易已成功
-        Closed                     //订单已关闭
+        ReservationSuccess = 2,    //位置预定已成功（下单已成功）
+        ReservationFailed = 3,     //位置预定已失败（下单失败）
+        PaymentSuccess = 4,        //付款已成功
+        PaymentRejected = 5,       //付款已拒绝
+        Expired = 6,               //订单已过期
+        Success = 7,               //交易已成功
+        Closed = 8                 //订单已关闭
     }
 }

@@ -11,6 +11,7 @@
         public const string RegistrationDomainEventTopic = "RegistrationDomainEventTopic";
 
         public const string PaymentCommandTopic = "PaymentCommandTopic";
+        public const string PaymentDomainEventTopic = "PaymentDomainEventTopic";
         public const string PaymentApplicationMessageTopic = "PaymentApplicationMessageTopic";
     }
 }

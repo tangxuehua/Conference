@@ -67,12 +67,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="QueryServices\Implementation\ConferenceQueryService.cs" />
+    <Compile Include="QueryServices\Implementation\PaymentQueryService.cs" />
     <Compile Include="QueryServices\Implementation\OrderQueryService.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="QueryServices\IPaymentQueryService.cs" />
     <Compile Include="QueryServices\IOrderQueryService.cs" />
     <Compile Include="QueryServices\SeatAssignment.cs" />
     <Compile Include="QueryServices\Order.cs" />
+    <Compile Include="QueryServices\Payment.cs" />
     <Compile Include="QueryServices\SeatType.cs" />
     <Compile Include="QueryServices\SeatTypeName.cs" />
   </ItemGroup>

@@ -8,6 +8,7 @@ using ENode.EQueue.Commanding;
 using ENode.Infrastructure;
 using ENode.Infrastructure.Impl;
 using EQueue.Configurations;
+using Payments.Commands;
 using Registration.Commands.Orders;
 using Registration.Commands.SeatAssignments;
 
@@ -30,6 +31,10 @@ namespace Registration.Web.Extensions
             provider.RegisterType<CreateSeatAssignments>(225);
             provider.RegisterType<AssignSeat>(226);
             provider.RegisterType<UnassignSeat>(227);
+
+            provider.RegisterType<CreatePayment>(240);
+            provider.RegisterType<CompletePayment>(241);
+            provider.RegisterType<CancelPayment>(242);
 
             return enodeConfiguration;
         }

@@ -163,7 +163,7 @@ CREATE TABLE [dbo].[ThidPartyProcessorPaymentItems](
     [Id] [uniqueidentifier] NOT NULL,
     [Description] [nvarchar](max) NULL,
     [Amount] [decimal](18, 2) NOT NULL,
-    [ThirdPartyProcessorPayment_Id] [uniqueidentifier] NULL,
+    [PaymentId] [uniqueidentifier] NULL,
 PRIMARY KEY CLUSTERED 
 (
     [Id] ASC
@@ -184,10 +184,11 @@ GO
 
 CREATE TABLE [dbo].[ThirdPartyProcessorPayments](
     [Id] [uniqueidentifier] NOT NULL,
-    [StateValue] [int] NOT NULL,
-    [PaymentSourceId] [uniqueidentifier] NOT NULL,
+    [State] [int] NOT NULL,
+    [OrderId] [uniqueidentifier] NOT NULL,
     [Description] [nvarchar](max) NULL,
     [TotalAmount] [decimal](18, 2) NOT NULL,
+    [Version] [bigint] NOT NULL,
 PRIMARY KEY CLUSTERED 
 (
     [Id] ASC

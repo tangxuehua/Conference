@@ -13,6 +13,7 @@ namespace ConferenceManagement
         public SeatsReservationCommitted() { }
         public SeatsReservationCommitted(Conference conference, Guid reservationId, IEnumerable<SeatQuantity> seatQuantities) : base(conference)
         {
+            ReservationId = reservationId;
             SeatQuantities = seatQuantities;
         }
     }

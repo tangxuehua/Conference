@@ -4,7 +4,7 @@ using ECommon.IO;
 using ENode.Infrastructure;
 using Payments.Messages;
 
-namespace Payments.EventHandlers
+namespace Payments.MessagePublishers
 {
     [Component]
     public class PaymentMessagePublisher :

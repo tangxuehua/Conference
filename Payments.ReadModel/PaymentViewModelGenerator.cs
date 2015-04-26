@@ -28,7 +28,7 @@ namespace Payments.ReadModel
                     OrderId = evnt.OrderId,
                     State = (int)PaymentState.Initiated,
                     Description = evnt.Description,
-                    Amount = evnt.TotalAmount,
+                    TotalAmount = evnt.TotalAmount,
                     Version = evnt.Version
                 }, ConfigSettings.PaymentTable, transaction));
                 foreach (var item in evnt.Items)

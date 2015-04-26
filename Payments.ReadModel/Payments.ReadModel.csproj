@@ -58,18 +58,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PaymentViewModelGenerator.cs" />
-    <Compile Include="PaymentItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Payment.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Conference.Common\Conference.Common.csproj">
       <Project>{baf088f8-3fcb-45ef-a228-6424c34c65ca}</Project>
       <Name>Conference.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Payments\Payments.csproj">
+    <ProjectReference Include="..\Payments\Payments.Domain.csproj">
       <Project>{c6d29641-e27b-4180-985b-e5fb7181f7f8}</Project>
-      <Name>Payments</Name>
+      <Name>Payments.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

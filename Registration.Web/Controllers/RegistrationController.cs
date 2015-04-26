@@ -73,7 +73,7 @@ namespace Registration.Web.Controllers
 
             return View(new RegistrationViewModel
             {
-                RegistrantDetails = new RegistrantDetails(),
+                RegistrantDetails = new RegistrantDetails { OrderId = order.OrderId },
                 Order = order
             });
         }
@@ -157,7 +157,7 @@ namespace Registration.Web.Controllers
         }
         private CreatePayment CreatePaymentCommand(Order order)
         {
-            var description = "Registration for " + this.ConferenceAlias.Name;
+            var description = "Payment for the order of " + this.ConferenceAlias.Name;
             var paymentCommand = new CreatePayment
             {
                 AggregateRootId = GuidUtil.NewSequentialId(),

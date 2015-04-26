@@ -2,6 +2,7 @@
 using ECommon.Components;
 using ENode.Commanding;
 using ENode.EQueue;
+using Payments.Commands;
 
 namespace Registration.Web.TopicProviders
 {
@@ -10,6 +11,10 @@ namespace Registration.Web.TopicProviders
     {
         public override string GetTopic(ICommand command)
         {
+            if (command is CreatePayment || command is CompletePayment || command is CancelPayment)
+            {
+                return Topics.PaymentCommandTopic;
+            }
             return Topics.RegistrationCommandTopic;
         }
     }

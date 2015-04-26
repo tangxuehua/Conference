@@ -64,9 +64,9 @@
       <Project>{914b7e07-3bd2-4eb6-b1c8-e37ff94d662b}</Project>
       <Name>Payments.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Payments\Payments.csproj">
+    <ProjectReference Include="..\Payments\Payments.Domain.csproj">
       <Project>{c6d29641-e27b-4180-985b-e5fb7181f7f8}</Project>
-      <Name>Payments</Name>
+      <Name>Payments.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

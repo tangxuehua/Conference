@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payments", "Payments", "{3C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Domain", "Registration\Registration.Domain.csproj", "{BA3DD497-5943-4E10-B586-12D9447A95A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments", "Payments\Payments.csproj", "{C6D29641-E27B-4180-985B-E5FB7181F7F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Domain", "Payments\Payments.Domain.csproj", "{C6D29641-E27B-4180-985B-E5FB7181F7F8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Messages", "Payments.Messages\Payments.Messages.csproj", "{C39BCB0A-AB88-45EB-9CEE-9EF4157B22C6}"
 EndProject
@@ -65,6 +65,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Repositories.Dapper", "ConferenceManagement.Repositories.Dapper\ConferenceManagement.Repositories.Dapper.csproj", "{DF81DDA1-EADF-4632-94FF-209DA2690D45}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Web", "Registration.Web\Registration.Web.csproj", "{32E3E4D7-D887-4BE1-A84F-130BF80533D0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosts", "Hosts", "{A328FBF2-255B-4F7F-8CE5-C4600943D0AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.ProcessorHost", "Payments.ProcessorHost\Payments.ProcessorHost.csproj", "{3029C3C2-AECE-4921-BA6E-D85A258B2BD2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -217,6 +221,12 @@ Global
 		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
 		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32E3E4D7-D887-4BE1-A84F-130BF80533D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3029C3C2-AECE-4921-BA6E-D85A258B2BD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3029C3C2-AECE-4921-BA6E-D85A258B2BD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3029C3C2-AECE-4921-BA6E-D85A258B2BD2}.DebugLocal|Any CPU.ActiveCfg = Debug|Any CPU
+		{3029C3C2-AECE-4921-BA6E-D85A258B2BD2}.DebugLocal|Any CPU.Build.0 = Debug|Any CPU
+		{3029C3C2-AECE-4921-BA6E-D85A258B2BD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3029C3C2-AECE-4921-BA6E-D85A258B2BD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -234,6 +244,7 @@ Global
 		{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{BC3D3AAC-E5A0-4AE0-AC38-1B247F83B692} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{34477AE1-228F-40DF-B463-3CFC85841A82} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
+		{A328FBF2-255B-4F7F-8CE5-C4600943D0AC} = {3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}
 		{44034F86-8D91-4489-A88A-A78886C772D7} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
 		{0CED18F4-5318-4B90-8F09-D1E4B2E75B08} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
 		{F522345E-1872-42B6-B5C2-9F158B91F3E3} = {D986C94C-06C0-4E9F-9E20-454673DAE696}
@@ -246,6 +257,7 @@ Global
 		{4E7E2173-B8EA-41DF-9611-00C6D208C603} = {351A4F87-5B69-4037-964D-85404F12B18A}
 		{DD03A579-1FDB-443A-8DE0-432CD51F0573} = {2EFC0517-BA42-4115-B962-1D0B162906F2}
 		{32E3E4D7-D887-4BE1-A84F-130BF80533D0} = {2EFC0517-BA42-4115-B962-1D0B162906F2}
+		{3029C3C2-AECE-4921-BA6E-D85A258B2BD2} = {A328FBF2-255B-4F7F-8CE5-C4600943D0AC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\lib\NET4;packages\EnterpriseLibrary.WindowsAzure.TransientFaultHandling.5.0.1118.2\DesignTime;packages\TransientFaultHandling.Core.5.0.1118.2\lib\NET35;packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35

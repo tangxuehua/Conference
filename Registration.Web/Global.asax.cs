@@ -135,6 +135,11 @@ namespace Registration.Web
                 new { controller = "Registration", action = "ShowExpiredOrder" });
 
             routes.MapRoute(
+                "RejectedOrder",
+                "{conferenceCode}/rejected",
+                new { controller = "Registration", action = "ShowRejectedOrder" });
+
+            routes.MapRoute(
                 "RegisterConfirmation",
                 "{conferenceCode}/confirmation",
                 new { controller = "Registration", action = "ThankYou" });

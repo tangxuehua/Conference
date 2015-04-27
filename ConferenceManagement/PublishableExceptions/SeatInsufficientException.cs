@@ -18,13 +18,13 @@ namespace ConferenceManagement
 
         public override void RestoreFrom(IDictionary<string, string> serializableInfo)
         {
-            serializableInfo.Add("ConferenceId", ConferenceId.ToString());
-            serializableInfo.Add("ReservationId", ReservationId.ToString());
+            ConferenceId = Guid.Parse(serializableInfo["ConferenceId"]);
+            ReservationId = Guid.Parse(serializableInfo["ReservationId"]);
         }
         public override void SerializeTo(IDictionary<string, string> serializableInfo)
         {
-            ConferenceId = Guid.Parse(serializableInfo["ConferenceId"]);
-            ReservationId = Guid.Parse(serializableInfo["ReservationId"]);
+            serializableInfo.Add("ConferenceId", ConferenceId.ToString());
+            serializableInfo.Add("ReservationId", ReservationId.ToString());
         }
     }
 }

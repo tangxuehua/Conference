@@ -20,7 +20,6 @@ namespace Registration.Web.Controllers
     public class RegistrationController : ConferenceTenantController
     {
         public const string ThirdPartyProcessorPayment = "thirdParty";
-        public const string InvoicePayment = "invoice";
         private static readonly TimeSpan DraftOrderWaitTimeout = TimeSpan.FromSeconds(5);
         private static readonly TimeSpan DraftOrderPollInterval = TimeSpan.FromMilliseconds(750);
         private static readonly TimeSpan PricedOrderWaitTimeout = TimeSpan.FromSeconds(5);
@@ -71,6 +70,7 @@ namespace Registration.Web.Controllers
                 return View("PricedOrderUnknown");
             }
 
+            //TODO,如果订单的状态是下单失败（库存不足的情况），则需要在UI上做相应显示
             return View(new RegistrationViewModel
             {
                 RegistrantDetails = new RegistrantDetails { OrderId = order.OrderId },
@@ -123,6 +123,13 @@ namespace Registration.Web.Controllers
 
         [HttpGet]
         [OutputCache(Duration = 0, NoStore = true)]
+        public ActionResult ShowRejectedOrder(Guid orderId)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        [OutputCache(Duration = 0, NoStore = true)]
         public ActionResult ShowExpiredOrder(Guid orderId)
         {
             return View();
@@ -142,7 +149,7 @@ namespace Registration.Web.Controllers
             SendCommandAsync(paymentCommand);
 
             var paymentAcceptedUrl = this.Url.Action("ThankYou", new { conferenceCode = this.ConferenceAlias.Slug, order.OrderId });
-            var paymentRejectedUrl = this.Url.Action("SpecifyRegistrantAndPaymentDetails", new { conferenceCode = this.ConferenceAlias.Slug, orderId = order.OrderId });
+            var paymentRejectedUrl = this.Url.Action("ShowRejectedOrder", new { conferenceCode = this.ConferenceAlias.Slug, orderId = order.OrderId });
 
             return RedirectToAction(
                 "ThirdPartyProcessorPayment",

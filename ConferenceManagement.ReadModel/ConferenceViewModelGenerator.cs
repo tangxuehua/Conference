@@ -133,7 +133,7 @@ namespace ConferenceManagement.ReadModel
         {
             return TryTransactionAsync(async (connection, transaction) =>
             {
-                var effectedRows = await connection.UpdateAsync(new
+                await connection.UpdateAsync(new
                 {
                     Version = evnt.Version
                 }, new
@@ -141,26 +141,24 @@ namespace ConferenceManagement.ReadModel
                     Id = evnt.AggregateRootId,
                     Version = evnt.Version - 1
                 }, ConfigSettings.ConferenceTable, transaction);
-                if (effectedRows == 1)
+
+                await connection.UpdateAsync(new
                 {
-                    await connection.UpdateAsync(new
-                    {
-                        Name = evnt.SeatTypeInfo.Name,
-                        Description = evnt.SeatTypeInfo.Description,
-                        Price = evnt.SeatTypeInfo.Price
-                    }, new
-                    {
-                        ConferenceId = evnt.AggregateRootId,
-                        Id = evnt.SeatTypeId
-                    }, ConfigSettings.SeatTypeTable, transaction);
-                }
+                    Name = evnt.SeatTypeInfo.Name,
+                    Description = evnt.SeatTypeInfo.Description,
+                    Price = evnt.SeatTypeInfo.Price
+                }, new
+                {
+                    ConferenceId = evnt.AggregateRootId,
+                    Id = evnt.SeatTypeId
+                }, ConfigSettings.SeatTypeTable, transaction);
             });
         }
         public Task<AsyncTaskResult> HandleAsync(SeatTypeQuantityChanged evnt)
         {
             return TryTransactionAsync(async (connection, transaction) =>
             {
-                var effectedRows = await connection.UpdateAsync(new
+                await connection.UpdateAsync(new
                 {
                     Version = evnt.Version
                 }, new
@@ -168,18 +166,16 @@ namespace ConferenceManagement.ReadModel
                     Id = evnt.AggregateRootId,
                     Version = evnt.Version - 1
                 }, ConfigSettings.ConferenceTable, transaction);
-                if (effectedRows == 1)
+
+                await connection.UpdateAsync(new
                 {
-                    await connection.UpdateAsync(new
-                    {
-                        Quantity = evnt.Quantity,
-                        AvailableQuantity = evnt.AvailableQuantity
-                    }, new
-                    {
-                        ConferenceId = evnt.AggregateRootId,
-                        Id = evnt.SeatTypeId
-                    }, ConfigSettings.SeatTypeTable, transaction);
-                }
+                    Quantity = evnt.Quantity,
+                    AvailableQuantity = evnt.AvailableQuantity
+                }, new
+                {
+                    ConferenceId = evnt.AggregateRootId,
+                    Id = evnt.SeatTypeId
+                }, ConfigSettings.SeatTypeTable, transaction);
             });
         }
         public Task<AsyncTaskResult> HandleAsync(SeatTypeRemoved evnt)

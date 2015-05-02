@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DD03A579-1FDB-443A-8DE0-432CD51F0573}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Registration.ProcessorHost</RootNamespace>
+    <AssemblyName>Registration.ProcessorHost</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac">
+      <HintPath>..\..\packages\Autofac.3.4.0\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper">
+      <HintPath>..\..\packages\Dapper.1.38\lib\net45\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="ECommon">
+      <HintPath>..\..\packages\ECommon.1.4.6\lib\net45\ECommon.dll</HintPath>
+    </Reference>
+    <Reference Include="ECommon.Autofac">
+      <HintPath>..\..\packages\ECommon.Autofac.1.4.2\lib\net45\ECommon.Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="ECommon.Dapper">
+      <HintPath>..\..\packages\ECommon.Dapper.1.4.2\lib\net45\ECommon.Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="ECommon.JsonNet">
+      <HintPath>..\..\packages\ECommon.JsonNet.1.4.2\lib\net45\ECommon.JsonNet.dll</HintPath>
+    </Reference>
+    <Reference Include="ECommon.Log4Net">
+      <HintPath>..\..\packages\ECommon.Log4Net.1.4.2\lib\net45\ECommon.Log4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="ENode">
+      <HintPath>..\..\packages\ENode.2.5.9\lib\net45\ENode.dll</HintPath>
+    </Reference>
+    <Reference Include="ENode.EQueue">
+      <HintPath>..\..\packages\ENode.EQueue.1.6.4\lib\net45\ENode.EQueue.dll</HintPath>
+    </Reference>
+    <Reference Include="EQueue">
+      <HintPath>..\..\packages\EQueue.1.4.5\lib\net45\EQueue.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Bootstrap.cs" />
+    <Compile Include="ENodeExtensions.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service1.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service1.Designer.cs">
+      <DependentUpon>Service1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TopicProviders\CommandTopicProvider.cs" />
+    <Compile Include="TopicProviders\DomainEventTopicProvider.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ProjectInstaller.resx">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Conference.Common\Conference.Common.csproj">
+      <Project>{baf088f8-3fcb-45ef-a228-6424c34c65ca}</Project>
+      <Name>Conference.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ConferenceManagementBC\ConferenceManagement.Commands\ConferenceManagement.Commands.csproj">
+      <Project>{f522345e-1872-42b6-b5c2-9f158b91f3e3}</Project>
+      <Name>ConferenceManagement.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ConferenceManagementBC\ConferenceManagement.Messages\ConferenceManagement.Messages.csproj">
+      <Project>{b3658426-259d-4393-aaca-60c84d7fa073}</Project>
+      <Name>ConferenceManagement.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PaymentsBC\Payments.Commands\Payments.Commands.csproj">
+      <Project>{914b7e07-3bd2-4eb6-b1c8-e37ff94d662b}</Project>
+      <Name>Payments.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PaymentsBC\Payments.Messages\Payments.Messages.csproj">
+      <Project>{c39bcb0a-ab88-45eb-9cee-9ef4157b22c6}</Project>
+      <Name>Payments.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Registration.CommandHandlers\Registration.CommandHandlers.csproj">
+      <Project>{f704dbe6-0cd4-40d3-b496-1aa65a6fe83e}</Project>
+      <Name>Registration.CommandHandlers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Registration.Commands\Registration.Commands.csproj">
+      <Project>{eb602d2f-5fc3-4a4f-aaf3-63bb43d02a5d}</Project>
+      <Name>Registration.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Registration.ProcessManagers\Registration.ProcessManagers.csproj">
+      <Project>{f9ce88c9-d44f-40a5-a30c-bfa90355a819}</Project>
+      <Name>Registration.ProcessManagers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Registration.ReadModel\Registration.ReadModel.csproj">
+      <Project>{223579dd-4650-4f51-a3ae-e7f8af00972c}</Project>
+      <Name>Registration.ReadModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Registration.Domain\Registration.Domain.csproj">
+      <Project>{ba3dd497-5943-4e10-b586-12d9447a95a2}</Project>
+      <Name>Registration.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。启用“NuGet 程序包还原”可下载这些程序包。有关详细信息，请参阅 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

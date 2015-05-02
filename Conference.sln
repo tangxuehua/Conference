@@ -7,25 +7,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Registration", "Registratio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Payments", "Payments", "{3CD498B7-B9C0-4B70-94A1-CFBF0718DDB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Domain", "Registration\Registration.Domain.csproj", "{BA3DD497-5943-4E10-B586-12D9447A95A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Domain", "RegistrationBC\Registration.Domain\Registration.Domain.csproj", "{BA3DD497-5943-4E10-B586-12D9447A95A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Domain", "Payments\Payments.Domain.csproj", "{C6D29641-E27B-4180-985B-E5FB7181F7F8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Domain", "PaymentsBC\Payments.Domain\Payments.Domain.csproj", "{C6D29641-E27B-4180-985B-E5FB7181F7F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Messages", "Payments.Messages\Payments.Messages.csproj", "{C39BCB0A-AB88-45EB-9CEE-9EF4157B22C6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Messages", "PaymentsBC\Payments.Messages\Payments.Messages.csproj", "{C39BCB0A-AB88-45EB-9CEE-9EF4157B22C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Commands", "Registration.Commands\Registration.Commands.csproj", "{EB602D2F-5FC3-4A4F-AAF3-63BB43D02A5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Commands", "RegistrationBC\Registration.Commands\Registration.Commands.csproj", "{EB602D2F-5FC3-4A4F-AAF3-63BB43D02A5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.CommandHandlers", "Registration.CommandHandlers\Registration.CommandHandlers.csproj", "{F704DBE6-0CD4-40D3-B496-1AA65A6FE83E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.CommandHandlers", "RegistrationBC\Registration.CommandHandlers\Registration.CommandHandlers.csproj", "{F704DBE6-0CD4-40D3-B496-1AA65A6FE83E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.ReadModel", "Registration.ReadModel\Registration.ReadModel.csproj", "{223579DD-4650-4F51-A3AE-E7F8AF00972C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.ReadModel", "RegistrationBC\Registration.ReadModel\Registration.ReadModel.csproj", "{223579DD-4650-4F51-A3AE-E7F8AF00972C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conference.Common", "Conference.Common\Conference.Common.csproj", "{BAF088F8-3FCB-45EF-A228-6424C34C65CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Commands", "Payments.Commands\Payments.Commands.csproj", "{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.Commands", "PaymentsBC\Payments.Commands\Payments.Commands.csproj", "{914B7E07-3BD2-4EB6-B1C8-E37FF94D662B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.ReadModel", "Payments.ReadModel\Payments.ReadModel.csproj", "{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.ReadModel", "PaymentsBC\Payments.ReadModel\Payments.ReadModel.csproj", "{EFC691DF-0EED-4E91-A2C2-E5DF41F09FD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.CommandHandlers", "Payments.CommandHandlers\Payments.CommandHandlers.csproj", "{BC3D3AAC-E5A0-4AE0-AC38-1B247F83B692}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.CommandHandlers", "PaymentsBC\Payments.CommandHandlers\Payments.CommandHandlers.csproj", "{BC3D3AAC-E5A0-4AE0-AC38-1B247F83B692}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{B26CE90F-E736-436F-9CB1-C182D157FB31}"
 	ProjectSection(SolutionItems) = preProject
@@ -36,39 +36,39 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{B26C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConferenceManagement", "ConferenceManagement", "{D986C94C-06C0-4E9F-9E20-454673DAE696}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Domain", "ConferenceManagement\ConferenceManagement.Domain.csproj", "{44034F86-8D91-4489-A88A-A78886C772D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Domain", "ConferenceManagementBC\ConferenceManagement.Domain\ConferenceManagement.Domain.csproj", "{44034F86-8D91-4489-A88A-A78886C772D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.ReadModel", "ConferenceManagement.ReadModel\ConferenceManagement.ReadModel.csproj", "{0CED18F4-5318-4B90-8F09-D1E4B2E75B08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.ReadModel", "ConferenceManagementBC\ConferenceManagement.ReadModel\ConferenceManagement.ReadModel.csproj", "{0CED18F4-5318-4B90-8F09-D1E4B2E75B08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Commands", "ConferenceManagement.Commands\ConferenceManagement.Commands.csproj", "{F522345E-1872-42B6-B5C2-9F158B91F3E3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Commands", "ConferenceManagementBC\ConferenceManagement.Commands\ConferenceManagement.Commands.csproj", "{F522345E-1872-42B6-B5C2-9F158B91F3E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.CommandHandlers", "ConferenceManagement.CommandHandlers\ConferenceManagement.CommandHandlers.csproj", "{22EAB61C-5473-4298-A767-BDC88EA09053}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.CommandHandlers", "ConferenceManagementBC\ConferenceManagement.CommandHandlers\ConferenceManagement.CommandHandlers.csproj", "{22EAB61C-5473-4298-A767-BDC88EA09053}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Messages", "ConferenceManagement.Messages\ConferenceManagement.Messages.csproj", "{B3658426-259D-4393-AACA-60C84D7FA073}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Messages", "ConferenceManagementBC\ConferenceManagement.Messages\ConferenceManagement.Messages.csproj", "{B3658426-259D-4393-AACA-60C84D7FA073}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.ProcessManagers", "Registration.ProcessManagers\Registration.ProcessManagers.csproj", "{F9CE88C9-D44F-40A5-A30C-BFA90355A819}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.ProcessManagers", "RegistrationBC\Registration.ProcessManagers\Registration.ProcessManagers.csproj", "{F9CE88C9-D44F-40A5-A30C-BFA90355A819}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.MessagePublishers", "ConferenceManagement.MessagePublishers\ConferenceManagement.MessagePublishers.csproj", "{6101A2D2-38DB-486A-A491-30E4E02843A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.MessagePublishers", "ConferenceManagementBC\ConferenceManagement.MessagePublishers\ConferenceManagement.MessagePublishers.csproj", "{6101A2D2-38DB-486A-A491-30E4E02843A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.MessagePublishers", "Payments.MessagePublishers\Payments.MessagePublishers.csproj", "{34477AE1-228F-40DF-B463-3CFC85841A82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.MessagePublishers", "PaymentsBC\Payments.MessagePublishers\Payments.MessagePublishers.csproj", "{34477AE1-228F-40DF-B463-3CFC85841A82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Web", "ConferenceManagement.Web\ConferenceManagement.Web.csproj", "{55C34F60-8B4D-428E-9340-2A6C4800E7B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Web", "ConferenceManagementBC\ConferenceManagement.Web\ConferenceManagement.Web.csproj", "{55C34F60-8B4D-428E-9340-2A6C4800E7B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.ProcessorHost", "Registration.ProcessorHost\Registration.ProcessorHost.csproj", "{DD03A579-1FDB-443A-8DE0-432CD51F0573}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.ProcessorHost", "RegistrationBC\Registration.ProcessorHost\Registration.ProcessorHost.csproj", "{DD03A579-1FDB-443A-8DE0-432CD51F0573}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.ProcessorHost", "ConferenceManagement.ProcessorHost\ConferenceManagement.ProcessorHost.csproj", "{4E7E2173-B8EA-41DF-9611-00C6D208C603}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.ProcessorHost", "ConferenceManagementBC\ConferenceManagement.ProcessorHost\ConferenceManagement.ProcessorHost.csproj", "{4E7E2173-B8EA-41DF-9611-00C6D208C603}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Conference.MessageBroker", "Conference.MessageBroker\Conference.MessageBroker.csproj", "{C1DE1080-796D-494A-82D6-5A2AF068AC57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Repositories.Dapper", "ConferenceManagement.Repositories.Dapper\ConferenceManagement.Repositories.Dapper.csproj", "{DF81DDA1-EADF-4632-94FF-209DA2690D45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConferenceManagement.Repositories.Dapper", "ConferenceManagementBC\ConferenceManagement.Repositories.Dapper\ConferenceManagement.Repositories.Dapper.csproj", "{DF81DDA1-EADF-4632-94FF-209DA2690D45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Web", "Registration.Web\Registration.Web.csproj", "{32E3E4D7-D887-4BE1-A84F-130BF80533D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Registration.Web", "RegistrationBC\Registration.Web\Registration.Web.csproj", "{32E3E4D7-D887-4BE1-A84F-130BF80533D0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosts", "Hosts", "{A328FBF2-255B-4F7F-8CE5-C4600943D0AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.ProcessorHost", "Payments.ProcessorHost\Payments.ProcessorHost.csproj", "{3029C3C2-AECE-4921-BA6E-D85A258B2BD2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Payments.ProcessorHost", "PaymentsBC\Payments.ProcessorHost\Payments.ProcessorHost.csproj", "{3029C3C2-AECE-4921-BA6E-D85A258B2BD2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Processors", "Processors", "{BE63DDAC-0FE1-4F10-9730-62F4A8733BE2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProcessorHosts", "ProcessorHosts", "{BE63DDAC-0FE1-4F10-9730-62F4A8733BE2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Websites", "Websites", "{1CD783E5-0215-4B06-92F4-7D9B8E630B3A}"
 EndProject
@@ -260,7 +260,6 @@ Global
 		{BE63DDAC-0FE1-4F10-9730-62F4A8733BE2} = {A328FBF2-255B-4F7F-8CE5-C4600943D0AC}
 		{1CD783E5-0215-4B06-92F4-7D9B8E630B3A} = {A328FBF2-255B-4F7F-8CE5-C4600943D0AC}
 		{4E7E2173-B8EA-41DF-9611-00C6D208C603} = {BE63DDAC-0FE1-4F10-9730-62F4A8733BE2}
-		{C1DE1080-796D-494A-82D6-5A2AF068AC57} = {BE63DDAC-0FE1-4F10-9730-62F4A8733BE2}
 		{3029C3C2-AECE-4921-BA6E-D85A258B2BD2} = {BE63DDAC-0FE1-4F10-9730-62F4A8733BE2}
 		{DD03A579-1FDB-443A-8DE0-432CD51F0573} = {BE63DDAC-0FE1-4F10-9730-62F4A8733BE2}
 		{55C34F60-8B4D-428E-9340-2A6C4800E7B5} = {1CD783E5-0215-4B06-92F4-7D9B8E630B3A}

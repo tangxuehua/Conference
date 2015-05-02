@@ -49,6 +49,12 @@ namespace Registration.Web.Controllers
             }
 
             var command = model.ToPlaceOrderCommand(this.ConferenceAlias, ConferenceQueryService);
+            if (!command.Seats.Any())
+            {
+                ModelState.AddModelError("ConferenceCode", "You must reservation at least one seat.");
+                return View(CreateViewModel());
+            }
+
             var result = await SendCommandAsync(command);
 
             if (!result.IsSuccess())
@@ -70,12 +76,18 @@ namespace Registration.Web.Controllers
                 return View("PricedOrderUnknown");
             }
 
-            //TODO,如果订单的状态是下单失败（库存不足的情况），则需要在UI上做相应显示
-            return View(new RegistrationViewModel
+            if (order.Status == (int)OrderStatus.ReservationSuccess)
             {
-                RegistrantDetails = new RegistrantDetails { OrderId = order.OrderId },
-                Order = order
-            });
+                return View(new RegistrationViewModel
+                {
+                    RegistrantDetails = new RegistrantDetails { OrderId = order.OrderId },
+                    Order = order
+                });
+            }
+            else
+            {
+                return View("ReservationFailed");
+            }
         }
 
         [HttpPost]
@@ -86,7 +98,7 @@ namespace Registration.Web.Controllers
                 return SpecifyRegistrantAndPaymentDetails(orderId);
             }
 
-            SendCommandAsync(new AssignRegistrantDetails(this.ConferenceAlias.Id)
+            SendCommandAsync(new AssignRegistrantDetails(orderId)
             {
                 FirstName = model.FirstName,
                 LastName = model.LastName,

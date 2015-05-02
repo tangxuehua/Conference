@@ -35,7 +35,7 @@ namespace Registration.ProcessorHost
 
             //aggregates
             provider.RegisterType<Order>(120);
-            provider.RegisterType<SeatAssignments>(121);
+            provider.RegisterType<OrderSeatAssignments>(121);
 
             //commands
             provider.RegisterType<MakeSeatReservation>(207);
@@ -50,6 +50,7 @@ namespace Registration.ProcessorHost
             provider.RegisterType<CreateSeatAssignments>(225);
             provider.RegisterType<AssignSeat>(226);
             provider.RegisterType<UnassignSeat>(227);
+            provider.RegisterType<AssignRegistrantDetails>(228);
 
             //application messages
             provider.RegisterType<SeatsReservedMessage>(300);
@@ -67,13 +68,15 @@ namespace Registration.ProcessorHost
             provider.RegisterType<OrderClosed>(423);
             provider.RegisterType<OrderExpired>(424);
             provider.RegisterType<OrderSuccessed>(425);
-            provider.RegisterType<SeatAssignmentsCreated>(426);
+            provider.RegisterType<OrderSeatAssignmentsCreated>(426);
             provider.RegisterType<SeatAssigned>(427);
             provider.RegisterType<SeatUnassigned>(428);
+            provider.RegisterType<OrderRegistrantAssigned>(429);
 
             //application message, domain event, or exception handlers
             provider.RegisterType<RegistrationProcessManager>(620);
             provider.RegisterType<OrderViewModelGenerator>(621);
+            provider.RegisterType<OrderSeatAssignmentsViewModelGenerator>(622);
 
             return enodeConfiguration;
         }

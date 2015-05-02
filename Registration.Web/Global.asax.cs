@@ -155,11 +155,6 @@ namespace Registration.Web
                 new { controller = "Order", action = "AssignSeats" });
 
             routes.MapRoute(
-                "AssignSeatsWithoutAssignmentsId",
-                "{conferenceCode}/order/{orderId}/seats-redirect",
-                new { controller = "Order", action = "AssignSeatsForOrder" });
-
-            routes.MapRoute(
                 "OrderDisplay",
                 "{conferenceCode}/order/{orderId}",
                 new { controller = "Order", action = "Display" });

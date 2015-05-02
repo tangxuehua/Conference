@@ -86,13 +86,13 @@ namespace Registration.Orders
             }
             ApplyEvent(new OrderClosed(this, _conferenceId));
         }
-        public SeatAssignments CreateSeatAssignments()
+        public OrderSeatAssignments CreateSeatAssignments()
         {
             if (_status != OrderStatus.Success)
             {
                 throw new InvalidOperationException("Cannot create seat assignments for an order that isn't success yet.");
             }
-            return new SeatAssignments(_id, _total.Lines);
+            return new OrderSeatAssignments(_id, _total.Lines);
         }
 
         private void Handle(OrderPlaced evnt)

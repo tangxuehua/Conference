@@ -82,7 +82,7 @@
 <script type="text/javascript" src="@Url.Content("~/Content/form/form.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/Content/reg-time-info/reg-time-info.js")"></script>
 <script type="text/javascript">
-    $(function () {
+    $(document).ready(function () {
         function calculateTotals() {
             var total = 0;
             $(".lineItem").each(function (index, item) {
@@ -100,4 +100,5 @@
         calculateTotals();
     });
 </script>
+
 }

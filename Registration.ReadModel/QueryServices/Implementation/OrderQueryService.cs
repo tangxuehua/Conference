@@ -36,11 +36,11 @@ namespace Registration.ReadModel.Implementation
                 return null;
             }
         }
-        public SeatAssignment[] FindOrderSeatAssignments(Guid orderId)
+        public OrderSeatAssignment[] FindOrderSeatAssignments(Guid orderId)
         {
             using (var connection = GetConnection())
             {
-                return connection.QueryList<SeatAssignment>(new { AssignmentsId = orderId }, ConfigSettings.OrderSeatAssignmentsTable).ToArray();
+                return connection.QueryList<OrderSeatAssignment>(new { OrderId = orderId }, ConfigSettings.OrderSeatAssignmentsTable).ToArray();
             }
         }
 

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Conference.Order>
+﻿@model IEnumerable<ConferenceManagement.ReadModel.OrderDTO>
 @{
     ViewBag.Title = "Orders & Attendees";
     ViewBag.PageType = "page_conference-seats";
@@ -25,19 +25,19 @@
                         <thead>
                             <tr>
                                 <th>
-                                    <span>@Html.DisplayNameFor(model => model.AccessCode)</span>
+                                    <span>AccessCode</span>
                                 </th>
                                 <th>
-                                    <span>@Html.DisplayNameFor(model => model.Status)</span>
+                                    <span>Status</span>
                                 </th>
                                 <th>
-                                    <span>@Html.DisplayNameFor(model => model.TotalAmount)</span>
+                                    <span>TotalAmount</span>
                                 </th>
                                 <th>
-                                    <span>@Html.DisplayNameFor(model => model.RegistrantName)</span>
+                                    <span>RegistrantName</span>
                                 </th>
                                 <th>
-                                    <span>@Html.DisplayNameFor(model => model.RegistrantEmail)</span>
+                                    <span>RegistrantEmail</span>
                                 </th>
                                 <th>
                                     <span>Attendees</span>
@@ -49,15 +49,15 @@
                             {
                                 <tr>
                                     <td>@order.AccessCode</td>
-                                    <td>@order.Status</td>
+                                    <td>@order.GetStatusText()</td>
                                     <td>$@order.TotalAmount</td>
-                                    <td>@order.RegistrantName</td>
+                                    <td>@order.RegistrantLastName @order.RegistrantFirstName</td>
                                     <td>@order.RegistrantEmail</td>
                                     <td>
                                         <ul>
-                                            @foreach (var attendee in order.Seats)
+                                            @foreach (var attendee in order.GetAttendees())
                                             {
-                                                <li>@attendee.SeatInfo.Name: @attendee.Attendee.LastName @attendee.Attendee.FirstName, @attendee.Attendee.Email</li>
+                                                <li>@attendee.SeatTypeName: @attendee.AttendeeLastName @attendee.AttendeeFirstName, @attendee.AttendeeEmail</li>
                                             }
                                         </ul>
                                     </td>

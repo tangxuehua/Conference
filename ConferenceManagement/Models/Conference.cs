@@ -109,7 +109,7 @@ namespace ConferenceManagement
                 {
                     throw new SeatInsufficientException(_id, reservationId);
                 }
-                seatAvailableQuantities.Add(new SeatAvailableQuantity(seatType.Id, availableQuantity));
+                seatAvailableQuantities.Add(new SeatAvailableQuantity(seatType.Id, availableQuantity - reservationItem.Quantity));
             }
             ApplyEvent(new SeatsReserved(this, reservationId, reservationItems, seatAvailableQuantities));
         }
@@ -136,7 +136,7 @@ namespace ConferenceManagement
                 foreach (var reservationItem in reservationItems)
                 {
                     var seatType = _seatTypes.Single(x => x.Id == reservationItem.SeatTypeId);
-                    var availableQuantity = GetTotalReservationQuantity(seatType.Id);
+                    var availableQuantity = seatType.Quantity - GetTotalReservationQuantity(seatType.Id);
                     seatAvailableQuantities.Add(new SeatAvailableQuantity(seatType.Id, availableQuantity + reservationItem.Quantity));
                 }
                 ApplyEvent(new SeatsReservationCancelled(this, reservationId, seatAvailableQuantities));

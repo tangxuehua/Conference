@@ -1,6 +1,5 @@
 ﻿using System;
 using ENode.Eventing;
-using Registration.Orders;
 
 namespace Registration.SeatAssigning
 {
@@ -12,8 +11,7 @@ namespace Registration.SeatAssigning
         public Attendee Attendee { get; private set; }
 
         public SeatAssigned() { }
-        public SeatAssigned(SeatAssignments seatAssignments, int position, SeatType seat, Attendee attendee)
-            : base(seatAssignments)
+        public SeatAssigned(OrderSeatAssignments source, int position, SeatType seat, Attendee attendee) : base(source)
         {
             Position = position;
             Seat = seat;

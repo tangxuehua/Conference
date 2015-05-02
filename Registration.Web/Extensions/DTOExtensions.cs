@@ -14,7 +14,7 @@ namespace Registration.Web.Extensions
             var command = new PlaceOrder();
             command.AggregateRootId = GuidUtil.NewSequentialId();
             command.ConferenceId = conferenceAlias.Id;
-            command.Seats = model.Seats.Select(x =>
+            command.Seats = model.Seats.Where(x => x.Quantity > 0).Select(x =>
             {
                 var seat = seatTypes.Single(y => y.Id == x.SeatType);
                 return new SeatInfo

@@ -8,6 +8,7 @@ using ENode.Commanding;
 using ENode.Infrastructure;
 using Payments.Messages;
 using Registration.Commands.Orders;
+using Registration.Commands.SeatAssignments;
 using Registration.Orders;
 
 namespace Registration.ProcessManagers
@@ -22,7 +23,8 @@ namespace Registration.ProcessManagers
         IMessageHandler<SeatsReservationCommittedMessage>,
         IMessageHandler<SeatsReservationCancelledMessage>,
         IMessageHandler<PaymentCompletedMessage>,
-        IMessageHandler<PaymentRejectedMessage>
+        IMessageHandler<PaymentRejectedMessage>,
+        IMessageHandler<OrderSuccessed>
     {
         private ICommandService _commandService;
 
@@ -78,6 +80,10 @@ namespace Registration.ProcessManagers
         public Task<AsyncTaskResult> HandleAsync(OrderExpired evnt)
         {
             return _commandService.SendAsync(new CancelSeatReservation(evnt.ConferenceId, evnt.AggregateRootId));
+        }
+        public Task<AsyncTaskResult> HandleAsync(OrderSuccessed evnt)
+        {
+            return _commandService.SendAsync(new CreateSeatAssignments(evnt.AggregateRootId));
         }
     }
 }

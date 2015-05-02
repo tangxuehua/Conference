@@ -1,4 +1,4 @@
-﻿@model Registration.ReadModel.OrderSeats
+﻿@model Registration.Web.Models.OrderSeatsViewModel
 @{
     ViewBag.Title = "Assign Seats";
 }
@@ -25,22 +25,23 @@
                                 <th scope="col">Last name</th>
                                 <th scope="col">Email</th>
                             </tr>
-                            @for (var i = 0; i < this.Model.Seats.Count; i++)
+                            @for (var i = 0; i < this.Model.SeatAssignments.Count; i++)
                             {
                                 <tr>
                                     <td>
-                                        @Html.HiddenFor(model => model.Seats[i].Position)
+                                        @Html.HiddenFor(model => model.SeatAssignments[i].AssignmentsId)
+                                        @Html.HiddenFor(model => model.SeatAssignments[i].Position)
                                         <!-- TODO: grab the seat type name from somewhere? -->
-                                        @Html.DisplayFor(model => model.Seats[i].SeatName)
+                                        @Html.DisplayFor(model => model.SeatAssignments[i].SeatTypeName)
                                     </td>
                                     <td>
-                                        @Html.EditorFor(model => model.Seats[i].Attendee.FirstName)
+                                        @Html.EditorFor(model => model.SeatAssignments[i].AttendeeFirstName)
                                     </td>
                                     <td>
-                                        @Html.EditorFor(model => model.Seats[i].Attendee.LastName)
+                                        @Html.EditorFor(model => model.SeatAssignments[i].AttendeeLastName)
                                     </td>
                                     <td>
-                                        @Html.EditorFor(model => model.Seats[i].Attendee.Email)
+                                        @Html.EditorFor(model => model.SeatAssignments[i].AttendeeEmail)
                                     </td>
                                 </tr>
                             }
@@ -50,7 +51,7 @@
                          <button id="Next" class="nav__right" type="submit">Save
                             <span class="nav__right-small">Attendees will be notified by e-mail</span>
                          </button>
-                     </div>                      
+                     </div>
                 }
             </div>
         </div>

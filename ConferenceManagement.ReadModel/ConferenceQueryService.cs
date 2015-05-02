@@ -40,6 +40,18 @@ namespace ConferenceManagement.ReadModel
                 return connection.QueryList<SeatTypeDTO>(new { Id = seatTypeId }, ConfigSettings.SeatTypeTable).SingleOrDefault();
             }
         }
+        public IEnumerable<OrderDTO> FindOrders(Guid conferenceId)
+        {
+            using (var connection = GetConnection())
+            {
+                var orders = connection.QueryList<OrderDTO>(new { ConferenceId = conferenceId }, ConfigSettings.OrderTable);
+                foreach (var order in orders)
+                {
+                    order.SetAttendees(connection.QueryList<AttendeeDTO>(new { OrderId = order.OrderId }, ConfigSettings.OrderSeatAssignmentsTable).ToList());
+                }
+                return orders;
+            }
+        }
 
         private IDbConnection GetConnection()
         {

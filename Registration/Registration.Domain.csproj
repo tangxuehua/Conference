@@ -76,8 +76,8 @@
     <Compile Include="SeatAssigning\Events\SeatAssigned.cs" />
     <Compile Include="SeatAssigning\Models\Attendee.cs" />
     <Compile Include="SeatAssigning\Models\SeatAssignment.cs" />
-    <Compile Include="SeatAssigning\Models\SeatAssignments.cs" />
-    <Compile Include="SeatAssigning\Events\SeatAssignmentsCreated.cs" />
+    <Compile Include="SeatAssigning\Models\OrderSeatAssignments.cs" />
+    <Compile Include="SeatAssigning\Events\OrderSeatAssignmentsCreated.cs" />
     <Compile Include="SeatAssigning\Events\SeatUnassigned.cs" />
   </ItemGroup>
   <ItemGroup>

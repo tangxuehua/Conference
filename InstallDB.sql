@@ -107,16 +107,18 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dbo].[OrderSeats](
+CREATE TABLE [dbo].[OrderSeatAssignments](
+    [AssignmentsId] [uniqueidentifier] NOT NULL,
     [OrderId] [uniqueidentifier] NOT NULL,
     [Position] [int] NOT NULL,
-    [Attendee_FirstName] [nvarchar](max) NULL,
-    [Attendee_LastName] [nvarchar](max) NULL,
-    [Attendee_Email] [nvarchar](max) NULL,
-    [SeatInfoId] [uniqueidentifier] NOT NULL,
- CONSTRAINT [PK_ConferenceManagement.OrderSeats] PRIMARY KEY CLUSTERED 
+    [SeatTypeId] [uniqueidentifier] NOT NULL,
+    [SeatTypeName] [nvarchar](max) NULL,
+    [AttendeeFirstName] [nvarchar](max) NULL,
+    [AttendeeLastName] [nvarchar](max) NULL,
+    [AttendeeEmail] [nvarchar](max) NULL,
+PRIMARY KEY CLUSTERED 
 (
-    [OrderId] ASC,
+    [AssignmentsId] ASC,
     [Position] ASC
 )WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 ) ON [PRIMARY]

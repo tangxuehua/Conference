@@ -60,6 +60,7 @@
     <Compile Include="ConferenceDTO.cs" />
     <Compile Include="ConferenceQueryService.cs" />
     <Compile Include="ConferenceViewModelGenerator.cs" />
+    <Compile Include="OrderDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SeatTypeDTO.cs" />
   </ItemGroup>

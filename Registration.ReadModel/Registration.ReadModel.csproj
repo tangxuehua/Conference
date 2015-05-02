@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OrderSeatAssignmentsViewModelGenerator.cs" />
     <Compile Include="OrderViewModelGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryServices\Conference.cs" />
@@ -73,7 +74,7 @@
     </Compile>
     <Compile Include="QueryServices\IPaymentQueryService.cs" />
     <Compile Include="QueryServices\IOrderQueryService.cs" />
-    <Compile Include="QueryServices\SeatAssignment.cs" />
+    <Compile Include="QueryServices\OrderSeatAssignment.cs" />
     <Compile Include="QueryServices\Order.cs" />
     <Compile Include="QueryServices\Payment.cs" />
     <Compile Include="QueryServices\SeatType.cs" />

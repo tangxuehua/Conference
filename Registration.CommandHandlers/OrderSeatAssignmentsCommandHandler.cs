@@ -7,7 +7,7 @@ using Registration.SeatAssigning;
 namespace Registration.CommandHandlers
 {
     [Component]
-    public class SeatAssignmentsCommandHandler :
+    public class OrderSeatAssignmentsCommandHandler :
         ICommandHandler<CreateSeatAssignments>,
         ICommandHandler<UnassignSeat>,
         ICommandHandler<AssignSeat>
@@ -18,11 +18,11 @@ namespace Registration.CommandHandlers
         }
         public void Handle(ICommandContext context, AssignSeat command)
         {
-            context.Get<SeatAssignments>(command.AggregateRootId).AssignSeat(command.Position, new Attendee(command.PersonalInfo.FirstName, command.PersonalInfo.LastName, command.PersonalInfo.Email));
+            context.Get<OrderSeatAssignments>(command.AggregateRootId).AssignSeat(command.Position, new Attendee(command.PersonalInfo.FirstName, command.PersonalInfo.LastName, command.PersonalInfo.Email));
         }
         public void Handle(ICommandContext context, UnassignSeat command)
         {
-            context.Get<SeatAssignments>(command.AggregateRootId).UnassignSeat(command.Position);
+            context.Get<OrderSeatAssignments>(command.AggregateRootId).UnassignSeat(command.Position);
         }
     }
 }

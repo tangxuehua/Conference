@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using ECommon.Utilities;
+using ENode.Domain;
 
 namespace Registration.SeatAssigning
 {
     [Serializable]
-    public class Attendee
+    public class Attendee : ValueObject<Attendee>
     {
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
@@ -19,6 +21,13 @@ namespace Registration.SeatAssigning
             FirstName = firstName;
             LastName = lastName;
             Email = email;
+        }
+
+        public override IEnumerable<object> GetAtomicValues()
+        {
+            yield return FirstName;
+            yield return LastName;
+            yield return Email;
         }
     }
 }

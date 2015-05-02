@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
+using Conference.Common;
+using ECommon.IO;
 using ENode.Commanding;
 using Registration.Commands;
 using Registration.Commands.SeatAssignments;
 using Registration.ReadModel;
+using Registration.Web.Models;
 
 namespace Registration.Web.Controllers
 {
@@ -19,111 +23,104 @@ namespace Registration.Web.Controllers
             _commandService = commandService;
         }
 
-        //[HttpGet]
-        //public ActionResult Display(Guid orderId)
-        //{
-        //    var order = orderDao.FindOrder(orderId);
-        //    if (order == null)
-        //        return RedirectToAction("Find", new { conferenceCode = this.ConferenceCode });
+        [HttpGet]
+        public ActionResult Display(Guid orderId)
+        {
+            var order = OrderQueryService.FindOrder(orderId);
+            if (order == null)
+            {
+                return RedirectToAction("Find", new { conferenceCode = this.ConferenceCode });
+            }
+            return View(order);
+        }
 
-        //    return View(order);
-        //}
+        [HttpGet]
+        [OutputCache(Duration = 0, NoStore = true)]
+        public RedirectToRouteResult AssignSeatsForOrder(Guid orderId)
+        {
+            var order = OrderQueryService.FindOrder(orderId);
+            if (order == null)
+            {
+                return RedirectToAction("Display", new { orderId });
+            }
 
-        //[HttpGet]
-        //[OutputCache(Duration = 0, NoStore = true)]
-        //public RedirectToRouteResult AssignSeatsForOrder(Guid orderId)
-        //{
-        //    var order = orderDao.FindOrder(orderId);
-        //    if (order == null)
-        //    {
-        //        return RedirectToAction("Display", new { orderId });
-        //    }
+            return RedirectToAction("AssignSeats", new { assignmentsId = order.OrderId });
+        }
 
-        //    return RedirectToAction("AssignSeats", new { assignmentsId = order.OrderId });
-        //}
+        [HttpGet]
+        [OutputCache(Duration = 0, NoStore = true)]
+        public ActionResult AssignSeats(Guid orderId)
+        {
+            var assignments = OrderQueryService.FindOrderSeatAssignments(orderId);
+            if (assignments == null)
+            {
+                return RedirectToAction("Find", new { conferenceCode = this.ConferenceCode });
+            }
+            return View(new OrderSeatsViewModel { OrderId = orderId, SeatAssignments = assignments });
+        }
 
-        //[HttpGet]
-        //[OutputCache(Duration = 0, NoStore = true)]
-        //public ActionResult AssignSeats(Guid orderId)
-        //{
-        //    var assignments = this.orderDao.FindOrderSeatAssignments(orderId);
-        //    if (assignments == null)
-        //        return RedirectToAction("Find", new { conferenceCode = this.ConferenceCode });
+        [HttpPost]
+        public ActionResult AssignSeats(Guid orderId, List<OrderSeatAssignment> seatAssignments)
+        {
+            if (!seatAssignments.Any())
+            {
+                return RedirectToAction("Display", new { orderId = orderId });
+            }
 
-        //    return View(assignments);
-        //}
+            var assignmentsId = seatAssignments[0].AssignmentsId;
+            var unassignedCommands = seatAssignments
+                .Where(x => string.IsNullOrWhiteSpace(x.AttendeeEmail))
+                .Select(x => (ICommand)new UnassignSeat(assignmentsId) { Position = x.Position });
+            var assignedCommands = seatAssignments
+                .Where(x => !string.IsNullOrWhiteSpace(x.AttendeeEmail))
+                .Select(x => new AssignSeat(assignmentsId)
+                {
+                    Position = x.Position,
+                    PersonalInfo = new PersonalInfo
+                    {
+                        Email = x.AttendeeEmail,
+                        FirstName = x.AttendeeFirstName,
+                        LastName = x.AttendeeLastName
+                    }
+                });
 
-        ////[HttpPost]
-        ////public ActionResult AssignSeats(Guid assignmentsId, List<OrderSeat> seats)
-        ////{
-        ////    var saved = this.orderDao.FindOrderSeats(assignmentsId);
-        ////    if (saved == null)
-        ////        return RedirectToAction("Find", new { conferenceCode = this.ConferenceCode });
+            var commands = assignedCommands.Union(unassignedCommands).ToList();
+            foreach (var command in commands)
+            {
+                SendCommandAsync(command);
+            }
 
-        ////    var pairs = seats
-        ////        // If a seat is null, it's because it's an invalid null entry 
-        ////        // in the list of seats, so we ignore it.
-        ////        .Where(seat => seat != null)
-        ////        .Select(seat => new { Saved = saved.Seats.FirstOrDefault(x => x.Position == seat.Position), New = seat })
-        ////        // Ignore posted seats that we don't have saved already: pair.Saved == null
-        ////        // This may be because the client sent mangled or incorrect data so we couldn't 
-        ////        // find a matching saved seat.
-        ////        .Where(pair => pair.Saved != null)
-        ////        // Only process those that have an email (i.e. they are or were assigned)
-        ////        .Where(pair => pair.Saved.Attendee.Email != null || pair.New.Attendee.Email != null)
-        ////        .ToList();
+            return RedirectToAction("Display", new { orderId = orderId });
+        }
 
-        ////    // NOTE: in the read model, we care about the OrderId, 
-        ////    // but the write side uses a different aggregate root id for the seat 
-        ////    // assignments, so we pass that on when we issue commands.
+        [HttpGet]
+        public ActionResult Find()
+        {
+            return View();
+        }
 
-        ////    var unassigned = pairs
-        ////        .Where(x => !string.IsNullOrWhiteSpace(x.Saved.Attendee.Email) && string.IsNullOrWhiteSpace(x.New.Attendee.Email))
-        ////        .Select(x => (ICommand)new UnassignSeat(saved.AssignmentsId) { Position = x.Saved.Position });
+        [HttpPost]
+        public ActionResult Find(string email, string accessCode)
+        {
+            var orderId = OrderQueryService.LocateOrder(email, accessCode);
 
-        ////    var changed = pairs
-        ////        .Where(x => x.Saved.Attendee != x.New.Attendee && x.New.Attendee.Email != null)
-        ////        .Select(x => new AssignSeat(saved.AssignmentsId)
-        ////        {
-        ////            Position = x.Saved.Position,
-        ////            PersonalInfo = new PersonalInfo
-        ////                {
-        ////                    Email = x.New.Attendee.Email,
-        ////                    FirstName = x.New.Attendee.FirstName,
-        ////                    LastName = x.New.Attendee.LastName
-        ////                }
-        ////        });
+            if (!orderId.HasValue)
+            {
+                // TODO: 404?
+                return RedirectToAction("Find", new { conferenceCode = this.ConferenceCode });
+            }
 
-        ////    var commands = unassigned.Union(changed).ToList();
-        ////    if (commands.Count > 0)
-        ////    {
-        ////        foreach (var command in commands)
-        ////        {
-        ////            this.commandService.Send(command);
-        ////        }
-        ////    }
+            return RedirectToAction("Display", new { conferenceCode = this.ConferenceCode, orderId = orderId.Value });
+        }
 
-        ////    return RedirectToAction("Display", new { orderId = saved.OrderId });
-        ////}
-
-        //[HttpGet]
-        //public ActionResult Find()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public ActionResult Find(string email, string accessCode)
-        //{
-        //    var orderId = orderDao.LocateOrder(email, accessCode);
-
-        //    if (!orderId.HasValue)
-        //    {
-        //        // TODO: 404?
-        //        return RedirectToAction("Find", new { conferenceCode = this.ConferenceCode });
-        //    }
-
-        //    return RedirectToAction("Display", new { conferenceCode = this.ConferenceCode, orderId = orderId.Value });
-        //}
+        /// <summary>异步发送给定的命令
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="millisecondsDelay"></param>
+        /// <returns></returns>
+        private Task<AsyncTaskResult> SendCommandAsync(ICommand command, int millisecondsDelay = 5000)
+        {
+            return _commandService.SendAsync(command).TimeoutAfter(millisecondsDelay);
+        }
     }
 }

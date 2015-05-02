@@ -6,6 +6,6 @@ namespace Registration.ReadModel
     {
         Order FindOrder(Guid orderId);
         Guid? LocateOrder(string email, string accessCode);
-        SeatAssignment[] FindOrderSeatAssignments(Guid orderId);
+        OrderSeatAssignment[] FindOrderSeatAssignments(Guid orderId);
     }
 }

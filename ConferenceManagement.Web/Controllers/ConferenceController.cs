@@ -285,16 +285,15 @@ namespace Conference.Web.Admin.Controllers
 
         #endregion
 
-        //#region Orders
+        #region Orders
 
-        //public ViewResult Orders()
-        //{
-        //    var orders = this.Service.FindOrders(this.Conference.Id);
+        public ViewResult Orders()
+        {
+            var orders = _conferenceQueryService.FindOrders(this.Conference.Id);
+            return View(orders);
+        }
 
-        //    return View(orders);
-        //}
-
-        //#endregion
+        #endregion
 
         private Task<AsyncTaskResult<CommandResult>> ExecuteCommandAsync(ICommand command, int millisecondsDelay = 5000)
         {

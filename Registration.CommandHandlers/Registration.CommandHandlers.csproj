@@ -58,7 +58,7 @@
   <ItemGroup>
     <Compile Include="OrderCommandHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SeatAssignmentsCommandHandler.cs" />
+    <Compile Include="OrderSeatAssignmentsCommandHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Registration.Commands\Registration.Commands.csproj">

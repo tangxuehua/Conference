@@ -189,6 +189,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\OrderSeatsViewModel.cs" />
     <Compile Include="Models\RegistrantDetails.cs" />
     <Compile Include="Models\OrderItemViewModel.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
@@ -272,6 +273,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Registration\ShowRejectedOrder.cshtml" />
+    <Content Include="Views\Registration\ReservationFailed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Registration\ReservationUnknown.cshtml" />

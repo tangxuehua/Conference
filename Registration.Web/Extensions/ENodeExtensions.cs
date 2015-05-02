@@ -31,6 +31,7 @@ namespace Registration.Web.Extensions
             provider.RegisterType<CreateSeatAssignments>(225);
             provider.RegisterType<AssignSeat>(226);
             provider.RegisterType<UnassignSeat>(227);
+            provider.RegisterType<AssignRegistrantDetails>(228);
 
             provider.RegisterType<CreatePayment>(240);
             provider.RegisterType<CompletePayment>(241);

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using System.Linq;
 
 namespace Conference.Common
 {
@@ -41,8 +40,8 @@ namespace Conference.Common
             OrderTable = "Orders";
             OrderLineTable = "OrderLines";
             OrderSeatAssignmentsTable = "OrderSeatAssignments";
-            PaymentTable = "ThirdPartyProcessorPayments";
-            PaymentItemTable = "ThidPartyProcessorPaymentItems";
+            PaymentTable = "Payments";
+            PaymentItemTable = "PaymentItems";
         }
     }
 }

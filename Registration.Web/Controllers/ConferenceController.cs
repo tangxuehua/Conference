@@ -1,7 +1,7 @@
 ﻿using System.Web.Mvc;
 using Registration.ReadModel;
 
-namespace Conference.Web.Public.Controllers
+namespace Registration.Web.Controllers
 {
     public class ConferenceController : Controller
     {

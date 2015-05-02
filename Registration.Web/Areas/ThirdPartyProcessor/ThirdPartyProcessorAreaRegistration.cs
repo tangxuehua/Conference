@@ -13,7 +13,7 @@
 
 using System.Web.Mvc;
 
-namespace Conference.Web.Public.Areas.ThirdPartyProcessor
+namespace Registration.Web.Areas.ThirdPartyProcessor
 {
     public class ThirdPartyProcessorAreaRegistration : AreaRegistration
     {

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Conference.Common;
-using Conference.Web.Public;
 using ECommon.IO;
 using ENode.Commanding;
 using Payments.Commands;

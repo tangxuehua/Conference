@@ -3,7 +3,7 @@ using ECommon.Components;
 using ENode.EQueue;
 using ENode.Infrastructure;
 
-namespace ConferenceManagement.CommandProcessor.TopicProviders
+namespace Payments.ProcessorHost.TopicProviders
 {
     [Component]
     public class ApplicationMessageTopicProvider : AbstractTopicProvider<IApplicationMessage>

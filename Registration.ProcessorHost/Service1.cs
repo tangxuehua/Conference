@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Registration.ProcessorHost;
 
-namespace Registration.MessageProcessor
+namespace Registration.ProcessorHost
 {
     partial class Service1 : ServiceBase
     {

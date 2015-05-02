@@ -4,7 +4,7 @@ using ENode.EQueue;
 using ENode.Eventing;
 using ENode.Infrastructure;
 
-namespace ConferenceManagement.CommandProcessor.TopicProviders
+namespace ConferenceManagement.ProcessorHost.TopicProviders
 {
     [Component]
     public class ExceptionTopicProvider : AbstractTopicProvider<IPublishableException>

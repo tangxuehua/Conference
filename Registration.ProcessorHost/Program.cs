@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ServiceProcess;
-using Registration.MessageProcessor;
 
 namespace Registration.ProcessorHost
 {

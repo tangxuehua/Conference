@@ -3,7 +3,7 @@ using ECommon.Components;
 using ENode.EQueue;
 using ENode.Eventing;
 
-namespace ConferenceManagement.CommandProcessor.TopicProviders
+namespace ConferenceManagement.ProcessorHost.TopicProviders
 {
     [Component]
     public class DomainEventTopicProvider : AbstractTopicProvider<IDomainEvent>

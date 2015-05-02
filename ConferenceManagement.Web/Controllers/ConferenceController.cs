@@ -13,7 +13,7 @@ using ECommon.IO;
 using ECommon.Logging;
 using ENode.Commanding;
 
-namespace Conference.Web.Admin.Controllers
+namespace ConferenceManagement.Web.Controllers
 {
     public class ConferenceController : Controller
     {

@@ -1,4 +1,4 @@
-﻿namespace Registration.MessageProcessor
+﻿namespace Registration.ProcessorHost
 {
     partial class ProjectInstaller
     {

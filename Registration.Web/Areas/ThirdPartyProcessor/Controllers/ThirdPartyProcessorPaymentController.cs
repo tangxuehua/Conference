@@ -11,7 +11,7 @@
 // See the License for the specific language governing permissions and limitations under the License.
 // ==============================================================================================================
 
-namespace Conference.Web.Public.Areas.ThirdPartyProcessor.Controllers
+namespace Registration.Web.Areas.ThirdPartyProcessor.Controllers
 {
     using System.Web.Mvc;
 

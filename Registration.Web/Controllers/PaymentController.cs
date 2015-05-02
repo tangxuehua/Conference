@@ -5,7 +5,7 @@ using ENode.Commanding;
 using Payments.Commands;
 using Registration.ReadModel;
 
-namespace Conference.Web.Public.Controllers
+namespace Registration.Web.Controllers
 {
     public class PaymentController : Controller
     {

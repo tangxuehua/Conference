@@ -1,6 +1,6 @@
 ﻿using System.Web.Mvc;
 
-namespace Conference.Web.Admin.Controllers
+namespace ConferenceManagement.Web.Controllers
 {
     public class HomeController : Controller
     {

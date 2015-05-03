@@ -3,24 +3,24 @@ Conference
 
 A conference example to explain how to use enode to develop ddd+cqrs+event souricng style application.
 
-±¾ÏîÄ¿ÊÇÕ¹Ê¾ÈçºÎÊ¹ÓÃENode¿ª·¢»ùÓÚDDD,CQRS,ES¼Ü¹¹µÄÓ¦ÓÃ³ÌĞò¡£
+æœ¬é¡¹ç›®æ˜¯å±•ç¤ºå¦‚ä½•ä½¿ç”¨ENodeå¼€å‘åŸºäºDDD,CQRS,ESæ¶æ„çš„åº”ç”¨ç¨‹åºã€‚
 
-¹²·ÖÎªÈı¸öBounded Context£º
-1.ConferenceManagement£¬¸ºÔğ»áÒéÎ»ÖÃºóÌ¨¹ÜÀí
-2.Registration£¬¸ºÔğ´¦ÀíÓÃ»§ÏÂµ¥
-3.Payments£¬¸ºÔğ´¦ÀíÖ§¸¶
+å…±åˆ†ä¸ºä¸‰ä¸ªBounded Contextï¼š
+1.ConferenceManagementï¼Œè´Ÿè´£ä¼šè®®ä½ç½®åå°ç®¡ç†
+2.Registrationï¼Œè´Ÿè´£å¤„ç†ç”¨æˆ·ä¸‹å•
+3.Paymentsï¼Œè´Ÿè´£å¤„ç†æ”¯ä»˜
 
-ÔËĞĞ²½Öè£º
-1.ĞÂ½¨Ò»¸ö½ĞConferenceµÄÊı¾İ¿â£¬Ö´ĞĞScriptsÄ¿Â¼ÏÂµÄCreateConferenceTables SQL½Å±¾£¬´´½¨¸ÃÊı¾İ¿âÖĞµÄÏà¹Ø±í£»
-2.ĞÂ½¨Ò»¸ö½ĞConference_EQueueµÄÊı¾İ¿â£¬Ö´ĞĞScriptsÄ¿Â¼ÏÂµÄCreateEQueueTables SQL½Å±¾£¬´´½¨¸ÃÊı¾İ¿âÖĞµÄÏà¹Ø±í£»
-3.ĞÂ½¨Ò»¸ö½ĞConference_ENodeµÄÊı¾İ¿â£¬Ö´ĞĞScriptsÄ¿Â¼ÏÂµÄCreateENodeTables SQL½Å±¾£¬´´½¨¸ÃÊı¾İ¿âÖĞµÄÏà¹Ø±í£»
-4.HostsÄ¿Â¼ÏÂµÄ¹¤³Ì¶¼ÊÇ¶¥²ãËŞÖ÷¹¤³Ì¡£ÎÒÃÇÏÈĞèÒªĞŞ¸ÄÃ¿¸öËŞÖ÷¹¤³ÌÀïApp.config»òWeb.configÀïÅäÖÃµÄÊı¾İ¿âÁ¬½Ó×Ö·û´®£¬È·±£Êı¾İ¿âÁ¬½ÓÊÇÕıÈ·µÄ£»
-5.Öğ¸öÆô¶¯ËùÓĞµÄËŞÖ÷¹¤³Ì£¬Æô¶¯Ë³Ğò¿ÉÒÔÈçÏÂË³Ğò£º
-1£©Conference.MessageBroker
-2£©ConferenceManagement.ProcessorHost
-3£©Payments.ProcessorHost
-4£©Registration.ProcessorHost
-5£©ConferenceManagement.Web
-6£©Registration.Web
+è¿è¡Œæ­¥éª¤ï¼š
+1.æ–°å»ºä¸€ä¸ªå«Conferenceçš„æ•°æ®åº“ï¼Œæ‰§è¡ŒScriptsç›®å½•ä¸‹çš„CreateConferenceTables SQLè„šæœ¬ï¼Œåˆ›å»ºè¯¥æ•°æ®åº“ä¸­çš„ç›¸å…³è¡¨ï¼›
+2.æ–°å»ºä¸€ä¸ªå«Conference_EQueueçš„æ•°æ®åº“ï¼Œæ‰§è¡ŒScriptsç›®å½•ä¸‹çš„CreateEQueueTables SQLè„šæœ¬ï¼Œåˆ›å»ºè¯¥æ•°æ®åº“ä¸­çš„ç›¸å…³è¡¨ï¼›
+3.æ–°å»ºä¸€ä¸ªå«Conference_ENodeçš„æ•°æ®åº“ï¼Œæ‰§è¡ŒScriptsç›®å½•ä¸‹çš„CreateENodeTables SQLè„šæœ¬ï¼Œåˆ›å»ºè¯¥æ•°æ®åº“ä¸­çš„ç›¸å…³è¡¨ï¼›
+4.Hostsç›®å½•ä¸‹çš„å·¥ç¨‹éƒ½æ˜¯é¡¶å±‚å®¿ä¸»å·¥ç¨‹ã€‚æˆ‘ä»¬å…ˆéœ€è¦ä¿®æ”¹æ¯ä¸ªå®¿ä¸»å·¥ç¨‹é‡ŒApp.configæˆ–Web.configé‡Œé…ç½®çš„æ•°æ®åº“è¿æ¥å­—ç¬¦ä¸²ï¼Œç¡®ä¿æ•°æ®åº“è¿æ¥æ˜¯æ­£ç¡®çš„ï¼›
+5.é€ä¸ªå¯åŠ¨æ‰€æœ‰çš„å®¿ä¸»å·¥ç¨‹ï¼Œå¯åŠ¨é¡ºåºå¯ä»¥å¦‚ä¸‹é¡ºåºï¼š
+1ï¼‰Conference.MessageBroker
+2ï¼‰ConferenceManagement.ProcessorHost
+3ï¼‰Payments.ProcessorHost
+4ï¼‰Registration.ProcessorHost
+5ï¼‰ConferenceManagement.Web
+6ï¼‰Registration.Web
 
-µ½ÕâÀï£¬Ó¦¸ÃÄÜÔËĞĞÏîÄ¿ÁË¡£
+OKï¼Œåˆ°è¿™é‡Œï¼Œåº”è¯¥èƒ½è¿è¡Œé¡¹ç›®äº†ã€‚

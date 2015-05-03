@@ -11,11 +11,11 @@ A conference example to explain how to use enode to develop ddd+cqrs+event souri
 3.Payments，负责处理支付  
 
 运行步骤：  
-1.新建一个叫Conference的数据库，执行Scripts目录下的CreateConferenceTables SQL脚本，创建该数据库中的相关表；  
-2.新建一个叫Conference_EQueue的数据库，执行Scripts目录下的CreateEQueueTables SQL脚本，创建该数据库中的相关表；  
-3.新建一个叫Conference_ENode的数据库，执行Scripts目录下的CreateENodeTables SQL脚本，创建该数据库中的相关表；  
-4.Hosts目录下的工程都是顶层宿主工程。我们先需要修改每个宿主工程里App.config或Web.config里配置的数据库连接字符串，确保数据库连接是正确的；  
-5.逐个启动所有的宿主工程，启动顺序可以如下顺序：  
+1.新建一个数据库Conference，执行Scripts目录下的CreateConferenceTables SQL脚本，创建该数据库中的相关表；  
+2.新建一个数据库Conference_EQueue，执行Scripts目录下的CreateEQueueTables SQL脚本，创建该数据库中的相关表；  
+3.新建一个数据库Conference_ENode，执行Scripts目录下的CreateENodeTables SQL脚本，创建该数据库中的相关表；  
+4.修改Hosts目录下每个顶层宿主工程里的App.config或Web.config里的数据库连接字符串，确保数据库连接是正确的；  
+5.逐个启动所有的宿主工程，启动顺序可以如下：  
 1）Conference.MessageBroker  
 2）ConferenceManagement.ProcessorHost  
 3）Payments.ProcessorHost  
@@ -23,4 +23,4 @@ A conference example to explain how to use enode to develop ddd+cqrs+event souri
 5）ConferenceManagement.Web  
 6）Registration.Web  
 
-OK，到这里，应该能运行项目了。  
+OK，到这里，整个案例运行就完成了。  

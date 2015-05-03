@@ -84,7 +84,8 @@ namespace Conference.MessageBroker
             };
             var messageStoreSetting = new SqlServerMessageStoreSetting
             {
-                ConnectionString = ConfigSettings.ConferenceEQueueConnectionString
+                ConnectionString = ConfigSettings.ConferenceEQueueConnectionString,
+                MessageLogFilePath = "/home/admin/logs/conference/equeue"
             };
             var offsetManagerSetting = new SqlServerOffsetManagerSetting
             {

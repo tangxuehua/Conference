@@ -1,15 +1,18 @@
-﻿using Conference.Common;
+﻿using System.Net;
+using Conference.Common;
 using ConferenceManagement.Commands;
 using ConferenceManagement.MessagePublishers;
 using ConferenceManagement.Messages;
 using ConferenceManagement.ReadModel;
 using ECommon.Components;
+using ECommon.Utilities;
 using ENode.Configurations;
 using ENode.EQueue;
 using ENode.Eventing;
 using ENode.Infrastructure;
 using ENode.Infrastructure.Impl;
 using EQueue.Clients.Consumers;
+using EQueue.Clients.Producers;
 using EQueue.Configurations;
 using EQueue.Protocols;
 
@@ -77,9 +80,12 @@ namespace ConferenceManagement.ProcessorHost
 
             configuration.RegisterEQueueComponents();
 
-            _applicationMessagePublisher = new ApplicationMessagePublisher();
-            _domainEventPublisher = new DomainEventPublisher();
-            _exceptionPublisher = new PublishableExceptionPublisher();
+            var producerSetting = new ProducerSetting { BrokerProducerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort) };
+            var consumerSetting = new ConsumerSetting { BrokerConsumerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort) };
+
+            _applicationMessagePublisher = new ApplicationMessagePublisher("ConferenceApplicationMessagePublisher", producerSetting);
+            _domainEventPublisher = new DomainEventPublisher("ConferenceDomainEventPublisher", producerSetting);
+            _exceptionPublisher = new PublishableExceptionPublisher("ConferencePublishableExceptionPublisher", producerSetting);
 
             configuration.SetDefault<IMessagePublisher<IApplicationMessage>, ApplicationMessagePublisher>(_applicationMessagePublisher);
             configuration.SetDefault<IMessagePublisher<DomainEventStreamMessage>, DomainEventPublisher>(_domainEventPublisher);
@@ -87,17 +93,20 @@ namespace ConferenceManagement.ProcessorHost
 
             _commandConsumer = new CommandConsumer(
                 "ConferenceCommandConsumer",
-                "ConferenceCommandConsumerGroup")
+                "ConferenceCommandConsumerGroup",
+                consumerSetting)
             .Subscribe(Topics.ConferenceCommandTopic);
 
             _eventConsumer = new DomainEventConsumer(
                 "ConferenceEventConsumer",
-                "ConferenceEventConsumerGroup")
+                "ConferenceEventConsumerGroup",
+                consumerSetting)
             .Subscribe(Topics.ConferenceDomainEventTopic);
 
             _exceptionConsumer = new PublishableExceptionConsumer(
                 "ConferenceExceptionConsumer",
-                "ConferenceExceptionConsumerGroup")
+                "ConferenceExceptionConsumerGroup",
+                consumerSetting)
             .Subscribe(Topics.ConferenceExceptionTopic);
 
             return enodeConfiguration;

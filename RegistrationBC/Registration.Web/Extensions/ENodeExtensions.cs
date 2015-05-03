@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Conference.Common;
 using ECommon.Components;
 using ECommon.Utilities;
 using ENode.Commanding;
@@ -7,6 +8,7 @@ using ENode.EQueue;
 using ENode.EQueue.Commanding;
 using ENode.Infrastructure;
 using ENode.Infrastructure.Impl;
+using EQueue.Clients.Producers;
 using EQueue.Configurations;
 using Payments.Commands;
 using Registration.Commands.Orders;
@@ -45,7 +47,9 @@ namespace Registration.Web.Extensions
 
             configuration.RegisterEQueueComponents();
 
-            _commandService = new CommandService(new CommandResultProcessor(new IPEndPoint(SocketUtils.GetLocalIPV4(), 9001)));
+            _commandService = new CommandService(new CommandResultProcessor(new IPEndPoint(SocketUtils.GetLocalIPV4(), 9001)),
+                "RegistrationCommandService",
+                new ProducerSetting { BrokerProducerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort) });
 
             configuration.SetDefault<ICommandService, CommandService>(_commandService);
 

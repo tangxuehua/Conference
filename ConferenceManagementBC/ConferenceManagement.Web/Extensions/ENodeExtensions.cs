@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Conference.Common;
 using ConferenceManagement.Commands;
 using ECommon.Components;
 using ECommon.Utilities;
@@ -11,6 +12,7 @@ using ENode.EQueue;
 using ENode.EQueue.Commanding;
 using ENode.Infrastructure;
 using ENode.Infrastructure.Impl;
+using EQueue.Clients.Producers;
 using EQueue.Configurations;
 
 namespace ConferenceManagement.Web.Extensions
@@ -43,7 +45,10 @@ namespace ConferenceManagement.Web.Extensions
 
             configuration.RegisterEQueueComponents();
 
-            _commandService = new CommandService(new CommandResultProcessor(new IPEndPoint(SocketUtils.GetLocalIPV4(), 9000)));
+            _commandService = new CommandService(
+                new CommandResultProcessor(new IPEndPoint(SocketUtils.GetLocalIPV4(), 9000)),
+                "ConferenceCommandService",
+                new ProducerSetting { BrokerProducerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort) });
 
             configuration.SetDefault<ICommandService, CommandService>(_commandService);
 

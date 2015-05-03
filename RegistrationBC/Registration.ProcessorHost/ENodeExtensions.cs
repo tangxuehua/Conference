@@ -1,7 +1,9 @@
-﻿using Conference.Common;
+﻿using System.Net;
+using Conference.Common;
 using ConferenceManagement.Commands;
 using ConferenceManagement.Messages;
 using ECommon.Components;
+using ECommon.Utilities;
 using ENode.Commanding;
 using ENode.Configurations;
 using ENode.EQueue;
@@ -9,6 +11,7 @@ using ENode.Eventing;
 using ENode.Infrastructure;
 using ENode.Infrastructure.Impl;
 using EQueue.Clients.Consumers;
+using EQueue.Clients.Producers;
 using EQueue.Configurations;
 using EQueue.Protocols;
 using Payments.Messages;
@@ -86,27 +89,33 @@ namespace Registration.ProcessorHost
 
             configuration.RegisterEQueueComponents();
 
-            _domainEventPublisher = new DomainEventPublisher();
+            var producerSetting = new ProducerSetting { BrokerProducerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort) };
+            var consumerSetting = new ConsumerSetting { BrokerConsumerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort) };
+
+            _domainEventPublisher = new DomainEventPublisher("RegistrationDomainEventPublisher", producerSetting);
 
             configuration.SetDefault<IMessagePublisher<DomainEventStreamMessage>, DomainEventPublisher>(_domainEventPublisher);
 
-            _commandService = new CommandService();
+            _commandService = new CommandService(null, "RegistrationCommandService", producerSetting);
 
             configuration.SetDefault<ICommandService, CommandService>(_commandService);
 
             _commandConsumer = new CommandConsumer(
                 "RegistrationCommandConsumer",
-                "RegistrationCommandConsumerGroup")
+                "RegistrationCommandConsumerGroup",
+                consumerSetting)
             .Subscribe(Topics.RegistrationCommandTopic);
 
             _eventConsumer = new DomainEventConsumer(
                 "RegistrationEventConsumer",
-                "RegistrationEventConsumerGroup")
+                "RegistrationEventConsumerGroup",
+                consumerSetting)
             .Subscribe(Topics.RegistrationDomainEventTopic);
 
             _applicationMessageConsumer = new ApplicationMessageConsumer(
                 "RegistrationMessageConsumer",
-                "RegistrationMessageConsumerGroup")
+                "RegistrationMessageConsumerGroup",
+                consumerSetting)
             .Subscribe(Topics.ConferenceApplicationMessageTopic)
             .Subscribe(Topics.PaymentApplicationMessageTopic);
 

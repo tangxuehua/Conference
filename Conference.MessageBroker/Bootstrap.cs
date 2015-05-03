@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Net;
 using Conference.Common;
 using ECommon.Autofac;
 using ECommon.Components;
@@ -7,6 +8,7 @@ using ECommon.Configurations;
 using ECommon.JsonNet;
 using ECommon.Log4Net;
 using ECommon.Logging;
+using ECommon.Utilities;
 using EQueue.Broker;
 using EQueue.Configurations;
 using ECommonConfiguration = ECommon.Configurations.Configuration;
@@ -95,7 +97,13 @@ namespace Conference.MessageBroker
                 .UseSqlServerMessageStore(messageStoreSetting)
                 .UseSqlServerOffsetManager(offsetManagerSetting);
 
-            _broker = BrokerController.Create();
+            var setting = new BrokerSetting
+            {
+                ProducerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort),
+                ConsumerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort),
+                AdminIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort)
+            };
+            _broker = BrokerController.Create(setting);
             _logger.Info("EQueue initialized.");
         }
     }

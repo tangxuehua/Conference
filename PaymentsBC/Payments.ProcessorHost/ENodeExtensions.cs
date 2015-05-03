@@ -1,11 +1,14 @@
-﻿using Conference.Common;
+﻿using System.Net;
+using Conference.Common;
 using ECommon.Components;
+using ECommon.Utilities;
 using ENode.Configurations;
 using ENode.EQueue;
 using ENode.Eventing;
 using ENode.Infrastructure;
 using ENode.Infrastructure.Impl;
 using EQueue.Clients.Consumers;
+using EQueue.Clients.Producers;
 using EQueue.Configurations;
 using EQueue.Protocols;
 using Payments.Commands;
@@ -55,20 +58,25 @@ namespace Payments.ProcessorHost
 
             configuration.RegisterEQueueComponents();
 
-            _applicationMessagePublisher = new ApplicationMessagePublisher();
-            _domainEventPublisher = new DomainEventPublisher();
+            var producerSetting = new ProducerSetting { BrokerProducerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort) };
+            var consumerSetting = new ConsumerSetting { BrokerConsumerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort) };
+
+            _applicationMessagePublisher = new ApplicationMessagePublisher("PaymentsApplicationMessagePublisher", producerSetting);
+            _domainEventPublisher = new DomainEventPublisher("PaymentsDomainEventPublisher", producerSetting);
 
             configuration.SetDefault<IMessagePublisher<IApplicationMessage>, ApplicationMessagePublisher>(_applicationMessagePublisher);
             configuration.SetDefault<IMessagePublisher<DomainEventStreamMessage>, DomainEventPublisher>(_domainEventPublisher);
 
             _commandConsumer = new CommandConsumer(
                 "PaymentCommandConsumer",
-                "PaymentCommandConsumerGroup")
+                "PaymentCommandConsumerGroup",
+                consumerSetting)
             .Subscribe(Topics.PaymentCommandTopic);
 
             _eventConsumer = new DomainEventConsumer(
                 "PaymentEventConsumer",
-                "PaymentEventConsumerGroup")
+                "PaymentEventConsumerGroup",
+                consumerSetting)
             .Subscribe(Topics.PaymentDomainEventTopic);
 
             return enodeConfiguration;

@@ -87,20 +87,17 @@ namespace ConferenceManagement.ProcessorHost
 
             _commandConsumer = new CommandConsumer(
                 "ConferenceCommandConsumer",
-                "ConferenceCommandConsumerGroup",
-                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+                "ConferenceCommandConsumerGroup")
             .Subscribe(Topics.ConferenceCommandTopic);
 
             _eventConsumer = new DomainEventConsumer(
                 "ConferenceEventConsumer",
-                "ConferenceEventConsumerGroup",
-                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+                "ConferenceEventConsumerGroup")
             .Subscribe(Topics.ConferenceDomainEventTopic);
 
             _exceptionConsumer = new PublishableExceptionConsumer(
                 "ConferenceExceptionConsumer",
-                "ConferenceExceptionConsumerGroup",
-                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+                "ConferenceExceptionConsumerGroup")
             .Subscribe(Topics.ConferenceExceptionTopic);
 
             return enodeConfiguration;

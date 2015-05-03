@@ -13,6 +13,7 @@ CREATE TABLE [dbo].[Conferences] (
     [EndDate]       DATETIME         NOT NULL,
     [IsPublished]   BIT              NOT NULL,
     [Version]       BIGINT           NOT NULL,
+    [EventSequence] INT              NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 )
 GO

@@ -96,20 +96,17 @@ namespace Registration.ProcessorHost
 
             _commandConsumer = new CommandConsumer(
                 "RegistrationCommandConsumer",
-                "RegistrationCommandConsumerGroup",
-                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+                "RegistrationCommandConsumerGroup")
             .Subscribe(Topics.RegistrationCommandTopic);
 
             _eventConsumer = new DomainEventConsumer(
                 "RegistrationEventConsumer",
-                "RegistrationEventConsumerGroup",
-                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+                "RegistrationEventConsumerGroup")
             .Subscribe(Topics.RegistrationDomainEventTopic);
 
             _applicationMessageConsumer = new ApplicationMessageConsumer(
                 "RegistrationMessageConsumer",
-                "RegistrationMessageConsumerGroup",
-                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+                "RegistrationMessageConsumerGroup")
             .Subscribe(Topics.ConferenceApplicationMessageTopic)
             .Subscribe(Topics.PaymentApplicationMessageTopic);
 

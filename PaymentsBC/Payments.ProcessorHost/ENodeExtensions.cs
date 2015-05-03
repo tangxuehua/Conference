@@ -63,14 +63,12 @@ namespace Payments.ProcessorHost
 
             _commandConsumer = new CommandConsumer(
                 "PaymentCommandConsumer",
-                "PaymentCommandConsumerGroup",
-                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+                "PaymentCommandConsumerGroup")
             .Subscribe(Topics.PaymentCommandTopic);
 
             _eventConsumer = new DomainEventConsumer(
                 "PaymentEventConsumer",
-                "PaymentEventConsumerGroup",
-                new ConsumerSetting { ConsumeFromWhere = ConsumeFromWhere.LastOffset })
+                "PaymentEventConsumerGroup")
             .Subscribe(Topics.PaymentDomainEventTopic);
 
             return enodeConfiguration;

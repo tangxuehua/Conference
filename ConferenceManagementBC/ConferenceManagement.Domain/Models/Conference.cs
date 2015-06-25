@@ -40,10 +40,6 @@ namespace ConferenceManagement
         }
         public void AddSeat(SeatTypeInfo seatTypeInfo, int quantity)
         {
-            if (_isPublished)
-            {
-                throw new Exception("Published conference cannot add seat type.");
-            }
             ApplyEvent(new SeatTypeAdded(this, Guid.NewGuid(), seatTypeInfo, quantity));
         }
         public void UpdateSeat(Guid seatTypeId, SeatTypeInfo seatTypeInfo, int quantity)

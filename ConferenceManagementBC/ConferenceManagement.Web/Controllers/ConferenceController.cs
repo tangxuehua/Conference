@@ -19,7 +19,7 @@ namespace ConferenceManagement.Web.Controllers
     {
         private ICommandService _commandService;
         private ConferenceQueryService _conferenceQueryService;
-        private ConferenceInfo Conference;
+        private ConferenceInfo _conference;
 
         public ConferenceController(ICommandService commandService, ConferenceQueryService conferenceQueryService, ILoggerFactory loggerFactory)
         {
@@ -38,21 +38,21 @@ namespace ConferenceManagement.Web.Controllers
             if (!string.IsNullOrEmpty(slug))
             {
                 this.ViewBag.Slug = slug;
-                this.Conference = _conferenceQueryService.FindConference(slug).ToViewModel();
+                this._conference = _conferenceQueryService.FindConference(slug).ToViewModel();
 
-                if (this.Conference != null)
+                if (this._conference != null)
                 {
                     // check access
                     var accessCode = (string)this.ControllerContext.RequestContext.RouteData.Values["accessCode"];
 
-                    if (accessCode == null || !string.Equals(accessCode, this.Conference.AccessCode, StringComparison.Ordinal))
+                    if (accessCode == null || !string.Equals(accessCode, this._conference.AccessCode, StringComparison.Ordinal))
                     {
                         filterContext.Result = new HttpUnauthorizedResult("Invalid access code.");
                     }
                     else
                     {
-                        this.ViewBag.OwnerName = this.Conference.OwnerName;
-                        this.ViewBag.WasEverPublished = this.Conference.WasEverPublished;
+                        this.ViewBag.OwnerName = this._conference.OwnerName;
+                        this.ViewBag.WasEverPublished = this._conference.WasEverPublished;
                     }
                 }
             }
@@ -86,11 +86,11 @@ namespace ConferenceManagement.Web.Controllers
 
         public ActionResult Index()
         {
-            if (this.Conference == null)
+            if (this._conference == null)
             {
                 return HttpNotFound();
             }
-            return View(this.Conference);
+            return View(this._conference);
         }
 
         public ActionResult Create()
@@ -117,24 +117,24 @@ namespace ConferenceManagement.Web.Controllers
 
         public ActionResult Edit()
         {
-            if (this.Conference == null)
+            if (this._conference == null)
             {
                 return HttpNotFound();
             }
-            return View(this.Conference);
+            return View(this._conference);
         }
 
         [HttpPost]
         public async Task<ActionResult> Edit(EditableConferenceInfo conference)
         {
-            if (this.Conference == null)
+            if (this._conference == null)
             {
                 return HttpNotFound();
             }
 
             if (!ModelState.IsValid) return View(conference);
 
-            var command = conference.ToUpdateConferenceCommand(Conference);
+            var command = conference.ToUpdateConferenceCommand(_conference);
             var result = await ExecuteCommandAsync(command);
 
             if (!result.IsSuccess())
@@ -143,18 +143,18 @@ namespace ConferenceManagement.Web.Controllers
                 return View(conference);
             }
 
-            return RedirectToAction("Index", new { slug = Conference.Slug, accessCode = Conference.AccessCode });
+            return RedirectToAction("Index", new { slug = _conference.Slug, accessCode = _conference.AccessCode });
         }
 
         [HttpPost]
         public async Task<ActionResult> Publish()
         {
-            if (this.Conference == null)
+            if (this._conference == null)
             {
                 return HttpNotFound();
             }
 
-            var command = new PublishConference { AggregateRootId = this.Conference.Id };
+            var command = new PublishConference { AggregateRootId = this._conference.Id };
             var result = await ExecuteCommandAsync(command);
 
             if (!result.IsSuccess())
@@ -162,18 +162,18 @@ namespace ConferenceManagement.Web.Controllers
                 throw new InvalidOperationException(result.GetErrorMessage());
             }
 
-            return RedirectToAction("Index", new { slug = this.Conference.Slug, accessCode = this.Conference.AccessCode });
+            return RedirectToAction("Index", new { slug = this._conference.Slug, accessCode = this._conference.AccessCode });
         }
 
         [HttpPost]
         public async Task<ActionResult> Unpublish()
         {
-            if (this.Conference == null)
+            if (this._conference == null)
             {
                 return HttpNotFound();
             }
 
-            var command = new UnpublishConference { AggregateRootId = this.Conference.Id };
+            var command = new UnpublishConference { AggregateRootId = this._conference.Id };
             var result = await ExecuteCommandAsync(command);
 
             if (!result.IsSuccess())
@@ -181,7 +181,7 @@ namespace ConferenceManagement.Web.Controllers
                 throw new InvalidOperationException(result.GetErrorMessage());
             }
 
-            return RedirectToAction("Index", new { slug = this.Conference.Slug, accessCode = this.Conference.AccessCode });
+            return RedirectToAction("Index", new { slug = this._conference.Slug, accessCode = this._conference.AccessCode });
         }
 
         #endregion
@@ -195,12 +195,12 @@ namespace ConferenceManagement.Web.Controllers
 
         public ActionResult SeatGrid()
         {
-            if (this.Conference == null)
+            if (this._conference == null)
             {
                 return HttpNotFound();
             }
 
-            return PartialView(this._conferenceQueryService.FindSeatTypes(this.Conference.Id).Select(x => x.ToViewModel()));
+            return PartialView(this._conferenceQueryService.FindSeatTypes(this._conference.Id).Select(x => x.ToViewModel()));
         }
 
         public ActionResult SeatRow(Guid id)
@@ -216,7 +216,7 @@ namespace ConferenceManagement.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateSeat(SeatType seat)
         {
-            if (this.Conference == null)
+            if (this._conference == null)
             {
                 return HttpNotFound();
             }
@@ -226,7 +226,7 @@ namespace ConferenceManagement.Web.Controllers
                 return PartialView("EditSeat", seat);
             }
 
-            var command = seat.ToAddSeatTypeCommand(this.Conference);
+            var command = seat.ToAddSeatTypeCommand(this._conference);
             var result = await ExecuteCommandAsync(command);
 
             if (!result.IsSuccess())
@@ -239,7 +239,7 @@ namespace ConferenceManagement.Web.Controllers
 
         public ActionResult EditSeat(Guid id)
         {
-            if (this.Conference == null)
+            if (this._conference == null)
             {
                 return HttpNotFound();
             }
@@ -250,7 +250,7 @@ namespace ConferenceManagement.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> EditSeat(SeatType seat)
         {
-            if (this.Conference == null)
+            if (this._conference == null)
             {
                 return HttpNotFound();
             }
@@ -260,7 +260,7 @@ namespace ConferenceManagement.Web.Controllers
                 return PartialView(seat);
             }
 
-            var command = seat.ToUpdateSeatTypeCommand(this.Conference);
+            var command = seat.ToUpdateSeatTypeCommand(this._conference);
             var result = await ExecuteCommandAsync(command);
 
             if (!result.IsSuccess())
@@ -274,7 +274,7 @@ namespace ConferenceManagement.Web.Controllers
         [HttpPost]
         public async Task DeleteSeat(Guid id)
         {
-            var command = new RemoveSeatType(this.Conference.Id) { SeatTypeId = id };
+            var command = new RemoveSeatType(this._conference.Id) { SeatTypeId = id };
             var result = await ExecuteCommandAsync(command);
 
             if (!result.IsSuccess())
@@ -289,7 +289,7 @@ namespace ConferenceManagement.Web.Controllers
 
         public ViewResult Orders()
         {
-            var orders = _conferenceQueryService.FindOrders(this.Conference.Id);
+            var orders = _conferenceQueryService.FindOrders(this._conference.Id);
             return View(orders);
         }
 

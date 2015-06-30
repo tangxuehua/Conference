@@ -21,7 +21,7 @@ namespace ConferenceManagement.Web.Controllers
         private ConferenceQueryService _conferenceQueryService;
         private ConferenceInfo _conference;
 
-        public ConferenceController(ICommandService commandService, ConferenceQueryService conferenceQueryService, ILoggerFactory loggerFactory)
+        public ConferenceController(ICommandService commandService, ConferenceQueryService conferenceQueryService)
         {
             _commandService = commandService;
             _conferenceQueryService = conferenceQueryService;

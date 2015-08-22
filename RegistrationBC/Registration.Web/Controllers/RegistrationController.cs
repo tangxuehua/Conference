@@ -40,7 +40,7 @@ namespace Registration.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult StartRegistration(OrderViewModel model)
+        public async Task<ActionResult> StartRegistration(OrderViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -54,14 +54,13 @@ namespace Registration.Web.Controllers
                 return View(CreateViewModel());
             }
 
-            _commandService.Send(command);
-            //var result = await SendCommandAsync(command);
+            var result = await SendCommandAsync(command);
 
-            //if (!result.IsSuccess())
-            //{
-            //    ModelState.AddModelError("ConferenceCode", result.GetErrorMessage());
-            //    return View(CreateViewModel());
-            //}
+            if (!result.IsSuccess())
+            {
+                ModelState.AddModelError("ConferenceCode", result.GetErrorMessage());
+                return View(CreateViewModel());
+            }
 
             return RedirectToAction("SpecifyRegistrantAndPaymentDetails", new { conferenceCode = this.ConferenceCode, orderId = command.AggregateRootId });
         }

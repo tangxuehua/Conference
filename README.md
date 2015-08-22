@@ -1,7 +1,7 @@
-Conference
+﻿Conference
 ==========
 
-A conference example to explain how to use enode to develop ddd+cqrs+event souricng style application.  
+A conference example to explain how to use enode to develop ddd+cqrs+event sourcing style application.  
 
 本项目是展示如何使用ENode开发基于DDD,CQRS,ES架构的应用程序。  
 

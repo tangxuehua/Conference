@@ -1,11 +1,9 @@
-﻿using System;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Net;
 using Conference.Common;
 using ConferenceManagement.Commands;
+using ConferenceManagement.ReadModel;
 using ECommon.Components;
-using ECommon.Utilities;
+using ECommon.Socketing;
 using ENode.Commanding;
 using ENode.Configurations;
 using ENode.EQueue;
@@ -37,6 +35,9 @@ namespace ConferenceManagement.Web.Extensions
             provider.RegisterType<CommitSeatReservation>(208);
             provider.RegisterType<CancelSeatReservation>(209);
 
+            //application message, domain event, or exception handlers
+            provider.RegisterType<ConferenceViewModelGenerator>(600);
+
             return enodeConfiguration;
         }
         public static ENodeConfiguration UseEQueue(this ENodeConfiguration enodeConfiguration)
@@ -45,10 +46,11 @@ namespace ConferenceManagement.Web.Extensions
 
             configuration.RegisterEQueueComponents();
 
-            _commandService = new CommandService(
-                new CommandResultProcessor(new IPEndPoint(SocketUtils.GetLocalIPV4(), 9000)),
-                "ConferenceCommandService",
-                new ProducerSetting { BrokerProducerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort) });
+            _commandService = new CommandService(new CommandResultProcessor(new IPEndPoint(SocketUtils.GetLocalIPV4(), 9000)), new ProducerSetting
+            {
+                BrokerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort),
+                BrokerAdminAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort)
+            });
 
             configuration.SetDefault<ICommandService, CommandService>(_commandService);
 

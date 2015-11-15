@@ -86,7 +86,7 @@ namespace ConferenceManagement.ProcessorHost
             };
             var setting = new ConfigurationSetting
             {
-                SqlServerDefaultConnectionString = ConfigSettings.ConferenceENodeConnectionString
+                SqlDefaultConnectionString = ConfigSettings.ConferenceENodeConnectionString
             };
 
             _enodeConfiguration = _ecommonConfiguration

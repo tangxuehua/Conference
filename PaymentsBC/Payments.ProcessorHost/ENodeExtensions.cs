@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using Conference.Common;
 using ECommon.Components;
-using ECommon.Utilities;
+using ECommon.Socketing;
 using ENode.Configurations;
 using ENode.EQueue;
 using ENode.Eventing;
@@ -10,7 +10,6 @@ using ENode.Infrastructure.Impl;
 using EQueue.Clients.Consumers;
 using EQueue.Clients.Producers;
 using EQueue.Configurations;
-using EQueue.Protocols;
 using Payments.Commands;
 using Payments.MessagePublishers;
 using Payments.Messages;
@@ -58,26 +57,25 @@ namespace Payments.ProcessorHost
 
             configuration.RegisterEQueueComponents();
 
-            var producerSetting = new ProducerSetting { BrokerProducerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort) };
-            var consumerSetting = new ConsumerSetting { BrokerConsumerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort) };
+            var producerSetting = new ProducerSetting
+            {
+                BrokerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort),
+                BrokerAdminAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort)
+            };
+            var consumerSetting = new ConsumerSetting
+            {
+                BrokerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort),
+                BrokerAdminAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort)
+            };
 
-            _applicationMessagePublisher = new ApplicationMessagePublisher("PaymentsApplicationMessagePublisher", producerSetting);
-            _domainEventPublisher = new DomainEventPublisher("PaymentsDomainEventPublisher", producerSetting);
+            _applicationMessagePublisher = new ApplicationMessagePublisher(producerSetting);
+            _domainEventPublisher = new DomainEventPublisher(producerSetting);
 
             configuration.SetDefault<IMessagePublisher<IApplicationMessage>, ApplicationMessagePublisher>(_applicationMessagePublisher);
             configuration.SetDefault<IMessagePublisher<DomainEventStreamMessage>, DomainEventPublisher>(_domainEventPublisher);
 
-            _commandConsumer = new CommandConsumer(
-                "PaymentCommandConsumer",
-                "PaymentCommandConsumerGroup",
-                consumerSetting)
-            .Subscribe(Topics.PaymentCommandTopic);
-
-            _eventConsumer = new DomainEventConsumer(
-                "PaymentEventConsumer",
-                "PaymentEventConsumerGroup",
-                consumerSetting)
-            .Subscribe(Topics.PaymentDomainEventTopic);
+            _commandConsumer = new CommandConsumer("PaymentCommandConsumerGroup", consumerSetting).Subscribe(Topics.PaymentCommandTopic);
+            _eventConsumer = new DomainEventConsumer("PaymentEventConsumerGroup", consumerSetting).Subscribe(Topics.PaymentDomainEventTopic);
 
             return enodeConfiguration;
         }

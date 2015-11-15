@@ -31,7 +31,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{B26C
 	ProjectSection(SolutionItems) = preProject
 		Scripts\CreateConferenceTables.sql = Scripts\CreateConferenceTables.sql
 		Scripts\CreateENodeTables.sql = Scripts\CreateENodeTables.sql
-		Scripts\CreateEQueueTables.sql = Scripts\CreateEQueueTables.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ConferenceManagement", "ConferenceManagement", "{D986C94C-06C0-4E9F-9E20-454673DAE696}"

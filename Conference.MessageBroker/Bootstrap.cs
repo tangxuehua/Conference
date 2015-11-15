@@ -4,11 +4,10 @@ using System.Net;
 using Conference.Common;
 using ECommon.Autofac;
 using ECommon.Components;
-using ECommon.Configurations;
 using ECommon.JsonNet;
 using ECommon.Log4Net;
 using ECommon.Logging;
-using ECommon.Utilities;
+using ECommon.Socketing;
 using EQueue.Broker;
 using EQueue.Configurations;
 using ECommonConfiguration = ECommon.Configurations.Configuration;
@@ -23,6 +22,7 @@ namespace Conference.MessageBroker
 
         public static void Initialize()
         {
+            ConfigSettings.Initialize();
             InitializeECommon();
             try
             {
@@ -76,33 +76,13 @@ namespace Conference.MessageBroker
         }
         private static void InitializeEQueue()
         {
-            ConfigSettings.Initialize();
-
-            var queueStoreSetting = new SqlServerQueueStoreSetting
+            _configuration.RegisterEQueueComponents();
+            var storePath = ConfigurationManager.AppSettings["equeueStorePath"];
+            var setting = new BrokerSetting(storePath)
             {
-                ConnectionString = ConfigSettings.ConferenceEQueueConnectionString
-            };
-            var messageStoreSetting = new SqlServerMessageStoreSetting
-            {
-                ConnectionString = ConfigSettings.ConferenceEQueueConnectionString,
-                MessageLogFilePath = "/home/admin/logs/conference/equeue"
-            };
-            var offsetManagerSetting = new SqlServerOffsetManagerSetting
-            {
-                ConnectionString = ConfigSettings.ConferenceEQueueConnectionString
-            };
-
-            _configuration
-                .RegisterEQueueComponents()
-                .UseSqlServerQueueStore(queueStoreSetting)
-                .UseSqlServerMessageStore(messageStoreSetting)
-                .UseSqlServerOffsetManager(offsetManagerSetting);
-
-            var setting = new BrokerSetting
-            {
-                ProducerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort),
-                ConsumerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort),
-                AdminIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort)
+                ProducerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort),
+                ConsumerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort),
+                AdminAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort)
             };
             _broker = BrokerController.Create(setting);
             _logger.Info("EQueue initialized.");

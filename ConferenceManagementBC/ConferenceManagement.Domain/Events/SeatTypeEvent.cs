@@ -4,7 +4,7 @@ using ENode.Eventing;
 namespace ConferenceManagement
 {
     [Serializable]
-    public class SeatTypeEvent : DomainEvent<Guid>
+    public abstract class SeatTypeEvent : DomainEvent<Guid>
     {
         public Guid SeatTypeId { get; private set; }
         public SeatTypeInfo SeatTypeInfo { get; private set; }

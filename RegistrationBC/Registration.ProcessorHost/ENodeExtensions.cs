@@ -3,7 +3,7 @@ using Conference.Common;
 using ConferenceManagement.Commands;
 using ConferenceManagement.Messages;
 using ECommon.Components;
-using ECommon.Utilities;
+using ECommon.Socketing;
 using ENode.Commanding;
 using ENode.Configurations;
 using ENode.EQueue;
@@ -13,7 +13,6 @@ using ENode.Infrastructure.Impl;
 using EQueue.Clients.Consumers;
 using EQueue.Clients.Producers;
 using EQueue.Configurations;
-using EQueue.Protocols;
 using Payments.Messages;
 using Registration.Commands.Orders;
 using Registration.Commands.SeatAssignments;
@@ -89,35 +88,30 @@ namespace Registration.ProcessorHost
 
             configuration.RegisterEQueueComponents();
 
-            var producerSetting = new ProducerSetting { BrokerProducerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort) };
-            var consumerSetting = new ConsumerSetting { BrokerConsumerIPEndPoint = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort) };
+            var producerSetting = new ProducerSetting
+            {
+                BrokerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort),
+                BrokerAdminAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort)
+            };
+            var consumerSetting = new ConsumerSetting
+            {
+                BrokerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort),
+                BrokerAdminAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort)
+            };
 
-            _domainEventPublisher = new DomainEventPublisher("RegistrationDomainEventPublisher", producerSetting);
+            _domainEventPublisher = new DomainEventPublisher(producerSetting);
 
             configuration.SetDefault<IMessagePublisher<DomainEventStreamMessage>, DomainEventPublisher>(_domainEventPublisher);
 
-            _commandService = new CommandService(null, "RegistrationCommandService", producerSetting);
+            _commandService = new CommandService(null, producerSetting);
 
             configuration.SetDefault<ICommandService, CommandService>(_commandService);
 
-            _commandConsumer = new CommandConsumer(
-                "RegistrationCommandConsumer",
-                "RegistrationCommandConsumerGroup",
-                consumerSetting)
-            .Subscribe(Topics.RegistrationCommandTopic);
-
-            _eventConsumer = new DomainEventConsumer(
-                "RegistrationEventConsumer",
-                "RegistrationEventConsumerGroup",
-                consumerSetting)
-            .Subscribe(Topics.RegistrationDomainEventTopic);
-
-            _applicationMessageConsumer = new ApplicationMessageConsumer(
-                "RegistrationMessageConsumer",
-                "RegistrationMessageConsumerGroup",
-                consumerSetting)
-            .Subscribe(Topics.ConferenceApplicationMessageTopic)
-            .Subscribe(Topics.PaymentApplicationMessageTopic);
+            _commandConsumer = new CommandConsumer("RegistrationCommandConsumerGroup", consumerSetting).Subscribe(Topics.RegistrationCommandTopic);
+            _eventConsumer = new DomainEventConsumer("RegistrationEventConsumerGroup", consumerSetting).Subscribe(Topics.RegistrationDomainEventTopic);
+            _applicationMessageConsumer = new ApplicationMessageConsumer("RegistrationMessageConsumerGroup", consumerSetting)
+                .Subscribe(Topics.ConferenceApplicationMessageTopic)
+                .Subscribe(Topics.PaymentApplicationMessageTopic);
 
             return enodeConfiguration;
         }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using ENode.Domain;
+using ENode.Infrastructure;
 
 namespace Payments
 {
     [Serializable]
+    [Code(2200)]
     public class Payment : AggregateRoot<Guid>
     {
         private Guid _orderId;

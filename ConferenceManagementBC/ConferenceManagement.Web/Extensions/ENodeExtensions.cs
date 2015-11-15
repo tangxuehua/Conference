@@ -19,27 +19,6 @@ namespace ConferenceManagement.Web.Extensions
     {
         private static CommandService _commandService;
 
-        public static ENodeConfiguration RegisterAllTypeCodes(this ENodeConfiguration enodeConfiguration)
-        {
-            var provider = ObjectContainer.Resolve<ITypeCodeProvider>() as DefaultTypeCodeProvider;
-
-            //commands
-            provider.RegisterType<CreateConference>(200);
-            provider.RegisterType<UpdateConference>(201);
-            provider.RegisterType<AddSeatType>(202);
-            provider.RegisterType<UpdateSeatType>(203);
-            provider.RegisterType<RemoveSeatType>(204);
-            provider.RegisterType<PublishConference>(205);
-            provider.RegisterType<UnpublishConference>(206);
-            provider.RegisterType<MakeSeatReservation>(207);
-            provider.RegisterType<CommitSeatReservation>(208);
-            provider.RegisterType<CancelSeatReservation>(209);
-
-            //application message, domain event, or exception handlers
-            provider.RegisterType<ConferenceViewModelGenerator>(600);
-
-            return enodeConfiguration;
-        }
         public static ENodeConfiguration UseEQueue(this ENodeConfiguration enodeConfiguration)
         {
             var configuration = enodeConfiguration.GetCommonConfiguration();

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using ENode.Domain;
+using ENode.Infrastructure;
 
 namespace ConferenceManagement
 {
     [Serializable]
+    [Code(1200)]
     public class Conference : AggregateRoot<Guid>
     {
         private ConferenceInfo _info;

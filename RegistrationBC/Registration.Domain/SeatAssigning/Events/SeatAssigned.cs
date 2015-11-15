@@ -1,9 +1,11 @@
 ﻿using System;
 using ENode.Eventing;
+using ENode.Infrastructure;
 
 namespace Registration.SeatAssigning
 {
     [Serializable]
+    [Code(3307)]
     public class SeatAssigned : DomainEvent<Guid>
     {
         public int Position { get; private set; }

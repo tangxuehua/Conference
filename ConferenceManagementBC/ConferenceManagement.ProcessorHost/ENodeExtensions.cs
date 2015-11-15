@@ -26,53 +26,6 @@ namespace ConferenceManagement.ProcessorHost
         private static PublishableExceptionPublisher _exceptionPublisher;
         private static PublishableExceptionConsumer _exceptionConsumer;
 
-        public static ENodeConfiguration RegisterAllTypeCodes(this ENodeConfiguration enodeConfiguration)
-        {
-            var provider = ObjectContainer.Resolve<ITypeCodeProvider>() as DefaultTypeCodeProvider;
-
-            //aggregates
-            provider.RegisterType<Conference>(100);
-
-            //commands
-            provider.RegisterType<CreateConference>(200);
-            provider.RegisterType<UpdateConference>(201);
-            provider.RegisterType<AddSeatType>(202);
-            provider.RegisterType<UpdateSeatType>(203);
-            provider.RegisterType<RemoveSeatType>(204);
-            provider.RegisterType<PublishConference>(205);
-            provider.RegisterType<UnpublishConference>(206);
-            provider.RegisterType<MakeSeatReservation>(207);
-            provider.RegisterType<CommitSeatReservation>(208);
-            provider.RegisterType<CancelSeatReservation>(209);
-
-            //application messages
-            provider.RegisterType<SeatsReservedMessage>(300);
-            provider.RegisterType<SeatInsufficientMessage>(301);
-            provider.RegisterType<SeatsReservationCommittedMessage>(302);
-            provider.RegisterType<SeatsReservationCancelledMessage>(303);
-
-            //domain events
-            provider.RegisterType<ConferenceCreated>(400);
-            provider.RegisterType<ConferenceUpdated>(401);
-            provider.RegisterType<SeatTypeAdded>(402);
-            provider.RegisterType<SeatTypeUpdated>(403);
-            provider.RegisterType<SeatTypeRemoved>(404);
-            provider.RegisterType<SeatTypeQuantityChanged>(405);
-            provider.RegisterType<ConferencePublished>(406);
-            provider.RegisterType<ConferenceUnpublished>(407);
-            provider.RegisterType<SeatsReserved>(408);
-            provider.RegisterType<SeatsReservationCommitted>(409);
-            provider.RegisterType<SeatsReservationCancelled>(410);
-
-            //publishable exceptions
-            provider.RegisterType<SeatInsufficientException>(500);
-
-            //application message, domain event, or exception handlers
-            provider.RegisterType<ConferenceViewModelGenerator>(600);
-            provider.RegisterType<ConferenceMessagePublisher>(601);
-
-            return enodeConfiguration;
-        }
         public static ENodeConfiguration UseEQueue(this ENodeConfiguration enodeConfiguration)
         {
             var configuration = enodeConfiguration.GetCommonConfiguration();

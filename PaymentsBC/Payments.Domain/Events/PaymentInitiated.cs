@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using ENode.Eventing;
+using ENode.Infrastructure;
 
 namespace Payments
 {
     [Serializable]
+    [Code(2300)]
     public class PaymentInitiated : DomainEvent<Guid>
     {
         public Guid OrderId { get; private set; }

@@ -1,9 +1,11 @@
 ﻿using System;
 using ENode.Eventing;
+using ENode.Infrastructure;
 
 namespace Payments
 {
     [Serializable]
+    [Code(2302)]
     public class PaymentRejected : DomainEvent<Guid>
     {
         public Guid OrderId { get; private set; }

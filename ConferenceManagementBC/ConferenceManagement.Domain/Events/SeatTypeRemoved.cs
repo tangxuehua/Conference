@@ -1,9 +1,11 @@
 ﻿using System;
 using ENode.Eventing;
+using ENode.Infrastructure;
 
 namespace ConferenceManagement
 {
     [Serializable]
+    [Code(1309)]
     public class SeatTypeRemoved : DomainEvent<Guid>
     {
         public Guid SeatTypeId { get; private set; }

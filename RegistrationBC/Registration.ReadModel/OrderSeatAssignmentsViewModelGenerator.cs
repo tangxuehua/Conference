@@ -13,6 +13,7 @@ using Registration.SeatAssigning;
 namespace Registration.Handlers
 {
     [Component]
+    [Code(3501)]
     public class OrderSeatAssignmentsViewModelGenerator :
         IMessageHandler<OrderSeatAssignmentsCreated>,
         IMessageHandler<SeatAssigned>,

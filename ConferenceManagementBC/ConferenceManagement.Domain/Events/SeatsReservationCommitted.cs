@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using ENode.Eventing;
+using ENode.Infrastructure;
 
 namespace ConferenceManagement
 {
     [Serializable]
+    [Code(1305)]
     public class SeatsReservationCommitted : DomainEvent<Guid>
     {
         public Guid ReservationId { get; set; }

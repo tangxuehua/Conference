@@ -1,9 +1,11 @@
 ﻿using System;
 using ENode.Eventing;
+using ENode.Infrastructure;
 
 namespace ConferenceManagement
 {
     [Serializable]
+    [Code(1307)]
     public class SeatTypeAdded : SeatTypeEvent
     {
         public int Quantity { get; private set; }

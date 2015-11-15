@@ -1,9 +1,11 @@
 ﻿using System;
 using ENode.Commanding;
+using ENode.Infrastructure;
 
 namespace ConferenceManagement.Commands
 {
     [Serializable]
+    [Code(1109)]
     public class UpdateSeatType : Command<Guid>
     {
         public Guid SeatTypeId { get; set; }
@@ -12,6 +14,7 @@ namespace ConferenceManagement.Commands
         public decimal Price { get; set; }
         public int Quantity { get; set; }
 
+        public UpdateSeatType() { }
         public UpdateSeatType(Guid conferenceId) : base(conferenceId) { }
     }
 }

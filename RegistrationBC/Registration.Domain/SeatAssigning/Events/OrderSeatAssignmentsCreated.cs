@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using ENode.Eventing;
+using ENode.Infrastructure;
 
 namespace Registration.SeatAssigning
 {
     [Serializable]
+    [Code(3306)]
     public class OrderSeatAssignmentsCreated : DomainEvent<Guid>
     {
         public Guid OrderId { get; private set; }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using ENode.Eventing;
+using ENode.Infrastructure;
 
 namespace Registration.Orders
 {
     [Serializable]
+    [Code(3300)]
     public class OrderPlaced : DomainEvent<Guid>
     {
         public Guid ConferenceId { get; private set; }

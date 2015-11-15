@@ -50,15 +50,15 @@ namespace ConferenceManagement.Web
 
             var assemblies = new[]
             {
+                Assembly.Load("ConferenceManagement.Commands"),
                 Assembly.Load("ConferenceManagement.ReadModel"),
-                Assembly.Load("ConferenceManagement.Web")
+                Assembly.GetExecutingAssembly()
             };
 
             _enodeConfiguration = _ecommonConfiguration
                 .CreateENode()
                 .RegisterENodeComponents()
                 .RegisterBusinessComponents(assemblies)
-                .RegisterAllTypeCodes()
                 .UseEQueue()
                 .InitializeBusinessAssemblies(assemblies)
                 .StartEQueue();

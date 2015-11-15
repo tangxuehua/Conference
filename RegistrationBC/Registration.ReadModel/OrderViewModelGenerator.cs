@@ -13,6 +13,7 @@ using Registration.Orders;
 namespace Registration.Handlers
 {
     [Component]
+    [Code(3500)]
     public class OrderViewModelGenerator :
         IMessageHandler<OrderPlaced>,
         IMessageHandler<OrderRegistrantAssigned>,

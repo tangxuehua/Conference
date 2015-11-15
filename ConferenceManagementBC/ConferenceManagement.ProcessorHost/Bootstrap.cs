@@ -78,11 +78,13 @@ namespace ConferenceManagement.ProcessorHost
             {
                 Assembly.Load("Conference.Common"),
                 Assembly.Load("ConferenceManagement.Domain"),
+                Assembly.Load("ConferenceManagement.Commands"),
                 Assembly.Load("ConferenceManagement.CommandHandlers"),
                 Assembly.Load("ConferenceManagement.MessagePublishers"),
                 Assembly.Load("ConferenceManagement.ReadModel"),
                 Assembly.Load("ConferenceManagement.Repositories.Dapper"),
-                Assembly.Load("ConferenceManagement.ProcessorHost")
+                Assembly.Load("ConferenceManagement.Messages"),
+                Assembly.GetExecutingAssembly()
             };
             var setting = new ConfigurationSetting
             {
@@ -93,7 +95,6 @@ namespace ConferenceManagement.ProcessorHost
                 .CreateENode(setting)
                 .RegisterENodeComponents()
                 .RegisterBusinessComponents(assemblies)
-                .RegisterAllTypeCodes()
                 .UseSqlServerLockService()
                 .UseSqlServerCommandStore()
                 .UseSqlServerEventStore()

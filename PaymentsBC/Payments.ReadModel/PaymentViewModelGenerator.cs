@@ -12,6 +12,7 @@ using ENode.Infrastructure;
 namespace Payments.ReadModel
 {
     [Component]
+    [Code(2700)]
     public class PaymentViewModelGenerator :
         IMessageHandler<PaymentInitiated>,
         IMessageHandler<PaymentCompleted>,

@@ -1,9 +1,11 @@
 ﻿using System;
 using ENode.Eventing;
+using ENode.Infrastructure;
 
 namespace Registration.Orders
 {
     [Serializable]
+    [Code(3305)]
     public class OrderSuccessed : OrderEvent
     {
         public OrderSuccessed() { }

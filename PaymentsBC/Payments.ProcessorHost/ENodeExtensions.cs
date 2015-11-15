@@ -24,33 +24,6 @@ namespace Payments.ProcessorHost
         private static DomainEventPublisher _domainEventPublisher;
         private static DomainEventConsumer _eventConsumer;
 
-        public static ENodeConfiguration RegisterAllTypeCodes(this ENodeConfiguration enodeConfiguration)
-        {
-            var provider = ObjectContainer.Resolve<ITypeCodeProvider>() as DefaultTypeCodeProvider;
-
-            //aggregates
-            provider.RegisterType<Payment>(130);
-
-            //commands
-            provider.RegisterType<CreatePayment>(240);
-            provider.RegisterType<CompletePayment>(241);
-            provider.RegisterType<CancelPayment>(242);
-
-            //application messages
-            provider.RegisterType<PaymentCompletedMessage>(320);
-            provider.RegisterType<PaymentRejectedMessage>(321);
-
-            //domain events
-            provider.RegisterType<PaymentInitiated>(440);
-            provider.RegisterType<PaymentCompleted>(441);
-            provider.RegisterType<PaymentRejected>(442);
-
-            //application message, domain event, or exception handlers
-            provider.RegisterType<PaymentViewModelGenerator>(640);
-            provider.RegisterType<PaymentMessagePublisher>(641);
-
-            return enodeConfiguration;
-        }
         public static ENodeConfiguration UseEQueue(this ENodeConfiguration enodeConfiguration)
         {
             var configuration = enodeConfiguration.GetCommonConfiguration();

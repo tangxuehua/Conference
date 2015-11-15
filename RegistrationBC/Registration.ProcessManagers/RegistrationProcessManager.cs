@@ -14,6 +14,7 @@ using Registration.Orders;
 namespace Registration.ProcessManagers
 {
     [Component]
+    [Code(3400)]
     public class RegistrationProcessManager :
         IMessageHandler<OrderPlaced>,                           //订单创建时发生(Order)
 

@@ -4,11 +4,13 @@ using System.Linq;
 using Conference.Common;
 using ECommon.Utilities;
 using ENode.Domain;
+using ENode.Infrastructure;
 using Registration.SeatAssigning;
 
 namespace Registration.Orders
 {
     [Serializable]
+    [Code(3200)]
     public class Order : AggregateRoot<Guid>
     {
         private OrderTotal _total;

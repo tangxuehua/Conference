@@ -52,16 +52,18 @@ namespace Registration.Web
 
             var assemblies = new[]
             {
+                Assembly.Load("Registration.Commands"),
+                Assembly.Load("Registration.Domain"),
                 Assembly.Load("Registration.ReadModel"),
+                Assembly.Load("Payments.Commands"),
                 Assembly.Load("Payments.ReadModel"),
-                Assembly.Load("Registration.Web")
+                Assembly.GetExecutingAssembly()
             };
 
             _enodeConfiguration = _ecommonConfiguration
                 .CreateENode()
                 .RegisterENodeComponents()
                 .RegisterBusinessComponents(assemblies)
-                .RegisterAllTypeCodes()
                 .UseEQueue()
                 .InitializeBusinessAssemblies(assemblies)
                 .StartEQueue();

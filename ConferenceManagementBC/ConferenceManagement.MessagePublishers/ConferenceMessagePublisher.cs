@@ -8,6 +8,7 @@ using ENode.Infrastructure;
 namespace ConferenceManagement.MessagePublishers
 {
     [Component]
+    [Code(1500)]
     public class ConferenceMessagePublisher :
         IMessageHandler<SeatsReserved>,
         IMessageHandler<SeatsReservationCommitted>,

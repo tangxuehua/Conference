@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using ECommon.Utilities;
 using ENode.Domain;
+using ENode.Infrastructure;
 using Registration.Orders;
 
 namespace Registration.SeatAssigning
 {
     [Serializable]
+    [Code(3201)]
     public class OrderSeatAssignments : AggregateRoot<Guid>
     {
         private Guid _orderId;

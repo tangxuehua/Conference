@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using ENode.Commanding;
-using ENode.Infrastructure;
 
 namespace Payments.Commands
 {
     [Serializable]
-    [Code(2100)]
     public class CreatePayment : Command<Guid>
     {
         public Guid OrderId { get; set; }

@@ -24,6 +24,7 @@
     <RestorePackages>true</RestorePackages>
     <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -56,29 +57,17 @@
     <Reference Include="Dapper">
       <HintPath>..\..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
     </Reference>
-    <Reference Include="ECommon">
-      <HintPath>..\..\packages\ECommon.1.5.5\lib\net45\ECommon.dll</HintPath>
+    <Reference Include="ECommon, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ECommon.2.0.2\lib\net45\ECommon.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="ECommon.Autofac">
-      <HintPath>..\..\packages\ECommon.Autofac.1.5.5\lib\net45\ECommon.Autofac.dll</HintPath>
+    <Reference Include="ENode, Version=2.7.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ENode.2.7.1\lib\net45\ENode.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="ECommon.Dapper">
-      <HintPath>..\..\packages\ECommon.Dapper.1.5.5\lib\net45\ECommon.Dapper.dll</HintPath>
-    </Reference>
-    <Reference Include="ECommon.JsonNet">
-      <HintPath>..\..\packages\ECommon.JsonNet.1.5.5\lib\net45\ECommon.JsonNet.dll</HintPath>
-    </Reference>
-    <Reference Include="ECommon.Log4Net">
-      <HintPath>..\..\packages\ECommon.Log4Net.1.5.5\lib\net45\ECommon.Log4Net.dll</HintPath>
-    </Reference>
-    <Reference Include="ENode">
-      <HintPath>..\..\packages\ENode.2.6.9\lib\net45\ENode.dll</HintPath>
-    </Reference>
-    <Reference Include="ENode.EQueue">
-      <HintPath>..\..\packages\ENode.EQueue.1.7.0\lib\net45\ENode.EQueue.dll</HintPath>
-    </Reference>
-    <Reference Include="EQueue">
-      <HintPath>..\..\packages\EQueue.2.0.3\lib\net45\EQueue.dll</HintPath>
+    <Reference Include="EQueue, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EQueue.2.1.0\lib\net45\EQueue.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
@@ -86,6 +75,10 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="protobuf-net, Version=2.0.0.668, Culture=neutral, PublicKeyToken=257b51d87d2e4d67, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\protobuf-net.2.0.0.668\lib\net40\protobuf-net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

@@ -11,8 +11,7 @@ namespace ConferenceManagement
         public SeatTypeInfo SeatTypeInfo { get; private set; }
 
         public SeatTypeEvent() { }
-        public SeatTypeEvent(Conference conference, Guid seatTypeId, SeatTypeInfo seatTypeInfo)
-            : base(conference)
+        public SeatTypeEvent(Guid seatTypeId, SeatTypeInfo seatTypeInfo)
         {
             SeatTypeId = seatTypeId;
             SeatTypeInfo = seatTypeInfo;

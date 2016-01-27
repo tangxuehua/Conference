@@ -12,7 +12,6 @@ using ENode.Infrastructure;
 namespace ConferenceManagement.ReadModel
 {
     [Component]
-    [Code(1700)]
     public class ConferenceViewModelGenerator :
         IMessageHandler<ConferenceCreated>,
         IMessageHandler<ConferenceUpdated>,

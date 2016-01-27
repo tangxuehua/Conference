@@ -5,7 +5,6 @@ using ENode.Infrastructure;
 namespace ConferenceManagement
 {
     [Serializable]
-    [Code(1400)]
     public class SeatInsufficientException : PublishableException
     {
         public Guid ConferenceId { get; private set; }

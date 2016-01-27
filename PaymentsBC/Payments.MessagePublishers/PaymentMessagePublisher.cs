@@ -7,7 +7,6 @@ using Payments.Messages;
 namespace Payments.MessagePublishers
 {
     [Component]
-    [Code(2500)]
     public class PaymentMessagePublisher :
         IMessageHandler<PaymentCompleted>,
         IMessageHandler<PaymentRejected>

@@ -1,11 +1,9 @@
 ﻿using System;
 using ENode.Commanding;
-using ENode.Infrastructure;
 
 namespace Registration.Commands.SeatAssignments
 {
     [Serializable]
-    [Code(3106)]
     public class AssignSeat : Command<Guid>
     {
         public int Position { get; set; }

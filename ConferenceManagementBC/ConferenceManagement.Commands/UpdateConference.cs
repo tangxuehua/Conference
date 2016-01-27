@@ -1,11 +1,9 @@
 ﻿using System;
 using ENode.Commanding;
-using ENode.Infrastructure;
 
 namespace ConferenceManagement.Commands
 {
     [Serializable]
-    [Code(1108)]
     public class UpdateConference : Command<Guid>
     {
         public string Name { get; set; }

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using ENode.Eventing;
-using ENode.Infrastructure;
 
 namespace Registration.Orders
 {
     [Serializable]
-    [Code(3300)]
     public class OrderPlaced : DomainEvent<Guid>
     {
         public Guid ConferenceId { get; private set; }
@@ -15,8 +13,7 @@ namespace Registration.Orders
         public string AccessCode { get; private set; }
 
         public OrderPlaced() { }
-        public OrderPlaced(Order order, Guid conferenceId, OrderTotal orderTotal, DateTime reservationExpirationDate, string accessCode)
-            : base(order)
+        public OrderPlaced(Guid conferenceId, OrderTotal orderTotal, DateTime reservationExpirationDate, string accessCode)
         {
             ConferenceId = conferenceId;
             OrderTotal = orderTotal;

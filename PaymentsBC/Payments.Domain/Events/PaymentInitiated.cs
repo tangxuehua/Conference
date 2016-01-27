@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using ENode.Eventing;
-using ENode.Infrastructure;
 
 namespace Payments
 {
     [Serializable]
-    [Code(2300)]
     public class PaymentInitiated : DomainEvent<Guid>
     {
         public Guid OrderId { get; private set; }
@@ -16,8 +14,7 @@ namespace Payments
         public IEnumerable<PaymentItem> Items { get; private set; }
 
         public PaymentInitiated() { }
-        public PaymentInitiated(Payment payment, Guid orderId, Guid conferenceId, string description, decimal totalAmount, IEnumerable<PaymentItem> items)
-            : base(payment)
+        public PaymentInitiated(Guid orderId, Guid conferenceId, string description, decimal totalAmount, IEnumerable<PaymentItem> items)
         {
             OrderId = orderId;
             ConferenceId = conferenceId;

@@ -1,11 +1,9 @@
 ﻿using System;
 using ENode.Eventing;
-using ENode.Infrastructure;
 
 namespace ConferenceManagement
 {
     [Serializable]
-    [Code(1308)]
     public class SeatTypeQuantityChanged : DomainEvent<Guid>
     {
         public Guid SeatTypeId { get; private set; }
@@ -13,8 +11,7 @@ namespace ConferenceManagement
         public int AvailableQuantity { get; private set; }
 
         public SeatTypeQuantityChanged() { }
-        public SeatTypeQuantityChanged(Conference conference, Guid seatTypeId, int quantity, int availableQuantity)
-            : base(conference)
+        public SeatTypeQuantityChanged(Guid seatTypeId, int quantity, int availableQuantity)
         {
             SeatTypeId = seatTypeId;
             Quantity = quantity;

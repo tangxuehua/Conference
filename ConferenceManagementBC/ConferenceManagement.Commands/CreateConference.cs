@@ -1,11 +1,9 @@
 ﻿using System;
 using ENode.Commanding;
-using ENode.Infrastructure;
 
 namespace ConferenceManagement.Commands
 {
     [Serializable]
-    [Code(1103)]
     public class CreateConference : Command<Guid>
     {
         public string AccessCode { get; set; }

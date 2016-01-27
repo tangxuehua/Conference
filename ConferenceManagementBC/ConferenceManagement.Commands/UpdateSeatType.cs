@@ -1,11 +1,9 @@
 ﻿using System;
 using ENode.Commanding;
-using ENode.Infrastructure;
 
 namespace ConferenceManagement.Commands
 {
     [Serializable]
-    [Code(1109)]
     public class UpdateSeatType : Command<Guid>
     {
         public Guid SeatTypeId { get; set; }

@@ -1,11 +1,9 @@
 ﻿using System;
 using ENode.Eventing;
-using ENode.Infrastructure;
 
 namespace Registration.SeatAssigning
 {
     [Serializable]
-    [Code(3307)]
     public class SeatAssigned : DomainEvent<Guid>
     {
         public int Position { get; private set; }
@@ -13,7 +11,7 @@ namespace Registration.SeatAssigning
         public Attendee Attendee { get; private set; }
 
         public SeatAssigned() { }
-        public SeatAssigned(OrderSeatAssignments source, int position, SeatType seat, Attendee attendee) : base(source)
+        public SeatAssigned(int position, SeatType seat, Attendee attendee)
         {
             Position = position;
             Seat = seat;

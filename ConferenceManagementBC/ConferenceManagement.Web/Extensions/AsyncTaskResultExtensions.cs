@@ -15,13 +15,9 @@ namespace ConferenceManagement.Web.Extensions
         }
         public static string GetErrorMessage(this AsyncTaskResult<CommandResult> result)
         {
-            if (result.Status != AsyncTaskStatus.Success)
+            if (result.Status != AsyncTaskStatus.Success || result.Data.Status == CommandStatus.Failed)
             {
                 return result.ErrorMessage;
-            }
-            if (result.Data.Status == CommandStatus.Failed)
-            {
-                return result.Data.ErrorMessage;
             }
             return null;
         }

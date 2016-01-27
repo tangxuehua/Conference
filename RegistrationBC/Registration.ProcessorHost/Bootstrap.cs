@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Reflection;
 using Conference.Common;
-using ECommon.Autofac;
 using ECommon.Components;
-using ECommon.JsonNet;
-using ECommon.Log4Net;
+using ECommon.Configurations;
 using ECommon.Logging;
 using ENode.Configurations;
 using ECommonConfiguration = ECommon.Configurations.Configuration;

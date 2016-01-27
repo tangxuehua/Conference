@@ -4,13 +4,11 @@ using System.Linq;
 using Conference.Common;
 using ECommon.Utilities;
 using ENode.Domain;
-using ENode.Infrastructure;
 using Registration.SeatAssigning;
 
 namespace Registration.Orders
 {
     [Serializable]
-    [Code(3200)]
     public class Order : AggregateRoot<Guid>
     {
         private OrderTotal _total;
@@ -28,12 +26,12 @@ namespace Registration.Orders
             if (!seats.Any()) throw new ArgumentException("The seats of order cannot be empty.");
 
             var orderTotal = pricingService.CalculateTotal(conferenceId, seats);
-            ApplyEvent(new OrderPlaced(this, conferenceId, orderTotal, DateTime.UtcNow.Add(ConfigSettings.ReservationAutoExpiration), ObjectId.GenerateNewStringId()));
+            ApplyEvent(new OrderPlaced(conferenceId, orderTotal, DateTime.UtcNow.Add(ConfigSettings.ReservationAutoExpiration), ObjectId.GenerateNewStringId()));
         }
 
         public void AssignRegistrant(string firstName, string lastName, string email)
         {
-            ApplyEvent(new OrderRegistrantAssigned(this, _conferenceId, new Registrant(firstName, lastName, email)));
+            ApplyEvent(new OrderRegistrantAssigned(_conferenceId, new Registrant(firstName, lastName, email)));
         }
         public void ConfirmReservation(bool isReservationSuccess)
         {
@@ -43,11 +41,11 @@ namespace Registration.Orders
             }
             if (isReservationSuccess)
             {
-                ApplyEvent(new OrderReservationConfirmed(this, _conferenceId, OrderStatus.ReservationSuccess));
+                ApplyEvent(new OrderReservationConfirmed(_conferenceId, OrderStatus.ReservationSuccess));
             }
             else
             {
-                ApplyEvent(new OrderReservationConfirmed(this, _conferenceId, OrderStatus.ReservationFailed));
+                ApplyEvent(new OrderReservationConfirmed(_conferenceId, OrderStatus.ReservationFailed));
             }
         }
         public void ConfirmPayment(bool isPaymentSuccess)
@@ -58,11 +56,11 @@ namespace Registration.Orders
             }
             if (isPaymentSuccess)
             {
-                ApplyEvent(new OrderPaymentConfirmed(this, _conferenceId, OrderStatus.PaymentSuccess));
+                ApplyEvent(new OrderPaymentConfirmed(_conferenceId, OrderStatus.PaymentSuccess));
             }
             else
             {
-                ApplyEvent(new OrderPaymentConfirmed(this, _conferenceId, OrderStatus.PaymentRejected));
+                ApplyEvent(new OrderPaymentConfirmed(_conferenceId, OrderStatus.PaymentRejected));
             }
         }
         public void MarkAsSuccess()
@@ -71,13 +69,13 @@ namespace Registration.Orders
             {
                 throw new InvalidOperationException("Invalid order status:" + _status);
             }
-            ApplyEvent(new OrderSuccessed(this, _conferenceId));
+            ApplyEvent(new OrderSuccessed(_conferenceId));
         }
         public void MarkAsExpire()
         {
             if (_status == OrderStatus.ReservationSuccess)
             {
-                ApplyEvent(new OrderExpired(this, _conferenceId));
+                ApplyEvent(new OrderExpired(_conferenceId));
             }
         }
         public void Close()
@@ -86,7 +84,7 @@ namespace Registration.Orders
             {
                 throw new InvalidOperationException("Invalid order status:" + _status);
             }
-            ApplyEvent(new OrderClosed(this, _conferenceId));
+            ApplyEvent(new OrderClosed(_conferenceId));
         }
         public OrderSeatAssignments CreateSeatAssignments()
         {

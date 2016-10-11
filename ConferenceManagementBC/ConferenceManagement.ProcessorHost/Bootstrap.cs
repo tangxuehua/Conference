@@ -84,10 +84,7 @@ namespace ConferenceManagement.ProcessorHost
                 Assembly.Load("ConferenceManagement.Messages"),
                 Assembly.GetExecutingAssembly()
             };
-            var setting = new ConfigurationSetting
-            {
-                SqlDefaultConnectionString = ConfigSettings.ConferenceENodeConnectionString
-            };
+            var setting = new ConfigurationSetting(ConfigSettings.ConferenceENodeConnectionString);
 
             _enodeConfiguration = _ecommonConfiguration
                 .CreateENode(setting)
@@ -96,8 +93,6 @@ namespace ConferenceManagement.ProcessorHost
                 .UseSqlServerLockService()
                 .UseSqlServerCommandStore()
                 .UseSqlServerEventStore()
-                .UseSqlServerSequenceMessagePublishedVersionStore()
-                .UseSqlServerMessageHandleRecordStore()
                 .UseEQueue()
                 .InitializeBusinessAssemblies(assemblies);
             ObjectContainer.Resolve<ILockService>().AddLockKey(typeof(ConferenceSlugIndex).Name);

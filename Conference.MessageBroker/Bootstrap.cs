@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
 using Conference.Common;
@@ -8,6 +9,7 @@ using ECommon.Socketing;
 using ECommon.Logging;
 using EQueue.Broker;
 using EQueue.Configurations;
+using EQueue.Utils;
 using ECommonConfiguration = ECommon.Configurations.Configuration;
 
 namespace Conference.MessageBroker
@@ -76,12 +78,13 @@ namespace Conference.MessageBroker
         {
             _configuration.RegisterEQueueComponents();
             var storePath = ConfigurationManager.AppSettings["equeueStorePath"];
-            var setting = new BrokerSetting(storePath)
-            {
-                ProducerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort),
-                ConsumerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort),
-                AdminAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort)
-            };
+            var setting = new BrokerSetting(false, storePath);
+            setting.NameServerList = new List<IPEndPoint> { new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.NameServerPort) };
+            setting.BrokerInfo.BrokerName = "ConferenceBroker";
+            setting.BrokerInfo.GroupName = "ConferenceGroupName";
+            setting.BrokerInfo.ProducerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort).ToAddress();
+            setting.BrokerInfo.ConsumerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort).ToAddress();
+            setting.BrokerInfo.AdminAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort).ToAddress();
             _broker = BrokerController.Create(setting);
             _logger.Info("EQueue initialized.");
         }

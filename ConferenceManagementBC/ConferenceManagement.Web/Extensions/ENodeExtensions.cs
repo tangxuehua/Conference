@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Collections.Generic;
 using Conference.Common;
 using ConferenceManagement.Commands;
 using ConferenceManagement.ReadModel;
@@ -7,7 +8,6 @@ using ECommon.Socketing;
 using ENode.Commanding;
 using ENode.Configurations;
 using ENode.EQueue;
-using ENode.EQueue.Commanding;
 using ENode.Infrastructure;
 using ENode.Infrastructure.Impl;
 using EQueue.Clients.Producers;
@@ -27,8 +27,7 @@ namespace ConferenceManagement.Web.Extensions
 
             _commandService = new CommandService(new CommandResultProcessor(new IPEndPoint(SocketUtils.GetLocalIPV4(), 9002)), new ProducerSetting
             {
-                BrokerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort),
-                BrokerAdminAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort)
+                NameServerList = new List<IPEndPoint>() { new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.NameServerPort) }
             });
 
             configuration.SetDefault<ICommandService, CommandService>(_commandService);

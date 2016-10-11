@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Collections.Generic;
 using Conference.Common;
 using ECommon.Components;
 using ECommon.Socketing;
@@ -32,13 +33,11 @@ namespace Payments.ProcessorHost
 
             var producerSetting = new ProducerSetting
             {
-                BrokerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerProducerPort),
-                BrokerAdminAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort)
+                NameServerList = new List<IPEndPoint> { new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.NameServerPort) }
             };
             var consumerSetting = new ConsumerSetting
             {
-                BrokerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort),
-                BrokerAdminAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort)
+                NameServerList = new List<IPEndPoint> { new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.NameServerPort) }
             };
 
             _applicationMessagePublisher = new ApplicationMessagePublisher(producerSetting);

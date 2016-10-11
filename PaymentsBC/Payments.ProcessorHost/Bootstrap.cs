@@ -81,10 +81,7 @@ namespace Payments.ProcessorHost
                 Assembly.Load("Payments.ReadModel"),
                 Assembly.GetExecutingAssembly()
             };
-            var setting = new ConfigurationSetting
-            {
-                SqlDefaultConnectionString = ConfigSettings.ConferenceENodeConnectionString
-            };
+            var setting = new ConfigurationSetting(ConfigSettings.ConferenceENodeConnectionString);
 
             _enodeConfiguration = _ecommonConfiguration
                 .CreateENode(setting)
@@ -93,8 +90,6 @@ namespace Payments.ProcessorHost
                 .UseSqlServerLockService()
                 .UseSqlServerCommandStore()
                 .UseSqlServerEventStore()
-                .UseSqlServerSequenceMessagePublishedVersionStore()
-                .UseSqlServerMessageHandleRecordStore()
                 .UseEQueue()
                 .InitializeBusinessAssemblies(assemblies);
             _logger.Info("ENode initialized.");

@@ -83,10 +83,7 @@ namespace Registration.ProcessorHost
                 Assembly.Load("Registration.ReadModel"),
                 Assembly.GetExecutingAssembly()
             };
-            var setting = new ConfigurationSetting
-            {
-                SqlDefaultConnectionString = ConfigSettings.ConferenceENodeConnectionString
-            };
+            var setting = new ConfigurationSetting(ConfigSettings.ConferenceENodeConnectionString);
 
             _enodeConfiguration = _ecommonConfiguration
                 .CreateENode(setting)
@@ -95,8 +92,6 @@ namespace Registration.ProcessorHost
                 .UseSqlServerLockService()
                 .UseSqlServerCommandStore()
                 .UseSqlServerEventStore()
-                .UseSqlServerSequenceMessagePublishedVersionStore()
-                .UseSqlServerMessageHandleRecordStore()
                 .UseEQueue()
                 .InitializeBusinessAssemblies(assemblies);
             _logger.Info("ENode initialized.");

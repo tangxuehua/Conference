@@ -17,6 +17,7 @@ namespace Conference.Common
         public static string OrderSeatAssignmentsTable { get; set; }
         public static string PaymentTable { get; set; }
         public static string PaymentItemTable { get; set; }
+        public static int NameServerPort { get; set; }
         public static int BrokerProducerPort { get; set; }
         public static int BrokerConsumerPort { get; set; }
         public static int BrokerAdminPort { get; set; }
@@ -41,9 +42,10 @@ namespace Conference.Common
             PaymentTable = "Payments";
             PaymentItemTable = "PaymentItems";
 
-            BrokerProducerPort = 10000;
-            BrokerConsumerPort = 10001;
-            BrokerAdminPort = 10002;
+            NameServerPort = 10000;
+            BrokerProducerPort = 10001;
+            BrokerConsumerPort = 10002;
+            BrokerAdminPort = 10003;
         }
     }
 }

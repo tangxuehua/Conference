@@ -93,6 +93,7 @@ namespace ConferenceManagement.ProcessorHost
                 .UseSqlServerLockService()
                 .UseSqlServerCommandStore()
                 .UseSqlServerEventStore()
+                .UseSqlServerPublishedVersionStore()
                 .UseEQueue()
                 .InitializeBusinessAssemblies(assemblies);
             ObjectContainer.Resolve<ILockService>().AddLockKey(typeof(ConferenceSlugIndex).Name);

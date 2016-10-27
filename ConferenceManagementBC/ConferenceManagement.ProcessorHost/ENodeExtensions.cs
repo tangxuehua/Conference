@@ -1,17 +1,11 @@
 ﻿using System.Net;
 using System.Collections.Generic;
 using Conference.Common;
-using ConferenceManagement.Commands;
-using ConferenceManagement.MessagePublishers;
-using ConferenceManagement.Messages;
-using ConferenceManagement.ReadModel;
-using ECommon.Components;
 using ECommon.Socketing;
 using ENode.Configurations;
 using ENode.EQueue;
 using ENode.Eventing;
 using ENode.Infrastructure;
-using ENode.Infrastructure.Impl;
 using EQueue.Clients.Consumers;
 using EQueue.Clients.Producers;
 using EQueue.Configurations;

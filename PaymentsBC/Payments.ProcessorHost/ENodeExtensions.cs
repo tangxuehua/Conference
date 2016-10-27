@@ -1,20 +1,14 @@
 ﻿using System.Net;
 using System.Collections.Generic;
 using Conference.Common;
-using ECommon.Components;
 using ECommon.Socketing;
 using ENode.Configurations;
 using ENode.EQueue;
 using ENode.Eventing;
 using ENode.Infrastructure;
-using ENode.Infrastructure.Impl;
 using EQueue.Clients.Consumers;
 using EQueue.Clients.Producers;
 using EQueue.Configurations;
-using Payments.Commands;
-using Payments.MessagePublishers;
-using Payments.Messages;
-using Payments.ReadModel;
 
 namespace Payments.ProcessorHost
 {

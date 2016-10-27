@@ -92,6 +92,7 @@ namespace Registration.ProcessorHost
                 .UseSqlServerLockService()
                 .UseSqlServerCommandStore()
                 .UseSqlServerEventStore()
+                .UseSqlServerPublishedVersionStore()
                 .UseEQueue()
                 .InitializeBusinessAssemblies(assemblies);
             _logger.Info("ENode initialized.");

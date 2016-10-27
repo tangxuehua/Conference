@@ -1,26 +1,15 @@
 ﻿using System.Net;
 using System.Collections.Generic;
 using Conference.Common;
-using ConferenceManagement.Commands;
-using ConferenceManagement.Messages;
-using ECommon.Components;
 using ECommon.Socketing;
 using ENode.Commanding;
 using ENode.Configurations;
 using ENode.EQueue;
 using ENode.Eventing;
 using ENode.Infrastructure;
-using ENode.Infrastructure.Impl;
 using EQueue.Clients.Consumers;
 using EQueue.Clients.Producers;
 using EQueue.Configurations;
-using Payments.Messages;
-using Registration.Commands.Orders;
-using Registration.Commands.SeatAssignments;
-using Registration.Handlers;
-using Registration.Orders;
-using Registration.ProcessManagers;
-using Registration.SeatAssigning;
 
 namespace Registration.ProcessorHost
 {

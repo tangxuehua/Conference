@@ -3,7 +3,6 @@ using ENode.Commanding;
 
 namespace ConferenceManagement.Commands
 {
-    [Serializable]
     public class CreateConference : Command<Guid>
     {
         public string AccessCode { get; set; }

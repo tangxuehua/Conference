@@ -3,7 +3,6 @@ using ENode.Commanding;
 
 namespace ConferenceManagement.Commands
 {
-    [Serializable]
     public class CommitSeatReservation : Command<Guid>
     {
         public Guid ReservationId { get; set; }

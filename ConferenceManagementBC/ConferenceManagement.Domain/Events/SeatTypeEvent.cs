@@ -1,10 +1,8 @@
 ﻿using System;
 using ENode.Eventing;
-using ENode.Infrastructure;
 
 namespace ConferenceManagement
 {
-    [Serializable]
     public abstract class SeatTypeEvent : DomainEvent<Guid>
     {
         public Guid SeatTypeId { get; private set; }

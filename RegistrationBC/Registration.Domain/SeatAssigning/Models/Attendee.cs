@@ -5,7 +5,6 @@ using ENode.Domain;
 
 namespace Registration.SeatAssigning
 {
-    [Serializable]
     public class Attendee : ValueObject<Attendee>
     {
         public string FirstName { get; private set; }

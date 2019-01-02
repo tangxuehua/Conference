@@ -1,4 +1,5 @@
-﻿using ECommon.Components;
+﻿using System.Threading.Tasks;
+using ECommon.Components;
 using ENode.Commanding;
 using Registration.Commands.SeatAssignments;
 using Registration.Orders;
@@ -12,17 +13,24 @@ namespace Registration.CommandHandlers
         ICommandHandler<UnassignSeat>,
         ICommandHandler<AssignSeat>
     {
-        public void Handle(ICommandContext context, CreateSeatAssignments command)
+        public async Task HandleAsync(ICommandContext context, CreateSeatAssignments command)
         {
-            context.Add(context.Get<Order>(command.AggregateRootId).CreateSeatAssignments());
+            var order = await context.GetAsync<Order>(command.AggregateRootId);
+            OrderSeatAssignments orderSeatAssignments = order.CreateSeatAssignments();
+            context.Add(orderSeatAssignments);
         }
-        public void Handle(ICommandContext context, AssignSeat command)
+        public async Task HandleAsync(ICommandContext context, AssignSeat command)
         {
-            context.Get<OrderSeatAssignments>(command.AggregateRootId).AssignSeat(command.Position, new Attendee(command.PersonalInfo.FirstName, command.PersonalInfo.LastName, command.PersonalInfo.Email));
+            var orderSeatAssignments = await context.GetAsync<OrderSeatAssignments>(command.AggregateRootId);
+            orderSeatAssignments.AssignSeat(command.Position, new Attendee(
+                command.PersonalInfo.FirstName,
+                command.PersonalInfo.LastName,
+                command.PersonalInfo.Email));
         }
-        public void Handle(ICommandContext context, UnassignSeat command)
+        public async Task HandleAsync(ICommandContext context, UnassignSeat command)
         {
-            context.Get<OrderSeatAssignments>(command.AggregateRootId).UnassignSeat(command.Position);
+            var orderSeatAssignments = await context.GetAsync<OrderSeatAssignments>(command.AggregateRootId);
+            orderSeatAssignments.UnassignSeat(command.Position);
         }
     }
 }

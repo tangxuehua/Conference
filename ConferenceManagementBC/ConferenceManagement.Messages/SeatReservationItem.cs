@@ -2,7 +2,6 @@
 
 namespace ConferenceManagement.Messages
 {
-    [Serializable]
     public class SeatReservationItem
     {
         public Guid SeatTypeId { get; set; }

@@ -22,15 +22,7 @@ namespace Conference.MessageNameServer
         {
             ConfigSettings.Initialize();
             InitializeECommon();
-            try
-            {
-                InitializeNameServer();
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Initialize NameServer failed.", ex);
-                throw;
-            }
+            InitializeNameServer();
         }
 
         public static void Start()
@@ -70,18 +62,17 @@ namespace Conference.MessageNameServer
                 .UseLog4Net()
                 .UseJsonNet()
                 .RegisterUnhandledExceptionHandler();
-            _logger = ObjectContainer.Resolve<ILoggerFactory>().Create(typeof(Bootstrap).FullName);
-            _logger.Info("ECommon initialized.");
         }
 
         private static void InitializeNameServer()
         {
-            _configuration.RegisterEQueueComponents();
+            _configuration.RegisterEQueueComponents().BuildContainer();
             var setting = new NameServerSetting()
             {
                 BindingAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.NameServerPort)
             };
             _nameServer = new NameServerController(setting);
+            _logger = ObjectContainer.Resolve<ILoggerFactory>().Create(typeof(Bootstrap).FullName);
             _logger.Info("NameServer initialized.");
         }
     }

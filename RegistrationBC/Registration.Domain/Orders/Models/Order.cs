@@ -8,7 +8,6 @@ using Registration.SeatAssigning;
 
 namespace Registration.Orders
 {
-    [Serializable]
     public class Order : AggregateRoot<Guid>
     {
         private OrderTotal _total;

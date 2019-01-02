@@ -3,7 +3,6 @@ using ENode.Eventing;
 
 namespace Payments
 {
-    [Serializable]
     public class PaymentRejected : DomainEvent<Guid>
     {
         public Guid OrderId { get; private set; }

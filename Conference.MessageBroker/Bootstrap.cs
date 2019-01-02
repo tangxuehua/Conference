@@ -5,11 +5,11 @@ using System.Net;
 using Conference.Common;
 using ECommon.Components;
 using ECommon.Configurations;
+using ECommon.Extensions;
 using ECommon.Socketing;
 using ECommon.Logging;
 using EQueue.Broker;
 using EQueue.Configurations;
-using EQueue.Utils;
 using ECommonConfiguration = ECommon.Configurations.Configuration;
 
 namespace Conference.MessageBroker
@@ -24,15 +24,7 @@ namespace Conference.MessageBroker
         {
             ConfigSettings.Initialize();
             InitializeECommon();
-            try
-            {
-                InitializeEQueue();
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Initialize EQueue failed.", ex);
-                throw;
-            }
+            InitializeEQueue();
         }
         public static void Start()
         {
@@ -71,12 +63,10 @@ namespace Conference.MessageBroker
                 .UseLog4Net()
                 .UseJsonNet()
                 .RegisterUnhandledExceptionHandler();
-            _logger = ObjectContainer.Resolve<ILoggerFactory>().Create(typeof(Bootstrap).FullName);
-            _logger.Info("ECommon initialized.");
         }
         private static void InitializeEQueue()
         {
-            _configuration.RegisterEQueueComponents();
+            _configuration.RegisterEQueueComponents().BuildContainer();
             var storePath = ConfigurationManager.AppSettings["equeueStorePath"];
             var setting = new BrokerSetting(false, storePath);
             setting.NameServerList = new List<IPEndPoint> { new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.NameServerPort) };
@@ -86,7 +76,8 @@ namespace Conference.MessageBroker
             setting.BrokerInfo.ConsumerAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerConsumerPort).ToAddress();
             setting.BrokerInfo.AdminAddress = new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.BrokerAdminPort).ToAddress();
             _broker = BrokerController.Create(setting);
-            _logger.Info("EQueue initialized.");
+            _logger = ObjectContainer.Resolve<ILoggerFactory>().Create(typeof(Bootstrap).FullName);
+            _logger.Info("Broker initialized.");
         }
     }
 }

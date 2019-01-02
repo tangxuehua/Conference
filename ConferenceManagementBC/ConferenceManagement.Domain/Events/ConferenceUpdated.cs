@@ -3,7 +3,6 @@ using ENode.Eventing;
 
 namespace ConferenceManagement
 {
-    [Serializable]
     public class ConferenceUpdated : DomainEvent<Guid>
     {
         public ConferenceEditableInfo Info { get; private set; }

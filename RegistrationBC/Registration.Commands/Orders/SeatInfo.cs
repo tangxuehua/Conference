@@ -2,7 +2,6 @@
 
 namespace Registration.Commands.Orders
 {
-    [Serializable]
     public class SeatInfo
     {
         public Guid SeatType { get; set; }

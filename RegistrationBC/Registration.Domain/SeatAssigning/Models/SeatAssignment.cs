@@ -2,7 +2,6 @@
 
 namespace Registration.SeatAssigning
 {
-    [Serializable]
     public class SeatAssignment
     {
         public int Position { get; private set; }

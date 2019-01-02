@@ -4,7 +4,6 @@ using ENode.Commanding;
 
 namespace Payments.Commands
 {
-    [Serializable]
     public class CreatePayment : Command<Guid>
     {
         public Guid OrderId { get; set; }

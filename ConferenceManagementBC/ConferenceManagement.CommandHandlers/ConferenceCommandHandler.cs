@@ -1,5 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using ConferenceManagement.Commands;
 using ConferenceManagement.Domain.Models;
 using ConferenceManagement.Domain.Services;
@@ -31,9 +31,9 @@ namespace ConferenceManagement.CommandHandlers
             _registerConferenceSlugService = registerConferenceSlugService;
         }
 
-        public void Handle(ICommandContext context, CreateConference command)
+        public Task HandleAsync(ICommandContext context, CreateConference command)
         {
-            _lockService.ExecuteInLock(typeof(ConferenceSlugIndex).Name, () =>
+            return Task.Factory.StartNew(() => _lockService.ExecuteInLock(typeof(ConferenceSlugIndex).Name, () =>
             {
                 var conference = new Conference(command.AggregateRootId, new ConferenceInfo(
                     command.AccessCode,
@@ -48,11 +48,12 @@ namespace ConferenceManagement.CommandHandlers
                     command.EndDate));
                 _registerConferenceSlugService.RegisterSlug(command.Id, conference.Id, command.Slug);
                 context.Add(conference);
-            });
+            }));
         }
-        public void Handle(ICommandContext context, UpdateConference command)
+        public async Task HandleAsync(ICommandContext context, UpdateConference command)
         {
-            context.Get<Conference>(command.AggregateRootId).Update(new ConferenceEditableInfo(
+            var conference = await context.GetAsync<Conference>(command.AggregateRootId);
+            conference.Update(new ConferenceEditableInfo(
                 command.Name,
                 command.Description,
                 command.Location,
@@ -61,43 +62,51 @@ namespace ConferenceManagement.CommandHandlers
                 command.StartDate,
                 command.EndDate));
         }
-        public void Handle(ICommandContext context, PublishConference command)
+        public async Task HandleAsync(ICommandContext context, PublishConference command)
         {
-            context.Get<Conference>(command.AggregateRootId).Publish();
+            var conference = await context.GetAsync<Conference>(command.AggregateRootId);
+            conference.Publish();
         }
-        public void Handle(ICommandContext context, UnpublishConference command)
+        public async Task HandleAsync(ICommandContext context, UnpublishConference command)
         {
-            context.Get<Conference>(command.AggregateRootId).Unpublish();
+            var conference = await context.GetAsync<Conference>(command.AggregateRootId);
+            conference.Unpublish();
         }
-        public void Handle(ICommandContext context, AddSeatType command)
+        public async Task HandleAsync(ICommandContext context, AddSeatType command)
         {
-            context.Get<Conference>(command.AggregateRootId).AddSeat(new SeatTypeInfo(
+            var conference = await context.GetAsync<Conference>(command.AggregateRootId);
+            conference.AddSeat(new SeatTypeInfo(
                 command.Name,
                 command.Description,
                 command.Price), command.Quantity);
         }
-        public void Handle(ICommandContext context, RemoveSeatType command)
+        public async Task HandleAsync(ICommandContext context, RemoveSeatType command)
         {
-            context.Get<Conference>(command.AggregateRootId).RemoveSeat(command.SeatTypeId);
+            var conference = await context.GetAsync<Conference>(command.AggregateRootId);
+            conference.RemoveSeat(command.SeatTypeId);
         }
-        public void Handle(ICommandContext context, UpdateSeatType command)
+        public async Task HandleAsync(ICommandContext context, UpdateSeatType command)
         {
-            context.Get<Conference>(command.AggregateRootId).UpdateSeat(
+            var conference = await context.GetAsync<Conference>(command.AggregateRootId);
+            conference.UpdateSeat(
                 command.SeatTypeId,
                 new SeatTypeInfo(command.Name, command.Description, command.Price),
                 command.Quantity);
         }
-        public void Handle(ICommandContext context, MakeSeatReservation command)
+        public async Task HandleAsync(ICommandContext context, MakeSeatReservation command)
         {
-            context.Get<Conference>(command.AggregateRootId).MakeReservation(command.ReservationId, command.Seats.Select(x => new ReservationItem(x.SeatType, x.Quantity)).ToList());
+            var conference = await context.GetAsync<Conference>(command.AggregateRootId);
+            conference.MakeReservation(command.ReservationId, command.Seats.Select(x => new ReservationItem(x.SeatType, x.Quantity)).ToList());
         }
-        public void Handle(ICommandContext context, CommitSeatReservation command)
+        public async Task HandleAsync(ICommandContext context, CommitSeatReservation command)
         {
-            context.Get<Conference>(command.AggregateRootId).CommitReservation(command.ReservationId);
+            var conference = await context.GetAsync<Conference>(command.AggregateRootId);
+            conference.CommitReservation(command.ReservationId);
         }
-        public void Handle(ICommandContext context, CancelSeatReservation command)
+        public async Task HandleAsync(ICommandContext context, CancelSeatReservation command)
         {
-            context.Get<Conference>(command.AggregateRootId).CancelReservation(command.ReservationId);
+            var conference = await context.GetAsync<Conference>(command.AggregateRootId);
+            conference.CancelReservation(command.ReservationId);
         }
     }
 }

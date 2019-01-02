@@ -4,7 +4,6 @@ using ENode.Infrastructure;
 
 namespace ConferenceManagement.Messages
 {
-    [Serializable]
     public class SeatsReservedMessage : ApplicationMessage
     {
         public Guid ConferenceId { get; set; }

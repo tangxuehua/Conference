@@ -4,7 +4,6 @@ using ENode.Domain;
 
 namespace Payments
 {
-    [Serializable]
     public class Payment : AggregateRoot<Guid>
     {
         private Guid _orderId;

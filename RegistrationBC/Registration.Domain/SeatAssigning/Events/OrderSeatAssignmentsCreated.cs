@@ -4,7 +4,6 @@ using ENode.Eventing;
 
 namespace Registration.SeatAssigning
 {
-    [Serializable]
     public class OrderSeatAssignmentsCreated : DomainEvent<Guid>
     {
         public Guid OrderId { get; private set; }

@@ -3,7 +3,6 @@ using ECommon.Utilities;
 
 namespace Registration.Orders
 {
-    [Serializable]
     public class Registrant
     {
         public string FirstName { get; private set; }

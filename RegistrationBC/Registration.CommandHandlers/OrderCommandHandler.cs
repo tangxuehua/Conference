@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using ECommon.Components;
 using ENode.Commanding;
 using Registration.Commands.Orders;
@@ -22,33 +23,38 @@ namespace Registration.CommandHandlers
             _pricingService = pricingService;
         }
 
-        public void Handle(ICommandContext context, PlaceOrder command)
+        public Task HandleAsync(ICommandContext context, PlaceOrder command)
         {
-            context.Add(new Order(
+            return context.AddAsync(new Order(
                 command.AggregateRootId,
                 command.ConferenceId,
                 command.Seats.Select(x => new SeatQuantity(new SeatType(x.SeatType, x.SeatName, x.UnitPrice), x.Quantity)),
                 _pricingService));
         }
-        public void Handle(ICommandContext context, AssignRegistrantDetails command)
+        public async Task HandleAsync(ICommandContext context, AssignRegistrantDetails command)
         {
-            context.Get<Order>(command.AggregateRootId).AssignRegistrant(command.FirstName, command.LastName, command.Email);
+            var order = await context.GetAsync<Order>(command.AggregateRootId);
+            order.AssignRegistrant(command.FirstName, command.LastName, command.Email);
         }
-        public void Handle(ICommandContext context, ConfirmReservation command)
+        public async Task HandleAsync(ICommandContext context, ConfirmReservation command)
         {
-            context.Get<Order>(command.AggregateRootId).ConfirmReservation(command.IsReservationSuccess);
+            var order = await context.GetAsync<Order>(command.AggregateRootId);
+            order.ConfirmReservation(command.IsReservationSuccess);
         }
-        public void Handle(ICommandContext context, ConfirmPayment command)
+        public async Task HandleAsync(ICommandContext context, ConfirmPayment command)
         {
-            context.Get<Order>(command.AggregateRootId).ConfirmPayment(command.IsPaymentSuccess);
+            var order = await context.GetAsync<Order>(command.AggregateRootId);
+            order.ConfirmPayment(command.IsPaymentSuccess);
         }
-        public void Handle(ICommandContext context, MarkAsSuccess command)
+        public async Task HandleAsync(ICommandContext context, MarkAsSuccess command)
         {
-            context.Get<Order>(command.AggregateRootId).MarkAsSuccess();
+            var order = await context.GetAsync<Order>(command.AggregateRootId);
+            order.MarkAsSuccess();
         }
-        public void Handle(ICommandContext context, CloseOrder command)
+        public async Task HandleAsync(ICommandContext context, CloseOrder command)
         {
-            context.Get<Order>(command.AggregateRootId).Close();
+            var order = await context.GetAsync<Order>(command.AggregateRootId);
+            order.Close();
         }
     }
 }

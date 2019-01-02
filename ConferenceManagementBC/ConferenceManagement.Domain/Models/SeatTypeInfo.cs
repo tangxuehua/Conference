@@ -2,7 +2,6 @@
 
 namespace ConferenceManagement
 {
-    [Serializable]
     public class SeatTypeInfo
     {
         public string Name { get; private set; }

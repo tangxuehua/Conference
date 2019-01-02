@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Reflection;
 using Conference.Common;
 using ConferenceManagement.Domain.Models;
@@ -8,6 +7,7 @@ using ECommon.Configurations;
 using ECommon.Logging;
 using ENode.Configurations;
 using ENode.Infrastructure;
+using ENode.SqlServer;
 using ECommonConfiguration = ECommon.Configurations.Configuration;
 
 namespace ConferenceManagement.ProcessorHost
@@ -21,15 +21,7 @@ namespace ConferenceManagement.ProcessorHost
         public static void Initialize()
         {
             InitializeECommon();
-            try
-            {
-                InitializeENode();
-            }
-            catch (Exception ex)
-            {
-                _logger.Error("Initialize ENode failed.", ex);
-                throw;
-            }
+            InitializeENode();
         }
         public static void Start()
         {
@@ -65,8 +57,6 @@ namespace ConferenceManagement.ProcessorHost
                 .UseLog4Net()
                 .UseJsonNet()
                 .RegisterUnhandledExceptionHandler();
-            _logger = ObjectContainer.Resolve<ILoggerFactory>().Create(typeof(Bootstrap).FullName);
-            _logger.Info("ECommon initialized.");
         }
         private static void InitializeENode()
         {
@@ -84,19 +74,26 @@ namespace ConferenceManagement.ProcessorHost
                 Assembly.Load("ConferenceManagement.Messages"),
                 Assembly.GetExecutingAssembly()
             };
-            var setting = new ConfigurationSetting(ConfigSettings.ConferenceENodeConnectionString);
+
+            var connectionString = ConfigSettings.ConferenceENodeConnectionString;
 
             _enodeConfiguration = _ecommonConfiguration
-                .CreateENode(setting)
+                .CreateENode()
                 .RegisterENodeComponents()
                 .RegisterBusinessComponents(assemblies)
                 .UseSqlServerLockService()
-                .UseSqlServerCommandStore()
                 .UseSqlServerEventStore()
                 .UseSqlServerPublishedVersionStore()
                 .UseEQueue()
+                .BuildContainer()
+                .InitializeSqlServerEventStore(connectionString)
+                .InitializeSqlServerPublishedVersionStore(connectionString)
+                .InitializeSqlServerLockService(connectionString)
                 .InitializeBusinessAssemblies(assemblies);
+
             ObjectContainer.Resolve<ILockService>().AddLockKey(typeof(ConferenceSlugIndex).Name);
+
+            _logger = ObjectContainer.Resolve<ILoggerFactory>().Create(typeof(Bootstrap).FullName);
             _logger.Info("ENode initialized.");
         }
     }

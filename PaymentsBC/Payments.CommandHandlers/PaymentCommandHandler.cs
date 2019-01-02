@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using ECommon.Components;
 using ENode.Commanding;
 using Payments.Commands;
@@ -11,9 +12,9 @@ namespace Payments.CommandHandlers
         ICommandHandler<CompletePayment>,
         ICommandHandler<CancelPayment>
     {
-        public void Handle(ICommandContext context, CreatePayment command)
+        public Task HandleAsync(ICommandContext context, CreatePayment command)
         {
-            context.Add(new Payment(
+            return context.AddAsync(new Payment(
                 command.AggregateRootId,
                 command.OrderId,
                 command.ConferenceId,
@@ -21,13 +22,15 @@ namespace Payments.CommandHandlers
                 command.TotalAmount,
                 command.Lines.Select(x => new PaymentItem(x.Description, x.Amount)).ToList()));
         }
-        public void Handle(ICommandContext context, CompletePayment command)
+        public async Task HandleAsync(ICommandContext context, CompletePayment command)
         {
-            context.Get<Payments.Payment>(command.AggregateRootId).Complete();
+            var payment = await context.GetAsync<Payment>(command.AggregateRootId);
+            payment.Complete();
         }
-        public void Handle(ICommandContext context, CancelPayment command)
+        public async Task HandleAsync(ICommandContext context, CancelPayment command)
         {
-            context.Get<Payments.Payment>(command.AggregateRootId).Cancel();
+            var payment = await context.GetAsync<Payment>(command.AggregateRootId);
+            payment.Cancel();
         }
     }
 }

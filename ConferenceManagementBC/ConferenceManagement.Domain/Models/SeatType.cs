@@ -2,7 +2,6 @@
 
 namespace ConferenceManagement
 {
-    [Serializable]
     public class SeatType
     {
         public Guid Id { get; private set; }

@@ -2,7 +2,6 @@
 
 namespace Registration.Orders
 {
-    [Serializable]
     public class OrderTotal
     {
         public OrderLine[] Lines { get; private set; }

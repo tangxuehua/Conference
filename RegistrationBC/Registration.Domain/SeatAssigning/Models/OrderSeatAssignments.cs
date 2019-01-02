@@ -7,7 +7,6 @@ using Registration.Orders;
 
 namespace Registration.SeatAssigning
 {
-    [Serializable]
     public class OrderSeatAssignments : AggregateRoot<Guid>
     {
         private Guid _orderId;

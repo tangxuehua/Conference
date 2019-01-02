@@ -5,12 +5,11 @@ using ENode.Commanding;
 
 namespace Registration.Commands.Orders
 {
-    [Serializable]
     public class PlaceOrder : Command<Guid>
     {
         public PlaceOrder() : base(Guid.NewGuid())
         {
-            this.Seats = new Collection<SeatInfo>();
+            Seats = new Collection<SeatInfo>();
         }
 
         public Guid ConferenceId { get; set; }

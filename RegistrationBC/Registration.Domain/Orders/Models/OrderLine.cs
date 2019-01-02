@@ -2,7 +2,6 @@
 
 namespace Registration.Orders
 {
-    [Serializable]
     public class OrderLine
     {
         public SeatQuantity SeatQuantity { get; private set; }

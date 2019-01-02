@@ -2,7 +2,6 @@
 
 namespace ConferenceManagement.Commands
 {
-    [Serializable]
     public class SeatReservationItemInfo
     {
         public Guid SeatType { get; set; }

@@ -21,12 +21,26 @@ namespace Registration.ProcessorHost
         private static DomainEventPublisher _domainEventPublisher;
         private static DomainEventConsumer _eventConsumer;
 
+        public static ENodeConfiguration BuildContainer(this ENodeConfiguration enodeConfiguration)
+        {
+            enodeConfiguration.GetCommonConfiguration().BuildContainer();
+            return enodeConfiguration;
+        }
         public static ENodeConfiguration UseEQueue(this ENodeConfiguration enodeConfiguration)
         {
             var configuration = enodeConfiguration.GetCommonConfiguration();
-
             configuration.RegisterEQueueComponents();
 
+            _domainEventPublisher = new DomainEventPublisher();
+            configuration.SetDefault<IMessagePublisher<DomainEventStreamMessage>, DomainEventPublisher>(_domainEventPublisher);
+
+            _commandService = new CommandService();
+            configuration.SetDefault<ICommandService, CommandService>(_commandService);
+
+            return enodeConfiguration;
+        }
+        public static ENodeConfiguration StartEQueue(this ENodeConfiguration enodeConfiguration)
+        {
             var producerSetting = new ProducerSetting
             {
                 NameServerList = new List<IPEndPoint> { new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.NameServerPort) }
@@ -36,24 +50,15 @@ namespace Registration.ProcessorHost
                 NameServerList = new List<IPEndPoint> { new IPEndPoint(SocketUtils.GetLocalIPV4(), ConfigSettings.NameServerPort) }
             };
 
-            _domainEventPublisher = new DomainEventPublisher(producerSetting);
+            _domainEventPublisher.InitializeEQueue(producerSetting);
+            _commandService.InitializeEQueue(null, producerSetting);
 
-            configuration.SetDefault<IMessagePublisher<DomainEventStreamMessage>, DomainEventPublisher>(_domainEventPublisher);
-
-            _commandService = new CommandService(null, producerSetting);
-
-            configuration.SetDefault<ICommandService, CommandService>(_commandService);
-
-            _commandConsumer = new CommandConsumer("RegistrationCommandConsumerGroup", consumerSetting).Subscribe(Topics.RegistrationCommandTopic);
-            _eventConsumer = new DomainEventConsumer("RegistrationEventConsumerGroup", consumerSetting).Subscribe(Topics.RegistrationDomainEventTopic);
-            _applicationMessageConsumer = new ApplicationMessageConsumer("RegistrationMessageConsumerGroup", consumerSetting)
+            _commandConsumer = new CommandConsumer().InitializeEQueue("RegistrationCommandConsumerGroup", consumerSetting).Subscribe(Topics.RegistrationCommandTopic);
+            _eventConsumer = new DomainEventConsumer().InitializeEQueue("RegistrationEventConsumerGroup", consumerSetting).Subscribe(Topics.RegistrationDomainEventTopic);
+            _applicationMessageConsumer = new ApplicationMessageConsumer().InitializeEQueue("RegistrationMessageConsumerGroup", consumerSetting)
                 .Subscribe(Topics.ConferenceApplicationMessageTopic)
                 .Subscribe(Topics.PaymentApplicationMessageTopic);
 
-            return enodeConfiguration;
-        }
-        public static ENodeConfiguration StartEQueue(this ENodeConfiguration enodeConfiguration)
-        {
             _applicationMessageConsumer.Start();
             _eventConsumer.Start();
             _commandConsumer.Start();

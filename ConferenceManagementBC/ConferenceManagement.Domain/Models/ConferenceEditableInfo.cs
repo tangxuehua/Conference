@@ -2,7 +2,6 @@
 
 namespace ConferenceManagement
 {
-    [Serializable]
     public class ConferenceEditableInfo
     {
         public string Name { get; private set; }

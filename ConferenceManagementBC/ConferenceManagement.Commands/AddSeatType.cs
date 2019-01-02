@@ -3,7 +3,6 @@ using ENode.Commanding;
 
 namespace ConferenceManagement.Commands
 {
-    [Serializable]
     public class AddSeatType : Command<Guid>
     {
         public string Name { get; set; }

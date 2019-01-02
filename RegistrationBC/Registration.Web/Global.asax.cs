@@ -2,14 +2,11 @@
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Autofac;
 using Autofac.Integration.Mvc;
 using Conference.Common;
 using ECommon.Autofac;
 using ECommon.Components;
 using ECommon.Configurations;
-using ECommon.JsonNet;
-using ECommon.Log4Net;
 using ECommon.Logging;
 using ENode.Configurations;
 using Registration.Web.Extensions;
@@ -42,9 +39,6 @@ namespace Registration.Web
                 .UseLog4Net()
                 .UseJsonNet()
                 .RegisterUnhandledExceptionHandler();
-
-            _logger = ObjectContainer.Resolve<ILoggerFactory>().Create(GetType().FullName);
-            _logger.Info("ECommon initialized.");
         }
         private void InitializeENode()
         {
@@ -65,20 +59,15 @@ namespace Registration.Web
                 .RegisterENodeComponents()
                 .RegisterBusinessComponents(assemblies)
                 .UseEQueue()
+                .RegisterControllers()
+                .BuildContainer()
                 .InitializeBusinessAssemblies(assemblies)
                 .StartEQueue();
 
-            RegisterControllers();
+            DependencyResolver.SetResolver(new AutofacDependencyResolver((ObjectContainer.Current as AutofacObjectContainer).Container));
+
+            _logger = ObjectContainer.Resolve<ILoggerFactory>().Create(GetType().FullName);
             _logger.Info("ENode initialized.");
-        }
-        private void RegisterControllers()
-        {
-            var webAssembly = Assembly.GetExecutingAssembly();
-            var container = (ObjectContainer.Current as AutofacObjectContainer).Container;
-            var builder = new ContainerBuilder();
-            builder.RegisterControllers(webAssembly);
-            builder.Update(container);
-            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
 
         private void RegisterRoutes(RouteCollection routes)

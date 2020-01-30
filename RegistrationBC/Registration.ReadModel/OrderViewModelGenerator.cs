@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Conference.Common;
 using ECommon.Components;
 using ECommon.Dapper;
-using ECommon.IO;
-using ENode.Infrastructure;
+using ENode.Messaging;
 using Registration.Orders;
 
 namespace Registration.Handlers
@@ -22,7 +21,7 @@ namespace Registration.Handlers
         IMessageHandler<OrderClosed>,
         IMessageHandler<OrderSuccessed>
     {
-        public Task<AsyncTaskResult> HandleAsync(OrderPlaced evnt)
+        public Task HandleAsync(OrderPlaced evnt)
         {
             return TryTransactionAsync((connection, transaction) =>
             {
@@ -57,7 +56,7 @@ namespace Registration.Handlers
                 return tasks;
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(OrderRegistrantAssigned evnt)
+        public Task HandleAsync(OrderRegistrantAssigned evnt)
         {
             return TryUpdateRecordAsync(connection =>
             {
@@ -74,7 +73,7 @@ namespace Registration.Handlers
                 }, ConfigSettings.OrderTable);
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(OrderReservationConfirmed evnt)
+        public Task HandleAsync(OrderReservationConfirmed evnt)
         {
             return TryUpdateRecordAsync(connection =>
             {
@@ -89,7 +88,7 @@ namespace Registration.Handlers
                 }, ConfigSettings.OrderTable);
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(OrderPaymentConfirmed evnt)
+        public Task HandleAsync(OrderPaymentConfirmed evnt)
         {
             return TryUpdateRecordAsync(connection =>
             {
@@ -104,7 +103,7 @@ namespace Registration.Handlers
                 }, ConfigSettings.OrderTable);
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(OrderExpired evnt)
+        public Task HandleAsync(OrderExpired evnt)
         {
             return TryUpdateRecordAsync(connection =>
             {
@@ -119,7 +118,7 @@ namespace Registration.Handlers
                 }, ConfigSettings.OrderTable);
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(OrderClosed evnt)
+        public Task HandleAsync(OrderClosed evnt)
         {
             return TryUpdateRecordAsync(connection =>
             {
@@ -134,7 +133,7 @@ namespace Registration.Handlers
                 }, ConfigSettings.OrderTable);
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(OrderSuccessed evnt)
+        public Task HandleAsync(OrderSuccessed evnt)
         {
             return TryUpdateRecordAsync(connection =>
             {
@@ -150,15 +149,14 @@ namespace Registration.Handlers
             });
         }
 
-        private async Task<AsyncTaskResult> TryUpdateRecordAsync(Func<IDbConnection, Task<int>> action)
+        private async Task TryUpdateRecordAsync(Func<IDbConnection, Task<int>> action)
         {
             using (var connection = GetConnection())
             {
                 await action(connection);
-                return AsyncTaskResult.Success;
             }
         }
-        private async Task<AsyncTaskResult> TryTransactionAsync(Func<IDbConnection, IDbTransaction, IEnumerable<Task>> actions)
+        private async Task TryTransactionAsync(Func<IDbConnection, IDbTransaction, IEnumerable<Task>> actions)
         {
             using (var connection = GetConnection())
             {
@@ -168,7 +166,6 @@ namespace Registration.Handlers
                 {
                     await Task.WhenAll(actions(connection, transaction)).ConfigureAwait(false);
                     await Task.Run(() => transaction.Commit()).ConfigureAwait(false);
-                    return AsyncTaskResult.Success;
                 }
                 catch
                 {

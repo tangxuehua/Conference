@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using ENode.Infrastructure;
+using ENode.Domain;
 
 namespace ConferenceManagement
 {
-    public class SeatInsufficientException : PublishableException
+    public class SeatInsufficientException : DomainException
     {
         public Guid ConferenceId { get; private set; }
         public Guid ReservationId { get; private set; }

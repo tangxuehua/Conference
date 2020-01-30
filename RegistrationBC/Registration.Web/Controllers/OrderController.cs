@@ -118,7 +118,7 @@ namespace Registration.Web.Controllers
         /// <param name="command"></param>
         /// <param name="millisecondsDelay"></param>
         /// <returns></returns>
-        private Task<AsyncTaskResult> SendCommandAsync(ICommand command, int millisecondsDelay = 5000)
+        private Task SendCommandAsync(ICommand command, int millisecondsDelay = 5000)
         {
             return _commandService.SendAsync(command).TimeoutAfter(millisecondsDelay);
         }

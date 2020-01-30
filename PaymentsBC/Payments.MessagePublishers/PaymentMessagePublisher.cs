@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using ECommon.Components;
-using ECommon.IO;
-using ENode.Infrastructure;
+using ENode.Messaging;
 using Payments.Messages;
 
 namespace Payments.MessagePublishers
@@ -18,7 +17,7 @@ namespace Payments.MessagePublishers
             _messagePublisher = messagePublisher;
         }
 
-        public Task<AsyncTaskResult> HandleAsync(PaymentCompleted evnt)
+        public Task HandleAsync(PaymentCompleted evnt)
         {
             return _messagePublisher.PublishAsync(new PaymentCompletedMessage
             {
@@ -27,7 +26,7 @@ namespace Payments.MessagePublishers
                 OrderId = evnt.OrderId
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(PaymentRejected evnt)
+        public Task HandleAsync(PaymentRejected evnt)
         {
             return _messagePublisher.PublishAsync(new PaymentRejectedMessage
             {

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Conference.Common;
 using ECommon.Components;
 using ECommon.Dapper;
-using ECommon.IO;
-using ENode.Infrastructure;
+using ENode.Messaging;
 
 namespace Payments.ReadModel
 {
@@ -17,7 +16,7 @@ namespace Payments.ReadModel
         IMessageHandler<PaymentCompleted>,
         IMessageHandler<PaymentRejected>
     {
-        public Task<AsyncTaskResult> HandleAsync(PaymentInitiated evnt)
+        public Task HandleAsync(PaymentInitiated evnt)
         {
             return TryTransactionAsync((connection, transaction) =>
             {
@@ -44,7 +43,7 @@ namespace Payments.ReadModel
                 return tasks;
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(PaymentCompleted evnt)
+        public Task HandleAsync(PaymentCompleted evnt)
         {
             return TryUpdateRecordAsync(connection =>
             {
@@ -59,7 +58,7 @@ namespace Payments.ReadModel
                 }, ConfigSettings.PaymentTable);
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(PaymentRejected evnt)
+        public Task HandleAsync(PaymentRejected evnt)
         {
             return TryUpdateRecordAsync(connection =>
             {
@@ -75,15 +74,14 @@ namespace Payments.ReadModel
             });
         }
 
-        private async Task<AsyncTaskResult> TryUpdateRecordAsync(Func<IDbConnection, Task<int>> action)
+        private async Task TryUpdateRecordAsync(Func<IDbConnection, Task<int>> action)
         {
             using (var connection = GetConnection())
             {
                 await action(connection);
-                return AsyncTaskResult.Success;
             }
         }
-        private async Task<AsyncTaskResult> TryTransactionAsync(Func<IDbConnection, IDbTransaction, IEnumerable<Task>> actions)
+        private async Task TryTransactionAsync(Func<IDbConnection, IDbTransaction, IEnumerable<Task>> actions)
         {
             using (var connection = GetConnection())
             {
@@ -93,7 +91,6 @@ namespace Payments.ReadModel
                 {
                     await Task.WhenAll(actions(connection, transaction)).ConfigureAwait(false);
                     await Task.Run(() => transaction.Commit()).ConfigureAwait(false);
-                    return AsyncTaskResult.Success;
                 }
                 catch
                 {

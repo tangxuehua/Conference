@@ -5,10 +5,11 @@ using ECommon.Socketing;
 using ENode.Configurations;
 using ENode.EQueue;
 using ENode.Eventing;
-using ENode.Infrastructure;
 using EQueue.Clients.Consumers;
 using EQueue.Clients.Producers;
 using EQueue.Configurations;
+using ENode.Messaging;
+using ENode.Domain;
 
 namespace ConferenceManagement.ProcessorHost
 {
@@ -18,8 +19,8 @@ namespace ConferenceManagement.ProcessorHost
         private static ApplicationMessagePublisher _applicationMessagePublisher;
         private static DomainEventPublisher _domainEventPublisher;
         private static DomainEventConsumer _eventConsumer;
-        private static PublishableExceptionPublisher _exceptionPublisher;
-        private static PublishableExceptionConsumer _exceptionConsumer;
+        private static DomainExceptionPublisher _exceptionPublisher;
+        private static DomainExceptionConsumer _exceptionConsumer;
 
         public static ENodeConfiguration BuildContainer(this ENodeConfiguration enodeConfiguration)
         {
@@ -34,11 +35,11 @@ namespace ConferenceManagement.ProcessorHost
 
             _applicationMessagePublisher = new ApplicationMessagePublisher();
             _domainEventPublisher = new DomainEventPublisher();
-            _exceptionPublisher = new PublishableExceptionPublisher();
+            _exceptionPublisher = new DomainExceptionPublisher();
 
             configuration.SetDefault<IMessagePublisher<IApplicationMessage>, ApplicationMessagePublisher>(_applicationMessagePublisher);
             configuration.SetDefault<IMessagePublisher<DomainEventStreamMessage>, DomainEventPublisher>(_domainEventPublisher);
-            configuration.SetDefault<IMessagePublisher<IPublishableException>, PublishableExceptionPublisher>(_exceptionPublisher);
+            configuration.SetDefault<IMessagePublisher<IDomainException>, DomainExceptionPublisher>(_exceptionPublisher);
 
             return enodeConfiguration;
         }
@@ -60,7 +61,7 @@ namespace ConferenceManagement.ProcessorHost
 
             _commandConsumer = new CommandConsumer().InitializeEQueue("ConferenceCommandConsumerGroup", consumerSetting).Subscribe(Topics.ConferenceCommandTopic);
             _eventConsumer = new DomainEventConsumer().InitializeEQueue("ConferenceEventConsumerGroup", consumerSetting).Subscribe(Topics.ConferenceDomainEventTopic);
-            _exceptionConsumer = new PublishableExceptionConsumer().InitializeEQueue("ConferenceExceptionConsumerGroup", consumerSetting).Subscribe(Topics.ConferenceExceptionTopic);
+            _exceptionConsumer = new DomainExceptionConsumer().InitializeEQueue("ConferenceExceptionConsumerGroup", consumerSetting).Subscribe(Topics.ConferenceExceptionTopic);
 
             _exceptionConsumer.Start();
             _eventConsumer.Start();

@@ -1,5 +1,5 @@
 ﻿using System;
-using ENode.Infrastructure;
+using ENode.Messaging;
 
 namespace ConferenceManagement.Messages
 {

@@ -10,6 +10,7 @@ using ENode.Infrastructure;
 using EQueue.Clients.Consumers;
 using EQueue.Clients.Producers;
 using EQueue.Configurations;
+using ENode.Messaging;
 
 namespace Registration.ProcessorHost
 {

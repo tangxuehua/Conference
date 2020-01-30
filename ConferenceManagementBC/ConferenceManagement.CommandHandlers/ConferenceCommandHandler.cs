@@ -31,24 +31,25 @@ namespace ConferenceManagement.CommandHandlers
             _registerConferenceSlugService = registerConferenceSlugService;
         }
 
-        public Task HandleAsync(ICommandContext context, CreateConference command)
+        public async Task HandleAsync(ICommandContext context, CreateConference command)
         {
-            return Task.Factory.StartNew(() => _lockService.ExecuteInLock(typeof(ConferenceSlugIndex).Name, () =>
+            var conference = new Conference(command.AggregateRootId, new ConferenceInfo(
+                command.AccessCode,
+                new ConferenceOwner(command.OwnerName, command.OwnerEmail),
+                command.Slug,
+                command.Name,
+                command.Description,
+                command.Location,
+                command.Tagline,
+                command.TwitterSearch,
+                command.StartDate,
+                command.EndDate));
+            await _lockService.ExecuteInLock(typeof(ConferenceSlugIndex).Name, () =>
             {
-                var conference = new Conference(command.AggregateRootId, new ConferenceInfo(
-                    command.AccessCode,
-                    new ConferenceOwner(command.OwnerName, command.OwnerEmail),
-                    command.Slug,
-                    command.Name,
-                    command.Description,
-                    command.Location,
-                    command.Tagline,
-                    command.TwitterSearch,
-                    command.StartDate,
-                    command.EndDate));
-                _registerConferenceSlugService.RegisterSlug(command.Id, conference.Id, command.Slug);
-                context.Add(conference);
-            }));
+                return _registerConferenceSlugService.RegisterSlug(command.Id, conference.Id, command.Slug);
+            });
+            context.Add(conference);
+
         }
         public async Task HandleAsync(ICommandContext context, UpdateConference command)
         {

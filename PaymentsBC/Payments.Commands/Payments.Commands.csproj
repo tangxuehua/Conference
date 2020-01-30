@@ -35,9 +35,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ENode, Version=2.8.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ENode.2.8.2\lib\net45\ENode.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="ECommon, Version=2.6.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ECommon.2.6.4\lib\netstandard2.0\ECommon.dll</HintPath>
+    </Reference>
+    <Reference Include="ENode, Version=2.9.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ENode.2.9.6\lib\netstandard2.0\ENode.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />

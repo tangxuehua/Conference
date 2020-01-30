@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Conference.Common;
 using ECommon.Components;
 using ECommon.Dapper;
-using ECommon.IO;
-using ENode.Infrastructure;
+using ENode.Messaging;
 
 namespace ConferenceManagement.ReadModel
 {
@@ -25,7 +24,7 @@ namespace ConferenceManagement.ReadModel
         IMessageHandler<SeatsReservationCommitted>,
         IMessageHandler<SeatsReservationCancelled>
     {
-        public Task<AsyncTaskResult> HandleAsync(ConferenceCreated evnt)
+        public Task HandleAsync(ConferenceCreated evnt)
         {
             return TryInsertRecordAsync(connection =>
             {
@@ -50,7 +49,7 @@ namespace ConferenceManagement.ReadModel
                 }, ConfigSettings.ConferenceTable);
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(ConferenceUpdated evnt)
+        public Task HandleAsync(ConferenceUpdated evnt)
         {
             return TryUpdateRecordAsync(connection =>
             {
@@ -74,7 +73,7 @@ namespace ConferenceManagement.ReadModel
                 }, ConfigSettings.ConferenceTable);
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(ConferencePublished evnt)
+        public Task HandleAsync(ConferencePublished evnt)
         {
             return TryUpdateRecordAsync(connection =>
             {
@@ -90,7 +89,7 @@ namespace ConferenceManagement.ReadModel
                 }, ConfigSettings.ConferenceTable);
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(ConferenceUnpublished evnt)
+        public Task HandleAsync(ConferenceUnpublished evnt)
         {
             return TryUpdateRecordAsync(connection =>
             {
@@ -106,7 +105,7 @@ namespace ConferenceManagement.ReadModel
                 }, ConfigSettings.ConferenceTable);
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(SeatTypeAdded evnt)
+        public Task HandleAsync(SeatTypeAdded evnt)
         {
             return TryTransactionAsync(async (connection, transaction) =>
             {
@@ -134,7 +133,7 @@ namespace ConferenceManagement.ReadModel
                 }
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(SeatTypeUpdated evnt)
+        public Task HandleAsync(SeatTypeUpdated evnt)
         {
             return TryTransactionAsync(async (connection, transaction) =>
             {
@@ -163,7 +162,7 @@ namespace ConferenceManagement.ReadModel
                 }
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(SeatTypeQuantityChanged evnt)
+        public Task HandleAsync(SeatTypeQuantityChanged evnt)
         {
             return TryTransactionAsync(async (connection, transaction) =>
             {
@@ -191,7 +190,7 @@ namespace ConferenceManagement.ReadModel
                 }
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(SeatTypeRemoved evnt)
+        public Task HandleAsync(SeatTypeRemoved evnt)
         {
             return TryTransactionAsync(async (connection, transaction) =>
             {
@@ -214,7 +213,7 @@ namespace ConferenceManagement.ReadModel
                 }
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(SeatsReserved evnt)
+        public Task HandleAsync(SeatsReserved evnt)
         {
             return TryTransactionAsync(async (connection, transaction) =>
             {
@@ -261,7 +260,7 @@ namespace ConferenceManagement.ReadModel
                 }
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(SeatsReservationCommitted evnt)
+        public Task HandleAsync(SeatsReservationCommitted evnt)
         {
             return TryTransactionAsync(async (connection, transaction) =>
             {
@@ -303,7 +302,7 @@ namespace ConferenceManagement.ReadModel
                 }
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(SeatsReservationCancelled evnt)
+        public Task HandleAsync(SeatsReservationCancelled evnt)
         {
             return TryTransactionAsync(async (connection, transaction) =>
             {
@@ -346,34 +345,32 @@ namespace ConferenceManagement.ReadModel
             });
         }
 
-        private async Task<AsyncTaskResult> TryInsertRecordAsync(Func<IDbConnection, Task<long>> action)
+        private async Task TryInsertRecordAsync(Func<IDbConnection, Task<long>> action)
         {
             try
             {
                 using (var connection = GetConnection())
                 {
                     await action(connection);
-                    return AsyncTaskResult.Success;
                 }
             }
             catch (SqlException ex)
             {
                 if (ex.Number == 2627)  //主键冲突，忽略即可；出现这种情况，是因为同一个消息的重复处理
                 {
-                    return AsyncTaskResult.Success;
+                    return;
                 }
                 throw;
             }
         }
-        private async Task<AsyncTaskResult> TryUpdateRecordAsync(Func<IDbConnection, Task<int>> action)
+        private async Task TryUpdateRecordAsync(Func<IDbConnection, Task<int>> action)
         {
             using (var connection = GetConnection())
             {
                 await action(connection);
-                return AsyncTaskResult.Success;
             }
         }
-        private async Task<AsyncTaskResult> TryTransactionAsync(Func<IDbConnection, IDbTransaction, Task> action)
+        private async Task TryTransactionAsync(Func<IDbConnection, IDbTransaction, Task> action)
         {
             using (var connection = GetConnection())
             {
@@ -383,7 +380,6 @@ namespace ConferenceManagement.ReadModel
                 {
                     await action(connection, transaction).ConfigureAwait(false);
                     await Task.Run(() => transaction.Commit()).ConfigureAwait(false);
-                    return AsyncTaskResult.Success;
                 }
                 catch
                 {
@@ -392,7 +388,7 @@ namespace ConferenceManagement.ReadModel
                 }
             }
         }
-        private async Task<AsyncTaskResult> TryTransactionAsync(Func<IDbConnection, IDbTransaction, IEnumerable<Task>> actions)
+        private async Task TryTransactionAsync(Func<IDbConnection, IDbTransaction, IEnumerable<Task>> actions)
         {
             using (var connection = GetConnection())
             {
@@ -402,7 +398,6 @@ namespace ConferenceManagement.ReadModel
                 {
                     await Task.WhenAll(actions(connection, transaction)).ConfigureAwait(false);
                     await Task.Run(() => transaction.Commit()).ConfigureAwait(false);
-                    return AsyncTaskResult.Success;
                 }
                 catch
                 {

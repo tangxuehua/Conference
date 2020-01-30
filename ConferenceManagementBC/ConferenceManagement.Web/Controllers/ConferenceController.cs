@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Conference.Common;
@@ -9,8 +8,6 @@ using ConferenceManagement.Commands;
 using ConferenceManagement.ReadModel;
 using ConferenceManagement.Web.Extensions;
 using ConferenceManagement.Web.Models;
-using ECommon.IO;
-using ECommon.Logging;
 using ENode.Commanding;
 
 namespace ConferenceManagement.Web.Controllers
@@ -295,7 +292,7 @@ namespace ConferenceManagement.Web.Controllers
 
         #endregion
 
-        private Task<AsyncTaskResult<CommandResult>> ExecuteCommandAsync(ICommand command, int millisecondsDelay = 5000)
+        private Task<CommandResult> ExecuteCommandAsync(ICommand command, int millisecondsDelay = 5000)
         {
             return _commandService.ExecuteAsync(command, CommandReturnType.EventHandled).TimeoutAfter(millisecondsDelay);
         }

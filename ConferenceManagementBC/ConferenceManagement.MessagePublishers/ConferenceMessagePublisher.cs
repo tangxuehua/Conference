@@ -2,8 +2,7 @@
 using System.Threading.Tasks;
 using ConferenceManagement.Messages;
 using ECommon.Components;
-using ECommon.IO;
-using ENode.Infrastructure;
+using ENode.Messaging;
 
 namespace ConferenceManagement.MessagePublishers
 {
@@ -21,7 +20,7 @@ namespace ConferenceManagement.MessagePublishers
             _messagePublisher = messagePublisher;
         }
 
-        public Task<AsyncTaskResult> HandleAsync(SeatsReserved evnt)
+        public Task HandleAsync(SeatsReserved evnt)
         {
             return _messagePublisher.PublishAsync(new SeatsReservedMessage
             {
@@ -30,7 +29,7 @@ namespace ConferenceManagement.MessagePublishers
                 ReservationItems = evnt.ReservationItems.Select(x => new SeatReservationItem { SeatTypeId = x.SeatTypeId, Quantity = x.Quantity }).ToList()
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(SeatsReservationCommitted evnt)
+        public Task HandleAsync(SeatsReservationCommitted evnt)
         {
             return _messagePublisher.PublishAsync(new SeatsReservationCommittedMessage
             {
@@ -38,7 +37,7 @@ namespace ConferenceManagement.MessagePublishers
                 ReservationId = evnt.ReservationId
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(SeatsReservationCancelled evnt)
+        public Task HandleAsync(SeatsReservationCancelled evnt)
         {
             return _messagePublisher.PublishAsync(new SeatsReservationCancelledMessage
             {
@@ -46,7 +45,7 @@ namespace ConferenceManagement.MessagePublishers
                 ReservationId = evnt.ReservationId
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(SeatInsufficientException exception)
+        public Task HandleAsync(SeatInsufficientException exception)
         {
             return _messagePublisher.PublishAsync(new SeatInsufficientMessage
             {

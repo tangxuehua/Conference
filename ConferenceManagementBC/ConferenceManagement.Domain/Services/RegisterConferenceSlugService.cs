@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Threading.Tasks;
 using ConferenceManagement.Domain.Models;
 using ConferenceManagement.Domain.Repositories;
 using ECommon.Components;
@@ -24,12 +25,12 @@ namespace ConferenceManagement.Domain.Services
         /// <param name="conferenceId"></param>
         /// <param name="slug"></param>
         /// <returns></returns>
-        public void RegisterSlug(string indexId, Guid conferenceId, string slug)
+        public async Task RegisterSlug(string indexId, Guid conferenceId, string slug)
         {
-            var slugIndex = _conferenceSlugIndexRepository.FindSlugIndex(slug);
+            var slugIndex = await _conferenceSlugIndexRepository.FindSlugIndex(slug);
             if (slugIndex == null)
             {
-                _conferenceSlugIndexRepository.Add(new ConferenceSlugIndex(indexId, conferenceId, slug));
+                await _conferenceSlugIndexRepository.Add(new ConferenceSlugIndex(indexId, conferenceId, slug));
             }
             else if (slugIndex.IndexId != indexId)
             {

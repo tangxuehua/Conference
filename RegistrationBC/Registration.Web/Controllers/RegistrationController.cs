@@ -54,13 +54,7 @@ namespace Registration.Web.Controllers
                 return View(CreateViewModel());
             }
 
-            var result = await SendCommandAsync(command);
-
-            if (!result.IsSuccess())
-            {
-                ModelState.AddModelError("ConferenceCode", result.GetErrorMessage());
-                return View(CreateViewModel());
-            }
+            await SendCommandAsync(command);
 
             return RedirectToAction("SpecifyRegistrantAndPaymentDetails", new { conferenceCode = this.ConferenceCode, orderId = command.AggregateRootId });
         }
@@ -228,7 +222,7 @@ namespace Registration.Web.Controllers
         /// <param name="command"></param>
         /// <param name="millisecondsDelay"></param>
         /// <returns></returns>
-        private Task<AsyncTaskResult> SendCommandAsync(ICommand command, int millisecondsDelay = 5000)
+        private Task SendCommandAsync(ICommand command, int millisecondsDelay = 5000)
         {
             return _commandService.SendAsync(command).TimeoutAfter(millisecondsDelay);
         }

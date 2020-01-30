@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using Conference.Common;
 using ECommon.Components;
 using ECommon.Dapper;
-using ECommon.IO;
-using ENode.Infrastructure;
+using ENode.Messaging;
 using Registration.SeatAssigning;
 
 namespace Registration.Handlers
@@ -18,7 +17,7 @@ namespace Registration.Handlers
         IMessageHandler<SeatAssigned>,
         IMessageHandler<SeatUnassigned>
     {
-        public Task<AsyncTaskResult> HandleAsync(OrderSeatAssignmentsCreated evnt)
+        public Task HandleAsync(OrderSeatAssignmentsCreated evnt)
         {
             return TryTransactionAsync((connection, transaction) =>
             {
@@ -39,7 +38,7 @@ namespace Registration.Handlers
                 return tasks;
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(SeatAssigned evnt)
+        public Task HandleAsync(SeatAssigned evnt)
         {
             return TryUpdateRecordAsync(connection =>
             {
@@ -55,7 +54,7 @@ namespace Registration.Handlers
                 }, ConfigSettings.OrderSeatAssignmentsTable);
             });
         }
-        public Task<AsyncTaskResult> HandleAsync(SeatUnassigned evnt)
+        public Task HandleAsync(SeatUnassigned evnt)
         {
             return TryUpdateRecordAsync(connection =>
             {
@@ -72,15 +71,14 @@ namespace Registration.Handlers
             });
         }
 
-        private async Task<AsyncTaskResult> TryUpdateRecordAsync(Func<IDbConnection, Task<int>> action)
+        private async Task TryUpdateRecordAsync(Func<IDbConnection, Task<int>> action)
         {
             using (var connection = GetConnection())
             {
                 await action(connection);
-                return AsyncTaskResult.Success;
             }
         }
-        private async Task<AsyncTaskResult> TryTransactionAsync(Func<IDbConnection, IDbTransaction, IEnumerable<Task>> actions)
+        private async Task TryTransactionAsync(Func<IDbConnection, IDbTransaction, IEnumerable<Task>> actions)
         {
             using (var connection = GetConnection())
             {
@@ -90,7 +88,6 @@ namespace Registration.Handlers
                 {
                     await Task.WhenAll(actions(connection, transaction)).ConfigureAwait(false);
                     await Task.Run(() => transaction.Commit()).ConfigureAwait(false);
-                    return AsyncTaskResult.Success;
                 }
                 catch
                 {

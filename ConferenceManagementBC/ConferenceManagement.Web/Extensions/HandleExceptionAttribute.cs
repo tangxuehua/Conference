@@ -32,7 +32,7 @@ namespace ConferenceManagement.Web.Extensions
             }
             if (_logger == null) return;
 
-            _logger.Error(ex);
+            _logger.Error("Controller action has unknown exception.", ex);
         }
     }
 }

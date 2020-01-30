@@ -1,7 +1,7 @@
 ﻿using Conference.Common;
 using ECommon.Components;
 using ENode.EQueue;
-using ENode.Infrastructure;
+using ENode.Messaging;
 
 namespace Payments.ProcessorHost.TopicProviders
 {

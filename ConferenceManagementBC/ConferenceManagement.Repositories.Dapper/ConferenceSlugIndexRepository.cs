@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using Conference.Common;
 using ConferenceManagement.Domain.Models;
 using ConferenceManagement.Domain.Repositories;
@@ -13,11 +14,12 @@ namespace ConferenceManagement.Repositories.Dapper
     [Component]
     public class ConferenceSlugIndexRepository : IConferenceSlugIndexRepository
     {
-        public void Add(ConferenceSlugIndex index)
+        public async Task Add(ConferenceSlugIndex index)
         {
             using (var connection = GetConnection())
             {
-                connection.Insert(new
+                await connection.OpenAsync();
+                await connection.InsertAsync(new
                 {
                     IndexId = index.IndexId,
                     ConferenceId = index.ConferenceId,
@@ -25,22 +27,24 @@ namespace ConferenceManagement.Repositories.Dapper
                 }, ConfigSettings.ConferenceSlugIndexTable);
             }
         }
-        public ConferenceSlugIndex FindSlugIndex(string slug)
+        public async Task<ConferenceSlugIndex> FindSlugIndex(string slug)
         {
             using (var connection = GetConnection())
             {
-                var record = connection.QueryList(new { Slug = slug }, ConfigSettings.ConferenceSlugIndexTable).SingleOrDefault();
-                if (record != null)
+                await connection.OpenAsync();
+                var data = await connection.QueryListAsync(new { Slug = slug }, ConfigSettings.ConferenceSlugIndexTable);
+                var conferenceSlugIndex = data.SingleOrDefault();
+                if (conferenceSlugIndex != null)
                 {
-                    var indexId = record.IndexId as string;
-                    var conferenceId = (Guid)record.ConferenceId;
+                    var indexId = conferenceSlugIndex.IndexId as string;
+                    var conferenceId = (Guid)conferenceSlugIndex.ConferenceId;
                     return new ConferenceSlugIndex(indexId, conferenceId, slug);
                 }
                 return null;
             }
         }
 
-        private IDbConnection GetConnection()
+        private SqlConnection GetConnection()
         {
             return new SqlConnection(ConfigSettings.ConferenceConnectionString);
         }

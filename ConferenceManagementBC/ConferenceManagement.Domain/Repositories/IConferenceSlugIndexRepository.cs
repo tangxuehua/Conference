@@ -1,10 +1,11 @@
-﻿using ConferenceManagement.Domain.Models;
+﻿using System.Threading.Tasks;
+using ConferenceManagement.Domain.Models;
 
 namespace ConferenceManagement.Domain.Repositories
 {
     public interface IConferenceSlugIndexRepository
     {
-        void Add(ConferenceSlugIndex index);
-        ConferenceSlugIndex FindSlugIndex(string slug);
+        Task Add(ConferenceSlugIndex index);
+        Task<ConferenceSlugIndex> FindSlugIndex(string slug);
     }
 }

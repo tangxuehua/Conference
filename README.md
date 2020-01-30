@@ -23,4 +23,5 @@ A conference example to explain how to use enode to develop ddd+cqrs+event sourc
 6）ConferenceManagement.Web  
 7）Registration.Web  
 
-OK，到这里，整个案例运行就完成了。  
+OK，到这里，整个案例运行就完成了。
+第一步，先在ConferenceManagement.Web网站的首页上点击Create Conference按钮创建第一个Conference，创建成功后，才能通过Login按钮登录访问管理你之前创建的Conference哦。

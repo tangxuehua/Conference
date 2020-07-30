@@ -10,16 +10,16 @@ namespace Payments
         public Guid ConferenceId { get; private set; }
         public string Description { get; private set; }
         public decimal TotalAmount { get; private set; }
-        public IEnumerable<PaymentItem> Items { get; private set; }
+        public IEnumerable<PaymentItem> PaymentItems { get; private set; }
 
         public PaymentInitiated() { }
-        public PaymentInitiated(Guid orderId, Guid conferenceId, string description, decimal totalAmount, IEnumerable<PaymentItem> items)
+        public PaymentInitiated(Guid orderId, Guid conferenceId, string description, decimal totalAmount, IEnumerable<PaymentItem> paymentItems)
         {
             OrderId = orderId;
             ConferenceId = conferenceId;
             Description = description;
             TotalAmount = totalAmount;
-            Items = items;
+            PaymentItems = paymentItems;
         }
     }
 }

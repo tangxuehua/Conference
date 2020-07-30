@@ -30,7 +30,7 @@ namespace Payments.ReadModel
                     TotalAmount = evnt.TotalAmount,
                     Version = evnt.Version
                 }, ConfigSettings.PaymentTable, transaction));
-                foreach (var item in evnt.Items)
+                foreach (var item in evnt.PaymentItems)
                 {
                     tasks.Add(connection.InsertAsync(new
                     {

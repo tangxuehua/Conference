@@ -43,7 +43,7 @@ namespace Payments
             _description = evnt.Description;
             _totalAmount = evnt.TotalAmount;
             _state = PaymentState.Initiated;
-            _items = evnt.Items;
+            _items = evnt.PaymentItems;
         }
         private void Handle(PaymentCompleted evnt)
         {
